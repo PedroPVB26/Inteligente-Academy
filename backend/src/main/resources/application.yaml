@@ -1,3 +1,14 @@
 spring:
-  application:
-    name: inteligenteacademy
+  datasource:
+    url: jdbc:postgresql://localhost:5432/inteligenteacademy
+    username: utfpr
+    password: utfpr
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  port: 8080
