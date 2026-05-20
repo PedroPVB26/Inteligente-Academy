@@ -54,7 +54,9 @@ public class Usuario {
     private LocalDateTime modifiedAt;
 
     
-    public Usuario() {}
+    public Usuario() {
+
+	}
 
 
 	public Usuario(Integer id, String cpf, String nome, String email, String senha, LocalDate dataNascimento,
@@ -71,8 +73,8 @@ public class Usuario {
 		this.tipoUsuario = tipoUsuario;
 		this.statusExcluido = statusExcluido;
 		this.deletedAt = deletedAt;
-		this.createdAt = createdAt;
-		this.modifiedAt = modifiedAt;
+//		this.createdAt = createdAt;
+//		this.modifiedAt = modifiedAt;
 	}
 
 	public Usuario(UsuarioCreationDto dto) {

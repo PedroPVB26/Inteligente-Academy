@@ -63,7 +63,7 @@ public class UsuarioCreationDto {
     private Boolean statusExcluido;
 
     public UsuarioCreationDto() {
-
+        
     }
     
     public UsuarioCreationDto(Usuario usuario) {

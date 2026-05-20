@@ -37,9 +37,9 @@ public class UsuarioService {
 		        usuarioRepository.findById(usuarioId)
 		        .orElseThrow(() ->
 			        new ResourceNotFoundException(
-			                "Usuário com id "
+			                "User with id "
 			                + usuarioId
-			                + " não encontrado"
+			                + " not found"
 			        )
 		        );
 		return new UsuarioResponseDto(usuario);
@@ -48,11 +48,11 @@ public class UsuarioService {
 	@Transactional
 	public UsuarioResponseDto save(UsuarioCreationDto usuarioCreationDto) {
 		if(usuarioRepository.existsByCpf(usuarioCreationDto.getCpf())) {
-			throw new DatabaseException("CPF informado já está cadastrado");
+			throw new DatabaseException("CPF already exists in the database");
 		}
 		
 		if (usuarioRepository.existsByEmail(usuarioCreationDto.getEmail())) {
-	        throw new DatabaseException("Email informado já está cadastrado");
+	        throw new DatabaseException("Email already exists in the database");
 	    }
 		
 		Usuario usuario = new Usuario(usuarioCreationDto);
