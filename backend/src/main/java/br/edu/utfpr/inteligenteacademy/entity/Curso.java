@@ -1,0 +1,110 @@
+package br.edu.utfpr.inteligenteacademy.entity;
+
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import br.edu.utfpr.inteligenteacademy.model.dto.CursoCreationDto;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Curso {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
+    private String nome;
+
+    @Column(nullable = true)
+    private String descricao;
+
+    @Column(nullable = false)
+    private Integer duracao;
+
+    @CreationTimestamp // Preenche automaticamente quando o registro é criado.
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp // Atualiza automaticamente sempre que houver alteração na entidade.
+    private LocalDateTime modifiedAt;
+
+    public Curso() {
+
+	}
+
+    public Curso(Integer id, String nome, String descricao, Integer duracao, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.duracao = duracao;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+    }
+
+    public Curso(CursoCreationDto dto){ 
+        this.id = dto.getId();
+        this.nome = dto.getNome();
+        this.descricao = dto.getDescricao();
+        this.duracao = dto.getDuracao();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Integer getDuracao() {
+        return duracao;
+    }
+
+    public void setDuracao(Integer duracao) {
+        this.duracao = duracao;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
+
+    
+
+
+    
+    
+}
