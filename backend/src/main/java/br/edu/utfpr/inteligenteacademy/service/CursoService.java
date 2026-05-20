@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import br.edu.utfpr.inteligenteacademy.entity.Curso;
 import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
-import br.edu.utfpr.inteligenteacademy.model.dto.CursoCreationDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.CursoResponseDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.curso.CursoCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.curso.CursoResponseDto;
 import br.edu.utfpr.inteligenteacademy.repository.CursoRepository;
 
 

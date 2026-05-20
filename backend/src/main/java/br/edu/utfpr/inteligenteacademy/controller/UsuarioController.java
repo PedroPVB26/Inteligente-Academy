@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.utfpr.inteligenteacademy.model.dto.UsuarioCreationDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.UsuarioResponseDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioResponseDto;
 import br.edu.utfpr.inteligenteacademy.service.UsuarioService;
 import jakarta.validation.Valid;
 

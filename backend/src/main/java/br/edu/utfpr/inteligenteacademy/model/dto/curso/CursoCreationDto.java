@@ -1,4 +1,4 @@
-package br.edu.utfpr.inteligenteacademy.model.dto;
+package br.edu.utfpr.inteligenteacademy.model.dto.curso;
 
 import br.edu.utfpr.inteligenteacademy.entity.Curso;
 import jakarta.validation.constraints.NotBlank;

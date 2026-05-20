@@ -1,13 +1,11 @@
 package br.edu.utfpr.inteligenteacademy.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import br.edu.utfpr.inteligenteacademy.model.dto.EtiquetaCreationDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.UsuarioCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.etiqueta.EtiquetaCreationDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,16 +32,12 @@ public class Etiqueta {
 
 	}
 
-    public Etiqueta(Integer id, String nome, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.id = id;
+    public Etiqueta(String nome, LocalDateTime createdAt) {
         this.nome = nome;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
     }
 
     public Etiqueta(EtiquetaCreationDto dto){   
         this.nome = dto.getNome();
-        this.id = dto.getId();
     }
 
     public Integer getId() {

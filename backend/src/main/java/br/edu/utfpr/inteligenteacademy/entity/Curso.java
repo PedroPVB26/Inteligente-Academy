@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import br.edu.utfpr.inteligenteacademy.model.dto.CursoCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.curso.CursoCreationDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +25,7 @@ public class Curso {
     private String descricao;
 
     @Column(nullable = false)
-    private Integer duracao;
+    private Integer duracao; // Em horas
 
     @CreationTimestamp // Preenche automaticamente quando o registro é criado.
     @Column(nullable = false, updatable = false)

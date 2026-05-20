@@ -1,7 +1,9 @@
-package br.edu.utfpr.inteligenteacademy.model.dto;
+package br.edu.utfpr.inteligenteacademy.model.dto.usuario;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import br.edu.utfpr.inteligenteacademy.entity.Usuario;
 
@@ -19,6 +21,17 @@ import br.edu.utfpr.inteligenteacademy.entity.Usuario;
  * - encapsulamento;
  * - manutenção e escalabilidade da arquitetura.
  */
+@JsonPropertyOrder({
+    "id",
+    "cpf",
+    "nome",
+    "email",
+    "dataNascimento",
+    "verificado",
+    "tipoUsuario",
+    "createdAt",
+    "modifiedAt"
+})
 public class UsuarioResponseDto {
 
     private Integer id;

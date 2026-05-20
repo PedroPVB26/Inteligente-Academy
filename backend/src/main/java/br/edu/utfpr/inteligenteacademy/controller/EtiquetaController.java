@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.utfpr.inteligenteacademy.model.dto.EtiquetaResponseDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.EtiquetaCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.etiqueta.EtiquetaCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.etiqueta.EtiquetaResponseDto;
 import br.edu.utfpr.inteligenteacademy.service.EtiquetaService;
 
 

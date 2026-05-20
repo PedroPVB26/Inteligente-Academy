@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import br.edu.utfpr.inteligenteacademy.entity.Usuario;
 import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
-import br.edu.utfpr.inteligenteacademy.model.dto.UsuarioCreationDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.UsuarioResponseDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioResponseDto;
 import br.edu.utfpr.inteligenteacademy.repository.UsuarioRepository;
 
 

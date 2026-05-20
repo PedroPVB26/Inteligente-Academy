@@ -1,4 +1,4 @@
-package br.edu.utfpr.inteligenteacademy.model.dto;
+package br.edu.utfpr.inteligenteacademy.model.dto.usuario;
 
 import java.time.LocalDate;
 
@@ -11,9 +11,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class UsuarioCreationDto {
-
-    private Integer id;
-
     @NotBlank(message = "cpf must not be blank")
     @Pattern(
         regexp = "^\\d{11}$",
@@ -59,38 +56,33 @@ public class UsuarioCreationDto {
     @NotNull(message = "tipoUsuario must not be null")
     private Short tipoUsuario;
 
-    @NotNull(message = "statusExcluido must not be null")
-    private Boolean statusExcluido;
 
     public UsuarioCreationDto() {
         
     }
     
-    public UsuarioCreationDto(Usuario usuario) {
-        this.id = usuario.getId();
-        this.cpf = usuario.getCpf();
-        this.nome = usuario.getNome();
-        this.email = usuario.getEmail();
-        this.senha = usuario.getSenha();
-        this.dataNascimento = usuario.getDataNascimento();
-        this.verificado = usuario.getVerificado();
-        this.tipoUsuario = usuario.getTipoUsuario();
-        this.statusExcluido = usuario.getStatusExcluido();
-    }
-    
+    // Acho que não vai precisar desse construtor
+//    public UsuarioCreationDto(Usuario usuario) {
+//        this.cpf = usuario.getCpf();
+//        this.nome = usuario.getNome();
+//        this.email = usuario.getEmail();
+//        this.senha = usuario.getSenha();
+//        this.dataNascimento = usuario.getDataNascimento();
+//        this.verificado = usuario.getVerificado();
+//        this.tipoUsuario = usuario.getTipoUsuario();
+//        this.statusExcluido = usuario.getStatusExcluido();
+//    }
+//    
     
     public UsuarioCreationDto(
-            Integer id,
             String cpf,
             String nome,
             String email,
             String senha,
             LocalDate dataNascimento,
             Boolean verificado,
-            Short tipoUsuario,
-            Boolean statusExcluido
+            Short tipoUsuario
     ) {
-        this.id = id;
         this.cpf = cpf;
         this.nome = nome;
         this.email = email;
@@ -98,15 +90,6 @@ public class UsuarioCreationDto {
         this.dataNascimento = dataNascimento;
         this.verificado = verificado;
         this.tipoUsuario = tipoUsuario;
-        this.statusExcluido = statusExcluido;
-    }
-
-	public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getCpf() {
@@ -163,13 +146,5 @@ public class UsuarioCreationDto {
 
     public void setTipoUsuario(Short tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
-    }
-
-    public Boolean getStatusExcluido() {
-        return statusExcluido;
-    }
-
-    public void setStatusExcluido(Boolean statusExcluido) {
-        this.statusExcluido = statusExcluido;
     }
 }

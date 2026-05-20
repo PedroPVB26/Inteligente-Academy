@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import br.edu.utfpr.inteligenteacademy.model.dto.UsuarioCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioCreationDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -59,11 +59,16 @@ public class Usuario {
 	}
 
 
-	public Usuario(Integer id, String cpf, String nome, String email, String senha, LocalDate dataNascimento,
-			Boolean verificado, Short tipoUsuario, Boolean statusExcluido, LocalDateTime deletedAt,
-			LocalDateTime createdAt, LocalDateTime modifiedAt) {
-		super();
-		this.id = id;
+	public Usuario(
+			String cpf, 
+			String nome, 
+			String email, 
+			String senha, 
+			LocalDate dataNascimento,
+			Boolean verificado, 
+			Short tipoUsuario, 
+			Boolean statusExcluido, 
+			LocalDateTime deletedAt) {
 		this.cpf = cpf;
 		this.nome = nome;
 		this.email = email;
@@ -72,9 +77,6 @@ public class Usuario {
 		this.verificado = verificado;
 		this.tipoUsuario = tipoUsuario;
 		this.statusExcluido = statusExcluido;
-		this.deletedAt = deletedAt;
-//		this.createdAt = createdAt;
-//		this.modifiedAt = modifiedAt;
 	}
 
 	public Usuario(UsuarioCreationDto dto) {
@@ -85,7 +87,7 @@ public class Usuario {
 	    this.dataNascimento = dto.getDataNascimento();
 	    this.verificado = dto.getVerificado();
 	    this.tipoUsuario = dto.getTipoUsuario();
-	    this.statusExcluido = dto.getStatusExcluido();
+	    this.statusExcluido = false;
 	}
 	
 	public Integer getId() {

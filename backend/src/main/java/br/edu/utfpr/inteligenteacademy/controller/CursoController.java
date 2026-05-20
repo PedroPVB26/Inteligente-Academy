@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.utfpr.inteligenteacademy.model.dto.CursoResponseDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.CursoCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.curso.CursoCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.curso.CursoResponseDto;
 import br.edu.utfpr.inteligenteacademy.service.CursoService;
 
 
@@ -31,16 +31,16 @@ public class CursoController {
         return ResponseEntity.status(HttpStatus.OK).body(cursoService.findAll());
     }
 
-    @GetMapping("/{CursoId}")
-    public ResponseEntity<CursoResponseDto> findById(@PathVariable Integer CursoId) {
-        CursoResponseDto CursoResponseDto = cursoService.findById(CursoId);
+    @GetMapping("/{cursoId}")
+    public ResponseEntity<CursoResponseDto> findById(@PathVariable Integer cursoId) {
+        CursoResponseDto CursoResponseDto = cursoService.findById(cursoId);
         return ResponseEntity.status(HttpStatus.OK).body(CursoResponseDto);
     }
 
     // ----- POST -----
     @PostMapping
-    public ResponseEntity<CursoResponseDto> save(@RequestBody CursoCreationDto CursoCreationDto) {
-        CursoResponseDto CursoSalvo = cursoService.save(CursoCreationDto);
+    public ResponseEntity<CursoResponseDto> save(@RequestBody CursoCreationDto cursoCreationDto) {
+        CursoResponseDto CursoSalvo = cursoService.save(cursoCreationDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(CursoSalvo);
     }
 

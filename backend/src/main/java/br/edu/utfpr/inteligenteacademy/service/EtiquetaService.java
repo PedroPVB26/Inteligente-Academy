@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import br.edu.utfpr.inteligenteacademy.entity.Etiqueta;
 import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
-import br.edu.utfpr.inteligenteacademy.model.dto.EtiquetaCreationDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.EtiquetaResponseDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.etiqueta.EtiquetaCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.etiqueta.EtiquetaResponseDto;
 import br.edu.utfpr.inteligenteacademy.repository.EtiquetaRepository;
 
 

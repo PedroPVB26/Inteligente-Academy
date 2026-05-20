@@ -1,14 +1,16 @@
-package br.edu.utfpr.inteligenteacademy.model.dto;
+package br.edu.utfpr.inteligenteacademy.model.dto.etiqueta;
 
 import java.time.LocalDateTime;
 
-import br.edu.utfpr.inteligenteacademy.entity.Curso;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import br.edu.utfpr.inteligenteacademy.entity.Etiqueta;
 
 /*
  * DTO responsável por representar os dados retornados pela API
- * relacionados à curso.
+ * relacionados à etiqueta.
  *
- * Sua finalidade é desacoplar a entidade Curso da camada de
+ * Sua finalidade é desacoplar a entidade Etiqueta da camada de
  * apresentação, evitando a exposição de dados sensíveis e permitindo
  * maior controle sobre as informações retornadas ao cliente.
  *
@@ -18,40 +20,38 @@ import br.edu.utfpr.inteligenteacademy.entity.Curso;
  * - encapsulamento;
  * - manutenção e escalabilidade da arquitetura.
  */
-public class CursoResponseDto {
+@JsonPropertyOrder({
+    "id",
+    "nome",
+    "createdAt",
+    "modifiedAt"
+})
+public class EtiquetaResponseDto {
 
     private Integer id;
 
     private String nome;
 
-    private String descricao;
-
-    private Integer duracao;
-
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
 
-    public CursoResponseDto() {
+    public EtiquetaResponseDto() {
 
     }
 
-    public CursoResponseDto(Integer id, String nome, String descricao, Integer duracao, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public EtiquetaResponseDto(Integer id, String nome, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.nome = nome;
-        this.descricao = descricao;
-        this.duracao = duracao;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
 
-    public CursoResponseDto(Curso curso) {
-        this.id = curso.getId();
-        this.nome = curso.getNome();
-        this.descricao = curso.getDescricao();
-        this.duracao = curso.getDuracao();
-        this.createdAt = curso.getCreatedAt();
-        this.modifiedAt = curso.getModifiedAt();
+    public EtiquetaResponseDto(Etiqueta etiqueta) {
+        this.id = etiqueta.getId();
+        this.nome = etiqueta.getNome();
+        this.createdAt = etiqueta.getCreatedAt();
+        this.modifiedAt = etiqueta.getModifiedAt();
     }
 
     public Integer getId() {
@@ -84,21 +84,5 @@ public class CursoResponseDto {
 
     public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public Integer getDuracao() {
-        return duracao;
-    }
-
-    public void setDuracao(Integer duracao) {
-        this.duracao = duracao;
     }
 }
