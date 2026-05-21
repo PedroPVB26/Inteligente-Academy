@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import br.edu.utfpr.inteligenteacademy.entity.Usuario;
+import br.edu.utfpr.inteligenteacademy.model.TipoUsuario;
 
 /*
  * DTO responsável por representar os dados retornados pela API
@@ -46,8 +47,12 @@ public class UsuarioResponseDto {
 
     private Boolean verificado;
 
-    private Short tipoUsuario;
+    private TipoUsuario tipoUsuario;
 
+    private Boolean usuarioExcluido;
+    
+    private LocalDateTime deletedAt;
+    
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
@@ -63,7 +68,7 @@ public class UsuarioResponseDto {
             String email,
             LocalDate dataNascimento,
             Boolean verificado,
-            Short tipoUsuario,
+            TipoUsuario tipoUsuario,
             LocalDateTime createdAt,
             LocalDateTime modifiedAt
     ) {
@@ -138,11 +143,11 @@ public class UsuarioResponseDto {
         this.verificado = verificado;
     }
 
-    public Short getTipoUsuario() {
+    public TipoUsuario getTipoUsuario() {
         return tipoUsuario;
     }
 
-    public void setTipoUsuario(Short tipoUsuario) {
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
 

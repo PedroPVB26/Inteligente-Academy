@@ -2,7 +2,7 @@ package br.edu.utfpr.inteligenteacademy.model.dto.usuario;
 
 import java.time.LocalDate;
 
-import br.edu.utfpr.inteligenteacademy.entity.Usuario;
+import br.edu.utfpr.inteligenteacademy.model.TipoUsuario;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -54,7 +54,7 @@ public class UsuarioCreationDto {
     private Boolean verificado;
 
     @NotNull(message = "tipoUsuario must not be null")
-    private Short tipoUsuario;
+    private TipoUsuario tipoUsuario;
 
 
     public UsuarioCreationDto() {
@@ -81,7 +81,7 @@ public class UsuarioCreationDto {
             String senha,
             LocalDate dataNascimento,
             Boolean verificado,
-            Short tipoUsuario
+            TipoUsuario tipoUsuario
     ) {
         this.cpf = cpf;
         this.nome = nome;
@@ -140,11 +140,11 @@ public class UsuarioCreationDto {
         this.verificado = verificado;
     }
 
-    public Short getTipoUsuario() {
+    public TipoUsuario getTipoUsuario() {
         return tipoUsuario;
     }
 
-    public void setTipoUsuario(Short tipoUsuario) {
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
 }

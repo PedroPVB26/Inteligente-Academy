@@ -6,9 +6,12 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import br.edu.utfpr.inteligenteacademy.model.TipoUsuario;
 import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioCreationDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,8 +41,9 @@ public class Usuario {
     @Column(nullable = false)
     private Boolean verificado;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Short tipoUsuario; // Internamente tratar como Enum (int -> Tipo) e.g ALUNO -> 1, ADMIN -> 3
+    private TipoUsuario tipoUsuario; // Internamente tratar como Enum (int -> Tipo) e.g ALUNO -> 1, ADMIN -> 3
 
     @Column(nullable = false)
     private Boolean statusExcluido;
@@ -66,7 +70,7 @@ public class Usuario {
 			String senha, 
 			LocalDate dataNascimento,
 			Boolean verificado, 
-			Short tipoUsuario, 
+			TipoUsuario tipoUsuario, 
 			Boolean statusExcluido, 
 			LocalDateTime deletedAt) {
 		this.cpf = cpf;
@@ -160,12 +164,12 @@ public class Usuario {
 	}
 
 
-	public Short getTipoUsuario() {
+	public TipoUsuario getTipoUsuario() {
 		return tipoUsuario;
 	}
 
 
-	public void setTipoUsuario(Short tipoUsuario) {
+	public void setTipoUsuario(TipoUsuario tipoUsuario) {
 		this.tipoUsuario = tipoUsuario;
 	}
 
