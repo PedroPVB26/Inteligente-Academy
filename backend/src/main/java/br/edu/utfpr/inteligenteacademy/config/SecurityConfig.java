@@ -4,17 +4,42 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import br.edu.utfpr.inteligenteacademy.exception.CustomAccessDeniedHandler;
+import br.edu.utfpr.inteligenteacademy.exception.CustomAuthenticationEntryPoint;
+import br.edu.utfpr.inteligenteacademy.model.dto.usuario.TipoUsuario;
+import br.edu.utfpr.inteligenteacademy.security.JwtAuthenticationFilter;
+
 @Configuration
 public class SecurityConfig {
+
+    private final AsyncConfig asyncConfig;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    SecurityConfig(
+            AsyncConfig asyncConfig,
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            CustomAccessDeniedHandler customAccessDeniedHandler,
+            CustomAuthenticationEntryPoint customAuthenticationEntryPoint
+    ) {
+        this.asyncConfig = asyncConfig;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+    }
 
 	/*
 	 * Configuração temporária utilizada durante a fase inicial
@@ -33,13 +58,52 @@ public class SecurityConfig {
             HttpSecurity http
     ) throws Exception {
 
+    	String admin = TipoUsuario.ADMIN.name();
+    	String educador = TipoUsuario.EDUCADOR.name();
+    	String aluno = TipoUsuario.ALUNO.name();
+    	
         http
             .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()
+            .sessionManagement(session ->
+            	session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-            .httpBasic(Customizer.withDefaults());
+            .exceptionHandling(exception -> exception
+                    .accessDeniedHandler(customAccessDeniedHandler)
+                    .authenticationEntryPoint(customAuthenticationEntryPoint)
+                )
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**").permitAll()
+//                .anyRequest().authenticated()
+                
+                // Curso
+                .requestMatchers(HttpMethod.GET, "/curso/**")
+                .authenticated()
+
+                .requestMatchers(HttpMethod.POST, "/curso/**")
+                .hasAnyRole(admin)
+
+                .requestMatchers(HttpMethod.PUT, "/curso/**")
+                .hasAnyRole(admin)
+
+                .requestMatchers(HttpMethod.DELETE, "/curso/**")
+                .hasRole(admin)
+
+                // Usuário
+                .requestMatchers("/usuario/**")
+                .hasRole(admin)
+                
+                // Swagger
+                .requestMatchers(
+                	    "/swagger-ui/**",
+                	    "/swagger-ui.html",
+                	    "/v3/api-docs/**",
+                	    "/v3/api-docs",
+                	    "/swagger-resources/**",
+                	    "/webjars/**"
+                	).permitAll()
+            )
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

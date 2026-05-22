@@ -2,7 +2,6 @@ package br.edu.utfpr.inteligenteacademy.model.dto.usuario;
 
 import java.time.LocalDate;
 
-import br.edu.utfpr.inteligenteacademy.model.TipoUsuario;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

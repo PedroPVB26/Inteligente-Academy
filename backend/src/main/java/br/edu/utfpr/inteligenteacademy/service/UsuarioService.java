@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.edu.utfpr.inteligenteacademy.entity.Usuario;
 import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
+import br.edu.utfpr.inteligenteacademy.exception.auth.InvalidCredentialsException;
 import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioCreationDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioResponseDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioSoftDeleteResponseDto;
@@ -32,6 +33,13 @@ public class UsuarioService {
 		return usuarios.stream().map(x -> new UsuarioResponseDto(x)).toList();
 	}
 	
+	
+	@Transactional(readOnly = true)
+	public Usuario findEntityByEmail(String email) {
+		return usuarioRepository.findByEmail(email)
+				.orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
+		
+	}
 	
 	@Transactional(readOnly = true)
 	public UsuarioResponseDto findById(Integer usuarioId) {

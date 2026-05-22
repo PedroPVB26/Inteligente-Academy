@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import br.edu.utfpr.inteligenteacademy.entity.Usuario;
-import br.edu.utfpr.inteligenteacademy.model.TipoUsuario;
 
 /*
  * DTO responsável por representar os dados retornados pela API

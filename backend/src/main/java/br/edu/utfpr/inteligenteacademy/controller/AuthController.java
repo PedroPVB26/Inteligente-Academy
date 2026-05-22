@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.utfpr.inteligenteacademy.model.dto.login.LoginRequestDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.login.LoginResponseDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioCreationDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioResponseDto;
 import br.edu.utfpr.inteligenteacademy.service.AuthService;
@@ -20,6 +22,12 @@ public class AuthController {
 
     public AuthController(AuthService authService) {
         this.authService = authService;
+    }
+    
+    
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequestDto){
+    	return ResponseEntity.ok(authService.login(loginRequestDto));
     }
     
     @PostMapping("/register")

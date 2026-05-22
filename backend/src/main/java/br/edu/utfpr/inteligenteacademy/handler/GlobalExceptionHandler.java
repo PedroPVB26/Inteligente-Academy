@@ -1,4 +1,4 @@
-package br.edu.utfpr.inteligenteacademy.exception;
+package br.edu.utfpr.inteligenteacademy.handler;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +10,16 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
+import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
+import br.edu.utfpr.inteligenteacademy.exception.StandardError;
+import br.edu.utfpr.inteligenteacademy.exception.ValidationError;
+import br.edu.utfpr.inteligenteacademy.exception.auth.EmailNotVerifiedException;
+import br.edu.utfpr.inteligenteacademy.exception.auth.InvalidCredentialsException;
+import br.edu.utfpr.inteligenteacademy.exception.auth.UserDeletedException;
+import br.edu.utfpr.inteligenteacademy.exception.token.TokenAlreadyUsedException;
+import br.edu.utfpr.inteligenteacademy.exception.token.TokenExpiredException;
+import br.edu.utfpr.inteligenteacademy.exception.token.TokenInvalidException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
@@ -141,5 +151,62 @@ public class GlobalExceptionHandler {
 	    );
 
 	    return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+	}
+	
+	@ExceptionHandler(InvalidCredentialsException.class)
+	public ResponseEntity<StandardError> invalidCredentials(
+	        InvalidCredentialsException e,
+	        HttpServletRequest request
+	) {
+
+	    StandardError error = new StandardError(
+	            LocalDateTime.now(),
+	            HttpStatus.UNAUTHORIZED.value(),
+	            "Invalid credentials",
+	            e.getMessage(),
+	            request.getRequestURI()
+	    );
+
+	    return ResponseEntity
+	            .status(HttpStatus.UNAUTHORIZED)
+	            .body(error);
+	}
+	
+	@ExceptionHandler(EmailNotVerifiedException.class)
+	public ResponseEntity<StandardError> emailNotVerified(
+	        EmailNotVerifiedException e,
+	        HttpServletRequest request
+	) {
+
+	    StandardError error = new StandardError(
+	            LocalDateTime.now(),
+	            HttpStatus.FORBIDDEN.value(),
+	            "Email not verified",
+	            e.getMessage(),
+	            request.getRequestURI()
+	    );
+
+	    return ResponseEntity
+	            .status(HttpStatus.FORBIDDEN)
+	            .body(error);
+	}
+	
+	@ExceptionHandler(UserDeletedException.class)
+	public ResponseEntity<StandardError> userDeleted(
+	        UserDeletedException e,
+	        HttpServletRequest request
+	) {
+
+	    StandardError error = new StandardError(
+	            LocalDateTime.now(),
+	            HttpStatus.FORBIDDEN.value(),
+	            "User deleted",
+	            e.getMessage(),
+	            request.getRequestURI()
+	    );
+
+	    return ResponseEntity
+	            .status(HttpStatus.FORBIDDEN)
+	            .body(error);
 	}
 }

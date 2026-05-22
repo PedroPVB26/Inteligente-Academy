@@ -13,8 +13,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: inteligenteacademy.dev@gmail.com
-    password: ojne cchz rskk tqxy
+    username: ${INTELIGENTE_ACADEMY_MAIL_USERNAME}
+    password: ${INTELIGENTE_ACADEMY_MAIL_PASSWORD}
 
     properties:
       mail:
@@ -27,6 +27,10 @@ spring:
           timeout: 3000
           writetimeout: 5000
         debug: true
+
+jwt:
+  secret: ${INTELIGENTE_ACADEMY_JWT_SECRET}
+  expiration: 3600000
 
 server:
   port: 8081
