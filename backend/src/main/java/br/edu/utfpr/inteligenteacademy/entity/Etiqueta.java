@@ -1,6 +1,8 @@
 package br.edu.utfpr.inteligenteacademy.entity;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Etiqueta {
@@ -28,6 +31,9 @@ public class Etiqueta {
     @UpdateTimestamp // Atualiza automaticamente sempre que houver alteração na entidade.
     private LocalDateTime modifiedAt;
 
+    @OneToMany(mappedBy = "etiqueta")
+    private Set<CursoEtiqueta> cursoEtiquetas = new HashSet<>();
+    
     public Etiqueta() {
 
 	}
@@ -72,5 +78,8 @@ public class Etiqueta {
         this.modifiedAt = modifiedAt;
     }
     
-    
+    public Set<CursoEtiqueta> getCursoEtiquetas() {
+        return cursoEtiquetas;
+    }
+
 }

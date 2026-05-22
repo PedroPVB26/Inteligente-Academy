@@ -1,7 +1,9 @@
 package br.edu.utfpr.inteligenteacademy.model.dto.curso;
 
-import br.edu.utfpr.inteligenteacademy.entity.Curso;
+import java.util.List;
+
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 public class CursoCreationDto {
@@ -27,22 +29,25 @@ public class CursoCreationDto {
     @NotBlank(message = "duracao must not be blank")
     private Integer duracao;
 
+    private List<@Positive Integer> etiquetasIds;
+    
     public CursoCreationDto() {
         
     }
     
-    public CursoCreationDto(Curso curso) {
-        this.id = curso.getId();
-        this.nome = curso.getNome();
-        this.descricao = curso.getDescricao();
-        this.duracao = curso.getDuracao();
-    }
+//    public CursoCreationDto(Curso curso) {
+//        this.id = curso.getId();
+//        this.nome = curso.getNome();
+//        this.descricao = curso.getDescricao();
+//        this.duracao = curso.getDuracao();
+//    }
 
-    public CursoCreationDto(Integer id, String nome, String descricao, Integer duracao) {
+    public CursoCreationDto(Integer id, String nome, String descricao, Integer duracao, List<Integer> etiquetasIds) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.duracao = duracao;
+        this.etiquetasIds = etiquetasIds;
     }
 
 	public Integer getId() {
@@ -76,4 +81,14 @@ public class CursoCreationDto {
     public void setDuracao(Integer duracao) {
         this.duracao = duracao;
     }
+
+	public List<Integer> getEtiquetasIds() {
+		return etiquetasIds;
+	}
+
+	public void setEtiquetasIds(List<Integer> etiquetasIds) {
+		this.etiquetasIds = etiquetasIds;
+	}
+    
+    
 }

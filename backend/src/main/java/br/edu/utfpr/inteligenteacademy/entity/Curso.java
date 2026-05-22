@@ -1,16 +1,20 @@
 package br.edu.utfpr.inteligenteacademy.entity;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import br.edu.utfpr.inteligenteacademy.model.dto.curso.CursoCreationDto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Curso {
@@ -21,7 +25,7 @@ public class Curso {
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String descricao;
 
     @Column(nullable = false)
@@ -34,6 +38,9 @@ public class Curso {
     @UpdateTimestamp // Atualiza automaticamente sempre que houver alteração na entidade.
     private LocalDateTime modifiedAt;
 
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CursoEtiqueta> cursoEtiquetas = new HashSet<>();
+    
     public Curso() {
 
 	}
@@ -54,6 +61,19 @@ public class Curso {
         this.duracao = dto.getDuracao();
     }
 
+    public void adicionarEtiqueta(Etiqueta etiqueta) {
+
+        CursoEtiqueta cursoEtiqueta =new CursoEtiqueta(this, etiqueta);
+
+        cursoEtiquetas.add(cursoEtiqueta);
+    }
+
+    public void removerEtiqueta(Etiqueta etiqueta) {
+
+        cursoEtiquetas.removeIf(relacao -> relacao.getEtiqueta().equals(etiqueta));
+    }
+    
+    
     public Integer getId() {
         return id;
     }
@@ -103,7 +123,9 @@ public class Curso {
     }
 
     
-
+    public Set<CursoEtiqueta> getCursoEtiquetas() {
+        return cursoEtiquetas;
+    }
 
     
     

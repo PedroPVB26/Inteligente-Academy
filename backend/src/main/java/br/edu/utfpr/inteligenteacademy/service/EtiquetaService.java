@@ -42,6 +42,18 @@ public class EtiquetaService {
 		return new EtiquetaResponseDto(etiqueta);
 	}
 	
+	@Transactional(readOnly = true)
+	public Etiqueta findEntityById(Integer etiquetaId) {
+		return etiquetaRepository.findById(etiquetaId)
+		        .orElseThrow(() ->
+			        new ResourceNotFoundException(
+			                "Etiqueta with id "
+			                + etiquetaId
+			                + " not found"
+			        )
+		        );
+	}
+	
 	@Transactional
 	public EtiquetaResponseDto save(EtiquetaCreationDto EtiquetaCreationDto) {
 

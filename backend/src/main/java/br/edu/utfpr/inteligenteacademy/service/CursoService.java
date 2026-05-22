@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.edu.utfpr.inteligenteacademy.entity.Curso;
+import br.edu.utfpr.inteligenteacademy.entity.Etiqueta;
 import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
 import br.edu.utfpr.inteligenteacademy.model.dto.curso.CursoCreationDto;
@@ -16,9 +17,11 @@ import br.edu.utfpr.inteligenteacademy.repository.CursoRepository;
 @Service
 public class CursoService {
 	private final CursoRepository cursoRepository;
+	private final EtiquetaService etiquetaService;
 	
-	public CursoService(CursoRepository cursoRepository) {
+	public CursoService(CursoRepository cursoRepository, EtiquetaService etiquetaService) {
 		this.cursoRepository = cursoRepository;
+		this.etiquetaService = etiquetaService;
 	}
 	
 	@Transactional(readOnly = true)
@@ -29,13 +32,13 @@ public class CursoService {
 	
 	
 	@Transactional(readOnly = true)
-	public CursoResponseDto findById(Integer CursoId) {
+	public CursoResponseDto findById(Integer cursoId) {
 		Curso Curso =
-		        cursoRepository.findById(CursoId)
+		        cursoRepository.findById(cursoId)
 		        .orElseThrow(() ->
 			        new ResourceNotFoundException(
 			                "Curso with id "
-			                + CursoId
+			                + cursoId
 			                + " not found"
 			        )
 		        );
@@ -43,13 +46,21 @@ public class CursoService {
 	}
 	
 	@Transactional
-	public CursoResponseDto save(CursoCreationDto CursoCreationDto) {
+	public CursoResponseDto save(CursoCreationDto cursoCreationDto) {
 
-		if(cursoRepository.existsByNome(CursoCreationDto.getNome())) {
+		if(cursoRepository.existsByNome(cursoCreationDto.getNome())) {
 			throw new DatabaseException("Nome already exists in the database");
 		}
 		
-		Curso curso = new Curso(CursoCreationDto);
+		Curso curso = new Curso(cursoCreationDto);
+
+		if(cursoCreationDto.getEtiquetasIds() != null && !cursoCreationDto.getEtiquetasIds().isEmpty()) {
+			for (Integer etiquetaId : cursoCreationDto.getEtiquetasIds()) {
+				Etiqueta etiqueta = etiquetaService.findEntityById(etiquetaId);
+				curso.adicionarEtiqueta(etiqueta);
+			}
+		}
+		
 		
 		Curso CursoSalvo = cursoRepository.save(curso);
 		

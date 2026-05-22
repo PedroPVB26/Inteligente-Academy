@@ -10,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+
 import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
 import br.edu.utfpr.inteligenteacademy.exception.StandardError;
@@ -102,7 +104,13 @@ public class GlobalExceptionHandler {
 	    if (cause != null && cause.getMessage().contains("TipoUsuario")) {
 	        error.addMessage("tipoUsuario: must be one of [ALUNO, EDUCADOR, ADMIN]");
 
-	    } else {
+	    } else if (cause instanceof InvalidFormatException invalidFormat) {
+
+	        String fieldName =
+	            invalidFormat.getPath().get(0).getFieldName();
+
+	        error.addMessage(fieldName + ": invalid value type");
+	    }else {
 	        error.addMessage("Malformed JSON request");
 	    }
 

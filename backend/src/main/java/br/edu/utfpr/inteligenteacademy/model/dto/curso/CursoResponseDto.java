@@ -1,10 +1,13 @@
 package br.edu.utfpr.inteligenteacademy.model.dto.curso;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import br.edu.utfpr.inteligenteacademy.entity.Curso;
+import br.edu.utfpr.inteligenteacademy.model.dto.etiqueta.EtiquetaResponseDto;
 
 /*
  * DTO responsável por representar os dados retornados pela API
@@ -25,6 +28,7 @@ import br.edu.utfpr.inteligenteacademy.entity.Curso;
     "nome",
     "descricao",
     "duracao",
+    "etiquetas",
     "createdAt",
     "modifiedAt"
 })
@@ -38,6 +42,8 @@ public class CursoResponseDto {
 
     private Integer duracao;
 
+    private List<EtiquetaResponseDto> etiquetas;
+    
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
@@ -46,14 +52,14 @@ public class CursoResponseDto {
 
     }
 
-    public CursoResponseDto(Integer id, String nome, String descricao, Integer duracao, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.duracao = duracao;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-    }
+//    public CursoResponseDto(Integer id, String nome, String descricao, Integer duracao, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+//        this.id = id;
+//        this.nome = nome;
+//        this.descricao = descricao;
+//        this.duracao = duracao;
+//        this.createdAt = createdAt;
+//        this.modifiedAt = modifiedAt;
+//    }
 
     public CursoResponseDto(Curso curso) {
         this.id = curso.getId();
@@ -62,6 +68,14 @@ public class CursoResponseDto {
         this.duracao = curso.getDuracao();
         this.createdAt = curso.getCreatedAt();
         this.modifiedAt = curso.getModifiedAt();
+        this.etiquetas = curso.getCursoEtiquetas()
+                .stream()
+                .map(cursoEtiqueta ->
+                        new EtiquetaResponseDto(
+                                cursoEtiqueta.getEtiqueta()
+                        )
+                )
+                .collect(Collectors.toList());
     }
 
     public Integer getId() {
@@ -111,4 +125,14 @@ public class CursoResponseDto {
     public void setDuracao(Integer duracao) {
         this.duracao = duracao;
     }
+
+	public List<EtiquetaResponseDto> getEtiquetas() {
+		return etiquetas;
+	}
+
+	public void setEtiquetas(List<EtiquetaResponseDto> etiquetas) {
+		this.etiquetas = etiquetas;
+	}
+    
+    
 }
