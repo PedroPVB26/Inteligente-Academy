@@ -150,7 +150,7 @@ function Usuarios() {
         onChange={(e) => setTipoUsuario(e.target.value)}
       >
         <option value="ALUNO">ALUNO</option>
-        <option value="PROFESSOR">PROFESSOR</option>
+        <option value="EDUCADOR">EDUCADOR</option>
         <option value="ADMIN">ADMIN</option>
       </select>
 
