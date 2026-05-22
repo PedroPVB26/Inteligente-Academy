@@ -74,34 +74,34 @@ public class SecurityConfig {
                 )
             .authorizeHttpRequests(auth -> auth
             	// PARA TESTAR O FRONT
-            	.anyRequest().permitAll()	
+            	//.anyRequest().permitAll()	
             		
             	// VALIDA QUEM PODE ACESSAR O QUE
-//                // Públicas
-//                .requestMatchers("/auth/**").permitAll()
-//
-//                // Cursos
-//                .requestMatchers(HttpMethod.GET, "/curso/**").authenticated()
-//
-//                .requestMatchers("/curso/**").hasRole(admin)
-//
-//                // Usuários
-//                .requestMatchers("/usuario/**").hasRole(admin)
-//
-//                // Etiquetas
-//                .requestMatchers(HttpMethod.GET, "/etiqueta/**").authenticated()
-//
-//                .requestMatchers("/etiqueta/**").hasRole(admin)
-//                
-//                // Swagger
-//                .requestMatchers(
-//                	    "/swagger-ui/**",
-//                	    "/swagger-ui.html",
-//                	    "/v3/api-docs/**",
-//                	    "/v3/api-docs",
-//                	    "/swagger-resources/**",
-//                	    "/webjars/**"
-//                	).permitAll()
+                // Públicas
+                .requestMatchers("/auth/**").permitAll()
+
+                // Cursos
+                .requestMatchers(HttpMethod.GET, "/curso/**").authenticated()
+
+                .requestMatchers("/curso/**").hasRole(admin)
+
+                // Usuários
+                .requestMatchers("/usuario/**").hasRole(admin)
+
+                // Etiquetas
+                .requestMatchers(HttpMethod.GET, "/etiqueta/**").authenticated()
+
+                .requestMatchers("/etiqueta/**").hasRole(admin)
+                
+                // Swagger
+                .requestMatchers(
+                	    "/swagger-ui/**",
+                	    "/swagger-ui.html",
+                	    "/v3/api-docs/**",
+                	    "/v3/api-docs",
+                	    "/swagger-resources/**",
+                	    "/webjars/**"
+                	).permitAll()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -6,10 +6,13 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.edu.utfpr.inteligenteacademy.entity.Usuario;
+import br.edu.utfpr.inteligenteacademy.exception.token.TokenExpiredException;
+import br.edu.utfpr.inteligenteacademy.exception.token.TokenInvalidException;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -43,13 +46,24 @@ public class JwtService {
 	}
 	
 	public String extrairEmail(String token) {
-		return Jwts
-				.parser()
-				.verifyWith((SecretKey) getSignInKey())
-				.build()
-				.parseSignedClaims(token)
-				.getPayload()
-				.getSubject();
+	    try {
+
+	        return Jwts
+	                .parser()
+	                .verifyWith((SecretKey) getSignInKey())
+	                .build()
+	                .parseSignedClaims(token)
+	                .getPayload()
+	                .getSubject();
+
+	    } catch (ExpiredJwtException e) {
+
+	        throw new TokenExpiredException("JWT token has expired");
+
+	    } catch (JwtException e) {
+
+	        throw new TokenInvalidException("JWT token is invalid");
+	    }
 	}
 	
 	public boolean tokenValid(String token) {
