@@ -23,15 +23,15 @@ import br.edu.utfpr.inteligenteacademy.model.TipoUsuario;
  * - manutenção e escalabilidade da arquitetura.
  */
 @JsonPropertyOrder({
-    "id",
-    "cpf",
-    "nome",
-    "email",
-    "dataNascimento",
-    "verificado",
-    "tipoUsuario",
-    "createdAt",
-    "modifiedAt"
+        "id",
+        "cpf",
+        "nome",
+        "email",
+        "dataNascimento",
+        "verificado",
+        "tipoUsuario",
+        "createdAt",
+        "modifiedAt"
 })
 public class UsuarioResponseDto {
 
@@ -49,10 +49,10 @@ public class UsuarioResponseDto {
 
     private TipoUsuario tipoUsuario;
 
-    private Boolean usuarioExcluido;
-    
+    private Boolean statusExcluido;
+
     private LocalDateTime deletedAt;
-    
+
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
@@ -70,8 +70,9 @@ public class UsuarioResponseDto {
             Boolean verificado,
             TipoUsuario tipoUsuario,
             LocalDateTime createdAt,
-            LocalDateTime modifiedAt
-    ) {
+            LocalDateTime modifiedAt,
+            boolean statusExcluido,
+            LocalDateTime deletedAt) {
         this.id = id;
         this.cpf = cpf;
         this.nome = nome;
@@ -81,6 +82,8 @@ public class UsuarioResponseDto {
         this.tipoUsuario = tipoUsuario;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
+        this.statusExcluido = statusExcluido;
+        this.deletedAt = deletedAt;
     }
 
     public UsuarioResponseDto(Usuario usuario) {
@@ -93,6 +96,8 @@ public class UsuarioResponseDto {
         this.tipoUsuario = usuario.getTipoUsuario();
         this.createdAt = usuario.getCreatedAt();
         this.modifiedAt = usuario.getModifiedAt();
+        this.statusExcluido = usuario.getStatusExcluido();
+        this.deletedAt = usuario.getDeletedAt();
     }
 
     public Integer getId() {
@@ -166,4 +171,21 @@ public class UsuarioResponseDto {
     public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
+
+    public Boolean getStatusExcluido() {
+        return statusExcluido;
+    }
+
+    public void setStatusExcluido(Boolean statusExcluido) {
+        this.statusExcluido = statusExcluido;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
 }
