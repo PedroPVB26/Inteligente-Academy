@@ -49,9 +49,6 @@ public class UsuarioCreationDto {
     @Past(message = "dataNascimento must be a past date")
     private LocalDate dataNascimento;
 
-    @NotNull(message = "verificado must not be null")
-    private Boolean verificado;
-
     @NotNull(message = "tipoUsuario must not be null")
     private TipoUsuario tipoUsuario;
 
@@ -79,7 +76,6 @@ public class UsuarioCreationDto {
             String email,
             String senha,
             LocalDate dataNascimento,
-            Boolean verificado,
             TipoUsuario tipoUsuario
     ) {
         this.cpf = cpf;
@@ -87,7 +83,6 @@ public class UsuarioCreationDto {
         this.email = email;
         this.senha = senha;
         this.dataNascimento = dataNascimento;
-        this.verificado = verificado;
         this.tipoUsuario = tipoUsuario;
     }
 
@@ -129,14 +124,6 @@ public class UsuarioCreationDto {
 
     public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
-    }
-
-    public Boolean getVerificado() {
-        return verificado;
-    }
-
-    public void setVerificado(Boolean verificado) {
-        this.verificado = verificado;
     }
 
     public TipoUsuario getTipoUsuario() {
