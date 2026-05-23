@@ -1,218 +1,203 @@
 import { useEffect, useState } from "react";
 
-const API = import.meta.env.VITE_API_URL ?? "";
+import "../styles/usuarios.css";
+
+import UserCard from "../components/UserCard";
+
+import {
+    listarUsuarios,
+    criarUsuario
+} from "../services/usuarioService";
 
 function Usuarios() {
 
-  const [usuarios, setUsuarios] = useState([]);
-  const [error, setError] = useState(null);
+    const [usuarios, setUsuarios] = useState([]);
+    const [error, setError] = useState(null);
 
-  const [cpf, setCpf] = useState("");
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [dataNascimento, setDataNascimento] = useState("");
-  const [tipoUsuario, setTipoUsuario] = useState("ALUNO");
-  const [senha, setSenha] = useState("");
-
-
-  // GET
-  async function carregarUsuarios() {
-
-    try {
-
-      const resposta = await fetch(`${API}/usuario`);
-
-      if (!resposta.ok) {
-        throw new Error(`HTTP ${resposta.status}`);
-      }
-
-      const dados = await resposta.json();
-
-      setUsuarios(dados);
-      setError(null);
-
-    } catch (erro) {
-      console.log("Erro ao carregar usuários", erro);
-      setError(erro.message || String(erro));
-    }
-  }
+    const [cpf, setCpf] = useState("");
+    const [nome, setNome] = useState("");
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const [dataNascimento, setDataNascimento] = useState("");
+    const [tipoUsuario, setTipoUsuario] = useState("ALUNO");
 
 
-  useEffect(() => {
-    console.log('API base URL:', API);
-    carregarUsuarios();
-  }, []);
+    async function carregar() {
 
+        try {
 
-  // POST
-  async function cadastrarUsuario() {
+            const dados = await listarUsuarios();
 
-    if (!cpf || !nome || !email || !dataNascimento || !senha) {
-      alert("Preencha todos os campos");
-      return;
+            setUsuarios(dados);
+
+            setError(null);
+
+        } catch (erro) {
+
+            console.log(erro);
+
+            setError(erro.message);
+
+        }
     }
 
-    try {
 
-      const novoUsuario = {
-        cpf,
-        nome,
-        email,
-        dataNascimento,
-        verificado: false,
-        tipoUsuario,
-        senha
-      };
+    useEffect(() => {
 
-      const resposta = await fetch(`${API}/usuario`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(novoUsuario)
-      });
+        carregar();
 
-      if (resposta.ok) {
+    }, []);
 
-        alert("Usuário cadastrado!");
 
-        carregarUsuarios();
+    async function cadastrarUsuario() {
 
-        setCpf("");
-        setNome("");
-        setEmail("");
-        setDataNascimento("");
-        setTipoUsuario("ALUNO");
+        if (
+            !cpf ||
+            !nome ||
+            !email ||
+            !senha ||
+            !dataNascimento
+        ) {
 
-      } else {
-        alert("Erro ao cadastrar usuário");
-      }
+            alert("Preencha todos os campos");
+            return;
+        }
 
-    } catch (erro) {
-      console.log("Erro no cadastro", erro);
+        try {
+
+            await criarUsuario({
+
+                cpf,
+                nome,
+                email,
+                senha,
+                dataNascimento,
+                tipoUsuario,
+                verificado: false
+
+            });
+
+            carregar();
+
+            setCpf("");
+            setNome("");
+            setEmail("");
+            setSenha("");
+            setDataNascimento("");
+            setTipoUsuario("ALUNO");
+
+            alert("Usuário cadastrado!");
+
+        } catch (erro) {
+
+            console.log(erro);
+
+            alert("Erro ao cadastrar usuário");
+
+        }
     }
-  }
 
 
-  return (
-    <div style={{ padding: "20px" }}>
+    return (
 
-      <h2>Usuários</h2>
-      <p style={{fontSize:12, color:'#666'}}>API: {API}</p>
-      {error && <p style={{color:'crimson'}}>Erro: {error}</p>}
+        <div className="container">
 
-      <input
-        type="text"
-        placeholder="CPF"
-        value={cpf}
-        onChange={(e) => setCpf(e.target.value)}
-      />
+            <h2>Usuários</h2>
 
-      <br /><br />
-
-      <input
-        type="text"
-        placeholder="Nome"
-        value={nome}
-        onChange={(e) => setNome(e.target.value)}
-      />
-
-      <br /><br />
-
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-
-      <br /><br />
-
-      <input
-        type="password"
-        placeholder="Senha"
-        value={senha}
-        onChange={(e) => setSenha(e.target.value)}
-      />
-
-      <br /><br />
-
-      <input
-        type="date"
-        value={dataNascimento}
-        onChange={(e) => setDataNascimento(e.target.value)}
-      />
-
-      <br /><br />
-
-      <select
-        value={tipoUsuario}
-        onChange={(e) => setTipoUsuario(e.target.value)}
-      >
-        <option value="ALUNO">ALUNO</option>
-        <option value="EDUCADOR">EDUCADOR</option>
-        <option value="ADMIN">ADMIN</option>
-      </select>
-
-      <br /><br />
-
-      <button onClick={cadastrarUsuario}>
-        Cadastrar
-      </button>
-
-      <hr />
-
-      <h3>Lista de Usuários</h3>
-
-      {
-        usuarios.map(usuario => (
-          <div
-            key={usuario.id}
-            style={{
-              border: "1px solid gray",
-              padding: "10px",
-              marginBottom: "10px"
-            }}
-          >
-
-            <p>
-              <strong>Nome:</strong> {usuario.nome}
+            <p className="api">
+                API: {import.meta.env.VITE_API_URL}
             </p>
 
-            <p>
-              <strong>CPF:</strong> {usuario.cpf}
-            </p>
+            {error &&
+                <p className="error">
+                    Erro: {error}
+                </p>
+            }
 
-            <p>
-              <strong>Email:</strong> {usuario.email}
-            </p>
+            <div className="formulario">
 
-            <p>
-              <strong>Tipo:</strong> {usuario.tipoUsuario}
-            </p>
+                <input
+                    type="text"
+                    placeholder="CPF"
+                    value={cpf}
+                    onChange={(e) => setCpf(e.target.value)}
+                />
 
-            <p>
-              <strong>Criado em:</strong> {usuario.createdAt}
-            </p>
+                <input
+                    type="text"
+                    placeholder="Nome"
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                />
 
-            <p>
-              <strong>Modificado em:</strong> {usuario.modifiedAt}
-            </p>
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
 
-            <p>
-              <strong>Verificado:</strong>
-              {" "}
-              {usuario.verificado ? "Sim" : "Não"}
-            </p>
+                <input
+                    type="password"
+                    placeholder="Senha"
+                    value={senha}
+                    onChange={(e) => setSenha(e.target.value)}
+                />
 
-            
+                <input
+                    type="date"
+                    value={dataNascimento}
+                    onChange={(e) => setDataNascimento(e.target.value)}
+                />
 
-          </div>
-        ))
-      }
+                <select
+                    value={tipoUsuario}
+                    onChange={(e) => setTipoUsuario(e.target.value)}
+                >
 
-    </div>
-  );
+                    <option value="ALUNO">
+                        ALUNO
+                    </option>
+
+                    <option value="EDUCADOR">
+                        EDUCADOR
+                    </option>
+
+                    <option value="ADMIN">
+                        ADMIN
+                    </option>
+
+                </select>
+
+                <button
+                    onClick={cadastrarUsuario}
+                >
+                    Cadastrar
+                </button>
+
+            </div>
+
+            <hr />
+
+            <h3>Lista de Usuários</h3>
+
+            {
+
+                usuarios.map(usuario => (
+
+                    <UserCard
+                        key={usuario.id}
+                        usuario={usuario}
+                    />
+
+                ))
+
+            }
+
+        </div>
+
+    );
+
 }
 
 export default Usuarios;

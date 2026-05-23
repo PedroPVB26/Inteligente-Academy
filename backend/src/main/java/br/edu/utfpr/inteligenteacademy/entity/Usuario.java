@@ -95,7 +95,6 @@ public class Usuario implements UserDetails{
 	    this.email = dto.getEmail();
 	    this.senha = dto.getSenha();
 	    this.dataNascimento = dto.getDataNascimento();
-	    this.verificado = dto.getVerificado();
 	    this.tipoUsuario = dto.getTipoUsuario();
 	    this.statusExcluido = false;
 	}
