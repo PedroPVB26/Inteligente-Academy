@@ -1,6 +1,7 @@
 package br.edu.utfpr.inteligenteacademy.security;
 
 import java.io.IOException;
+import java.time.Instant;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
+import br.edu.utfpr.inteligenteacademy.entity.Usuario;
+import br.edu.utfpr.inteligenteacademy.exception.PasswordChangedException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,14 +54,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	    	}
 
 	    	String token = authorizationHeader.substring(7);
+	    	String email = jwtService.extractEmail(token);
 
-	    	// Extrai email e valida automaticamente:
-	    	// - assinatura
-	    	// - expiração
-	    	// - formato do token
-	    	String email = jwtService.extrairEmail(token);
 
-	    	// Evita autenticar duas vezes
 	    	if (
 	    			email != null &&
 	    			SecurityContextHolder
@@ -67,16 +65,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	    	) {
 
 	    		// Busca usuario no banco
-	    		UserDetails userDetails =
-	    				userDetailsService.loadUserByUsername(email);
+	    		UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
+	    		Usuario usuario = (Usuario) userDetails;
+	    		Instant passwordChangedAt = usuario.getPasswordChangedAt();
+
+	    		if(passwordChangedAt != null) {
+	    			Instant tokenIssuedAt = jwtService.extractIssuedAt(token).toInstant();
+	    			if(tokenIssuedAt.isBefore(passwordChangedAt)) {
+	    		        throw new PasswordChangedException("Password changed. Please login again.");
+	    			}
+	    		}
+	    		
 	    		// Cria autenticação
 	    		UsernamePasswordAuthenticationToken authentication =
-	    				new UsernamePasswordAuthenticationToken(
-	    						userDetails,
-	    						null,
-	    						userDetails.getAuthorities()
-	    				);
+	    				new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
 	    		// Adiciona detalhes da request
 	    		authentication.setDetails(

@@ -1,6 +1,7 @@
 package br.edu.utfpr.inteligenteacademy.service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -63,7 +64,7 @@ public class AuthService {
 	        throw new UserDeletedException("User deleted");
 	    }
 
-		String token = jwtService.gerarToken(usuario);
+		String token = jwtService.generateToken(usuario);
 		return new LoginResponseDto(token);
 	}
 	
@@ -76,7 +77,7 @@ public class AuthService {
     	TokenVerificacaoEmail tokenEntity = new TokenVerificacaoEmail();
     	tokenEntity.setToken(token);
     	tokenEntity.setUsuario(usuarioSalvo);
-    	tokenEntity.setExpiracao(LocalDateTime.now().plusHours(1));
+    	tokenEntity.setExpiracao(Instant.now().plus(1, ChronoUnit.MONTHS));
     	tokenVerificacaoEmailRepository.save(tokenEntity);
     	
     	// Email
@@ -105,7 +106,7 @@ public class AuthService {
     		throw new TokenAlreadyUsedException("Token already used");
     	}
     	
-    	if(tokenEntity.getExpiracao().isBefore(LocalDateTime.now())) {
+    	if(tokenEntity.getExpiracao().isBefore(Instant.now())) {
     		throw new TokenExpiredException("Token expired");
     	}
 

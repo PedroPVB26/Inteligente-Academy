@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
+import br.edu.utfpr.inteligenteacademy.exception.BadRequestException;
 import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
+import br.edu.utfpr.inteligenteacademy.exception.PasswordChangedException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
 import br.edu.utfpr.inteligenteacademy.exception.StandardError;
 import br.edu.utfpr.inteligenteacademy.exception.ValidationError;
@@ -215,6 +217,44 @@ public class GlobalExceptionHandler {
 
 	    return ResponseEntity
 	            .status(HttpStatus.FORBIDDEN)
+	            .body(error);
+	}
+	
+	@ExceptionHandler(PasswordChangedException.class)
+	public ResponseEntity<StandardError> handlePasswordChangedException(
+	        PasswordChangedException ex,
+	        HttpServletRequest request
+	) {
+
+	    StandardError error = new StandardError(
+	            LocalDateTime.now(),
+	            HttpStatus.UNAUTHORIZED.value(),
+	            "Password changed",
+	            ex.getMessage(),
+	            request.getRequestURI()
+	    );
+
+	    return ResponseEntity
+	            .status(HttpStatus.UNAUTHORIZED)
+	            .body(error);
+	}
+	
+	@ExceptionHandler(BadRequestException.class)
+	public ResponseEntity<StandardError> badRequest(
+	        BadRequestException e,
+	        HttpServletRequest request
+	) {
+
+	    StandardError error = new StandardError(
+	            LocalDateTime.now(),
+	            HttpStatus.BAD_REQUEST.value(),
+	            "Bad request",
+	            e.getMessage(),
+	            request.getRequestURI()
+	    );
+
+	    return ResponseEntity
+	            .status(HttpStatus.BAD_REQUEST)
 	            .body(error);
 	}
 }

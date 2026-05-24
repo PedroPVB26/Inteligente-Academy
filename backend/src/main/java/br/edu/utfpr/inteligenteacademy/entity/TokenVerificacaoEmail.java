@@ -1,5 +1,6 @@
 package br.edu.utfpr.inteligenteacademy.entity;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -22,13 +23,13 @@ public class TokenVerificacaoEmail {
     @OneToOne
     private Usuario usuario;
 
-    private LocalDateTime expiracao;
+    private Instant expiracao;
 
     private boolean usado = false;
 
     public TokenVerificacaoEmail() {}
     
-	public TokenVerificacaoEmail(String token, Usuario usuario, LocalDateTime expiracao, boolean usado) {
+	public TokenVerificacaoEmail(String token, Usuario usuario, Instant expiracao, boolean usado) {
 		this.token = token;
 		this.usuario = usuario;
 		this.expiracao = expiracao;
@@ -55,11 +56,11 @@ public class TokenVerificacaoEmail {
 		this.usuario = usuario;
 	}
 
-	public LocalDateTime getExpiracao() {
+	public Instant getExpiracao() {
 		return expiracao;
 	}
 
-	public void setExpiracao(LocalDateTime expiracao) {
+	public void setExpiracao(Instant expiracao) {
 		this.expiracao = expiracao;
 	}
 

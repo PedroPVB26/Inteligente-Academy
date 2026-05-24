@@ -74,7 +74,7 @@ public class SecurityConfig {
                 )
             .authorizeHttpRequests(auth -> auth
             	// PARA TESTAR O FRONT
-            	//.anyRequest().permitAll()	
+//            	.anyRequest().permitAll()	
             		
             	// VALIDA QUEM PODE ACESSAR O QUE
                 // Públicas

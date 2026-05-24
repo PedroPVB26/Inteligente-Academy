@@ -14,29 +14,29 @@ import br.edu.utfpr.inteligenteacademy.exception.auth.InvalidCredentialsExceptio
 import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioCreationDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioResponseDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioSoftDeleteResponseDto;
-import br.edu.utfpr.inteligenteacademy.repository.UsuarioRepository;
+import br.edu.utfpr.inteligenteacademy.repository.UserRepository;
 
 
 @Service
 public class UsuarioService {
-	private final UsuarioRepository usuarioRepository;
+	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	
-	public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
-		this.usuarioRepository = usuarioRepository;
+	public UsuarioService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 	}
 	
 	@Transactional(readOnly = true)
 	public List<UsuarioResponseDto> findAll(){
-		List<Usuario> usuarios = usuarioRepository.findAll();
+		List<Usuario> usuarios = userRepository.findAll();
 		return usuarios.stream().map(x -> new UsuarioResponseDto(x)).toList();
 	}
 	
 	
 	@Transactional(readOnly = true)
 	public Usuario findEntityByEmail(String email) {
-		return usuarioRepository.findByEmail(email)
+		return userRepository.findByEmail(email)
 				.orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
 		
 	}
@@ -44,7 +44,7 @@ public class UsuarioService {
 	@Transactional(readOnly = true)
 	public UsuarioResponseDto findById(Integer usuarioId) {
 		Usuario usuario =
-		        usuarioRepository.findById(usuarioId)
+		        userRepository.findById(usuarioId)
 		        .orElseThrow(() ->
 			        new ResourceNotFoundException(
 			                "User with id "
@@ -57,11 +57,11 @@ public class UsuarioService {
 	
 	@Transactional
 	public UsuarioResponseDto save(UsuarioCreationDto usuarioCreationDto) {
-		if(usuarioRepository.existsByCpf(usuarioCreationDto.getCpf())) {
+		if(userRepository.existsByCpf(usuarioCreationDto.getCpf())) {
 			throw new DatabaseException("CPF already exists in the database");
 		}
 		
-		if (usuarioRepository.existsByEmail(usuarioCreationDto.getEmail())) {
+		if (userRepository.existsByEmail(usuarioCreationDto.getEmail())) {
 	        throw new DatabaseException("Email already exists in the database");
 	    }
 		
@@ -73,18 +73,18 @@ public class UsuarioService {
 		usuario.setVerificado(false);
 		usuario.setStatusExcluido(false);
 		
-		Usuario usuarioSalvo = usuarioRepository.save(usuario);
+		Usuario usuarioSalvo = userRepository.save(usuario);
 		
 		return new UsuarioResponseDto(usuarioSalvo);
 	}
 	
 	@Transactional
 	public Usuario register(UsuarioCreationDto usuarioCreationDto) {
-		if(usuarioRepository.existsByCpf(usuarioCreationDto.getCpf())) {
+		if(userRepository.existsByCpf(usuarioCreationDto.getCpf())) {
 			throw new DatabaseException("CPF already exists in the database");
 		}
 		
-		if (usuarioRepository.existsByEmail(usuarioCreationDto.getEmail())) {
+		if (userRepository.existsByEmail(usuarioCreationDto.getEmail())) {
 	        throw new DatabaseException("Email already exists in the database");
 	    }
 		
@@ -96,12 +96,12 @@ public class UsuarioService {
 		usuario.setVerificado(false);
 		usuario.setStatusExcluido(false);
 		
-		return usuarioRepository.save(usuario);
+		return userRepository.save(usuario);
 	}
 	
 	@Transactional
 	public UsuarioSoftDeleteResponseDto softDelete(Integer usuarioId) {
-	    Usuario usuario = usuarioRepository.findById(usuarioId)
+	    Usuario usuario = userRepository.findById(usuarioId)
 	        .orElseThrow(() ->
 	            new ResourceNotFoundException(
 	                "User with id " + usuarioId + " not found"
@@ -111,7 +111,7 @@ public class UsuarioService {
 	    usuario.setStatusExcluido(true);
 	    usuario.setDeletedAt(LocalDateTime.now());
 	    
-	    usuarioRepository.save(usuario);
+	    userRepository.save(usuario);
 	    
 	    return new UsuarioSoftDeleteResponseDto(usuario);
 	}

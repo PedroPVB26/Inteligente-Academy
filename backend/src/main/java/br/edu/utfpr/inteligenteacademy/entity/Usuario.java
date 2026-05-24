@@ -1,5 +1,6 @@
 package br.edu.utfpr.inteligenteacademy.entity;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -54,6 +55,8 @@ public class Usuario implements UserDetails{
     @Column(nullable = false)
     private Boolean statusExcluido;
 
+    private  Instant passwordChangedAt;
+    
     private LocalDateTime deletedAt;
     
     @CreationTimestamp // Preenche automaticamente quando o registro é criado.
@@ -78,7 +81,8 @@ public class Usuario implements UserDetails{
 			Boolean verificado, 
 			TipoUsuario tipoUsuario, 
 			Boolean statusExcluido, 
-			LocalDateTime deletedAt) {
+			LocalDateTime deletedAt,
+			Instant passwordChangedAt) {
 		this.cpf = cpf;
 		this.nome = nome;
 		this.email = email;
@@ -87,6 +91,7 @@ public class Usuario implements UserDetails{
 		this.verificado = verificado;
 		this.tipoUsuario = tipoUsuario;
 		this.statusExcluido = statusExcluido;
+		this.passwordChangedAt = passwordChangedAt;
 	}
 
 	public Usuario(UsuarioCreationDto dto) {
@@ -216,6 +221,15 @@ public class Usuario implements UserDetails{
 
 	public void setModifiedAt(LocalDateTime modifiedAt) {
 		this.modifiedAt = modifiedAt;
+	}
+
+	public Instant getPasswordChangedAt() {
+		return passwordChangedAt;
+	}
+
+
+	public void setPasswordChangedAt(Instant passwordChangedAt) {
+		this.passwordChangedAt = passwordChangedAt;
 	}
 
 
