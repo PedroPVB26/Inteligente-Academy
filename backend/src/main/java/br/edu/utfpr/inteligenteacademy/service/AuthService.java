@@ -68,29 +68,31 @@ public class AuthService {
 		return new LoginResponseDto(token);
 	}
 	
-    @Transactional
-    public UsuarioResponseDto register(UsuarioCreationDto usuarioCreationDto) {
-    	Usuario usuarioSalvo = usuarioService.register(usuarioCreationDto);
-    	
-    	// Token
-    	String token = UUID.randomUUID().toString();
-    	TokenVerificacaoEmail tokenEntity = new TokenVerificacaoEmail();
-    	tokenEntity.setToken(token);
-    	tokenEntity.setUsuario(usuarioSalvo);
-    	tokenEntity.setExpiracao(Instant.now().plus(1, ChronoUnit.MONTHS));
-    	tokenVerificacaoEmailRepository.save(tokenEntity);
-    	
-    	// Email
-    	String link = "http://localhost:8081/auth/verificar-email?token=" + token;
-    	
-        emailService.enviarEmail(
-        		usuarioSalvo.getEmail(),
-                "Verifique seu email",
-                link
-        );
-        
-        return new UsuarioResponseDto(usuarioSalvo);
-    }
+	@Transactional
+	public UsuarioResponseDto register(UsuarioCreationDto usuarioCreationDto) {
+
+	    Usuario usuarioSalvo = usuarioService.register(usuarioCreationDto);
+
+	    String token = UUID.randomUUID().toString();
+
+	    TokenVerificacaoEmail tokenEntity = new TokenVerificacaoEmail();
+	    tokenEntity.setToken(token);
+	    tokenEntity.setUsuario(usuarioSalvo);
+	    tokenEntity.setExpiracao(Instant.now().plus(30, ChronoUnit.DAYS));
+
+	    tokenVerificacaoEmailRepository.save(tokenEntity);
+
+
+	    String link = "http://localhost:8081/auth/verify-email?token=" + token;
+
+	    emailService.sendVerificatioEmail(
+	            usuarioSalvo.getEmail(),
+	            "Verifique seu email",
+	            link
+	    );
+
+	    return new UsuarioResponseDto(usuarioSalvo);
+	}
     
     @Transactional
     public void verifyEmail(String token) {

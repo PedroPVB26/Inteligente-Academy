@@ -1,13 +1,13 @@
 package br.edu.utfpr.inteligenteacademy.entity;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -21,8 +21,10 @@ public class TokenVerificacaoEmail {
     private String token;
 
     @OneToOne
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
 
+    @Column(nullable = false)
     private Instant expiracao;
 
     private boolean usado = false;

@@ -49,10 +49,10 @@ public class ChangePasswordRequestDto {
     }
 
     public String getConfirmPassword() {
-        return confirmPassword;
-    }
+		return confirmPassword;
+	}
 
-    public void setConfirmPassword(String confirmPassword) {
+	public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
 }

@@ -55,7 +55,7 @@ public class Usuario implements UserDetails{
     @Column(nullable = false)
     private Boolean statusExcluido;
 
-    private  Instant passwordChangedAt;
+    private Instant passwordChangedAt;
     
     private LocalDateTime deletedAt;
     
