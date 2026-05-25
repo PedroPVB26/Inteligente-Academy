@@ -73,7 +73,6 @@ function Usuarios() {
                 senha,
                 dataNascimento,
                 tipoUsuario,
-                verificado: false
 
             });
 
@@ -91,7 +90,7 @@ function Usuarios() {
         } catch (erro) {
 
             console.log(erro);
-
+            
             alert("Erro ao cadastrar usuário");
 
         }

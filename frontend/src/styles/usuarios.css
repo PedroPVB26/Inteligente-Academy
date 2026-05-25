@@ -1,48 +1,36 @@
 .container {
-
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .formulario {
-
     display: flex;
-    flex-direction: column;
-
+    flex-direction: column;;
     gap: 12px;
-
     max-width: 350px;
 }
 
-.formulario input,
-.formulario select {
-
+.formulario input, .formulario select {
     padding: 10px;
 }
 
 .formulario button {
-
     padding: 10px;
     cursor: pointer;
 }
 
 .user-card {
-
     border: 1px solid gray;
-
     padding: 12px;
-
     margin-bottom: 10px;
-
     border-radius: 8px;
 }
 
 .error {
-
     color: crimson;
 }
 
 .api {
-
     color: gray;
     font-size: 12px;
 }

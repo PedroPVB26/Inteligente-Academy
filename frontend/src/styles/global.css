@@ -1,0 +1,56 @@
+/* 🌙 PADRÃO: Modo Escuro */
+:root {
+    --bg-main: #2e314c;
+    --bg-blue: #61679d;
+    --bg-blue-light: #689ee8;
+
+    --orange-dark: #b84a00;
+    --orange-default: #ee6509;
+    --orange-light: #e09734;
+    --lime: #36FF17;
+
+    --black: #121212;
+    --text-color: #f3f3f3;
+}
+
+:root.light-theme {
+    --bg-main: #f3f3f3;
+    --text-color: #61679d;
+}
+
+a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.3s ease-in-out; 
+}
+a:hover { color: var(--orange-default); }
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-main);
+  color: var(--text-color);
+}
+
+
+#root {
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+main {
+  flex: 1; /* Faz o conteúdo principal esticar e empurrar o footer para baixo */
+}
+
+p {
+  margin: 0;
+}

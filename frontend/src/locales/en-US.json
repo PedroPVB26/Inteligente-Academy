@@ -1,0 +1,28 @@
+{
+    "home": {
+        "title": "Welcome to InteliGente Academy",
+        "subtitle": "Learn Artificial Intelligence"
+    },
+
+    "login": {
+        "email": "Email",
+        "password": "Password",
+        "button": "Sign in"
+    },
+
+    "system": {
+        "title": "System"
+    },
+
+    "users": {
+        "title": "Users"
+    },
+
+    "courses": {
+        "title": "Courses"
+    },
+
+    "tags": {
+        "title": "Tags"
+    }
+}

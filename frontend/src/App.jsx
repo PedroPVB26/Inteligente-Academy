@@ -1,35 +1,41 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-
-import Usuarios from "./pages/Usuarios";
+import { useTranslation } from "react-i18next";
+import Navbar from './components/Navbar/Navbar';
+import Home from './pages/Home'; 
+import Login from './pages/Login';
+import Usuarios from "./admin/Usuarios";
 import Cursos from "./pages/Cursos";
 import Etiquetas from "./pages/Etiquetas";
 
-function App() {
 
+function App() {
+  const { t } = useTranslation();
   return (
     <BrowserRouter>
+      <Navbar />
 
       <div style={{ padding: "20px" }}>
 
-        <h1>Sistema</h1>
+        <h1>{t("system.title")}</h1>
 
         <nav>
-          <Link to="/usuarios">Usuários</Link>
+          <Link to="/admin/usuarios">{t("users.title")}</Link>
           {" | "}
-          <Link to="/cursos">Cursos</Link>
+          <Link to="/admin/cursos">{t("courses.title")}</Link>
           {" | "}
-          <Link to="/etiquetas">Etiquetas</Link>
+          <Link to="/admin/etiquetas">{t("tags.title")}</Link>
         </nav>
 
         <hr />
 
         <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/admin/usuarios" element={<Usuarios />} />
 
-          <Route path="/usuarios" element={<Usuarios />} />
+          <Route path="/admin/cursos" element={<Cursos />} />
 
-          <Route path="/cursos" element={<Cursos />} />
-
-          <Route path="/etiquetas" element={<Etiquetas />} />
+          <Route path="/admin/etiquetas" element={<Etiquetas />} />
 
         </Routes>
 
