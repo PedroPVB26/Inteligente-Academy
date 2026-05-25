@@ -4,21 +4,36 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class LoginResponseDto {
 
-	@Schema(description = "Token JWT de autenticação", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyQGV4YW1wbGUuY29tIiwiaWF0IjoxNjE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c")
-    private String token;
+	@Schema(
+			description = "Token JWT de autenticação",
+			example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+	)
+	private String accessToken;
 
-	public LoginResponseDto(String token) {
-		this.token = token;
+	@Schema(
+			description = "Refresh token para renovar o access token",
+			example = "dGhpc0lzUmVmcmVzaFRva2Vu"
+	)
+	private String refreshToken;
+
+	public LoginResponseDto(String accessToken, String refreshToken) {
+		this.accessToken = accessToken;
+		this.refreshToken = refreshToken;
 	}
 
-	public String getToken() {
-		return token;
+	public String getAccessToken() {
+		return accessToken;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
-    
-    
 
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
+	}
 }

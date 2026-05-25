@@ -42,7 +42,7 @@ public class UsuarioService {
 	}
 	
 	@Transactional(readOnly = true)
-	public UsuarioResponseDto findById(Integer usuarioId) {
+	public UsuarioResponseDto findById(Long usuarioId) {
 		Usuario usuario =
 		        usuarioRepository.findById(usuarioId)
 		        .orElseThrow(() ->
@@ -100,7 +100,7 @@ public class UsuarioService {
 	}
 	
 	@Transactional
-	public UsuarioSoftDeleteResponseDto softDelete(Integer usuarioId) {
+	public UsuarioSoftDeleteResponseDto softDelete(Long usuarioId) {
 	    Usuario usuario = usuarioRepository.findById(usuarioId)
 	        .orElseThrow(() ->
 	            new ResourceNotFoundException(

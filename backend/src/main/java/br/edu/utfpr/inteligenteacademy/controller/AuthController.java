@@ -1,5 +1,8 @@
 package br.edu.utfpr.inteligenteacademy.controller;
 
+import br.edu.utfpr.inteligenteacademy.model.dto.token.AccessTokenResponseDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.token.RefreshTokenRequestDto;
+import br.edu.utfpr.inteligenteacademy.security.RefreshTokenService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,11 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.utfpr.inteligenteacademy.exception.StandardError;
+import br.edu.utfpr.inteligenteacademy.model.dto.ForgotPasswordRequestDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.ResetPasswordRequestDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.login.LoginRequestDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.login.LoginResponseDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioCreationDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioResponseDto;
 import br.edu.utfpr.inteligenteacademy.service.AuthService;
+import br.edu.utfpr.inteligenteacademy.service.PasswordService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,9 +33,17 @@ import jakarta.validation.Valid;
 @Tag(name = "Autenticação", description = "Para logar, cadastrar e verificar email")
 public class AuthController {
     private final AuthService authService;
-
-    public AuthController(AuthService authService) {
+    private final RefreshTokenService  refreshTokenService;
+    private final PasswordService passwordResetService;
+    
+    public AuthController(
+            AuthService authService,
+            PasswordService passwordResetService,
+            RefreshTokenService refreshTokenService
+    ) {
         this.authService = authService;
+        this.passwordResetService = passwordResetService;
+        this.refreshTokenService = refreshTokenService;
     }
     
     @Operation(
@@ -69,19 +83,42 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<UsuarioResponseDto> register(@Valid @RequestBody UsuarioCreationDto dto) {
-
         UsuarioResponseDto response = authService.register(dto);
-
         return ResponseEntity.ok(response);
     }
     
 
 
-    @GetMapping("/verificar-email")
+    @GetMapping("/verify-email")
     public ResponseEntity<String> verificarEmail(@RequestParam String token) {
-
         authService.verifyEmail(token);
-
         return ResponseEntity.ok("Email verificado com sucesso!");
+    }
+    
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Void> forgotPassword(@RequestBody ForgotPasswordRequestDto request) {
+        passwordResetService.requestReset(request.getEmail());
+        return ResponseEntity.ok().build(); // sempre 200, mesmo se e-mail não existir
+    }
+    
+    @PostMapping("/reset-password")
+    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequestDto request) {
+        passwordResetService.resetPassword(request);
+        return ResponseEntity.noContent().build(); // 204
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponseDto> refreshToken(@Valid @RequestBody RefreshTokenRequestDto request) {
+        LoginResponseDto response = refreshTokenService.refreshAccessToken(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+            @Valid @RequestBody RefreshTokenRequestDto request) {
+
+        authService.logout(request.getRefreshToken());
+
+        return ResponseEntity.noContent().build();
     }
 }

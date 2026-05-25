@@ -2,6 +2,8 @@ package br.edu.utfpr.inteligenteacademy.model.dto.usuario;
 
 import java.time.LocalDate;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,10 +13,7 @@ import jakarta.validation.constraints.Size;
 
 public class UsuarioCreationDto {
     @NotBlank(message = "cpf must not be blank")
-    @Pattern(
-        regexp = "^\\d{11}$",
-        message = "cpf must contain exactly 11 numeric digits"
-    )
+    @CPF(message = "cpf must be valid")
     private String cpf;
 
     @NotBlank(message = "nome must not be blank")

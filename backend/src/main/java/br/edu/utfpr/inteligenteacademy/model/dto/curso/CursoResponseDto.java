@@ -34,7 +34,7 @@ import br.edu.utfpr.inteligenteacademy.model.dto.etiqueta.EtiquetaResponseDto;
 })
 public class CursoResponseDto {
 
-    private Integer id;
+    private Long id;
 
     private String nome;
 
@@ -78,11 +78,11 @@ public class CursoResponseDto {
                 .collect(Collectors.toList());
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

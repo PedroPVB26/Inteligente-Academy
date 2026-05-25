@@ -20,15 +20,15 @@ public class EmailService {
     }
     
     @Async
-    public void enviarEmail(String destinatario, String assunto, String html) {
+    public void sendVerificatioEmail(String destination, String subject, String html) { // MUDAR AQUI, POIS O EMAIL QUE DEVE GERAR O HTML COM BASE NOS DADOS RECEBIDOS
     	try {
     		MimeMessage message = mailSender.createMimeMessage();
     		
     		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
     		
     		helper.setFrom(fromEmail);
-    		helper.setTo(destinatario);
-    		helper.setSubject(assunto);
+    		helper.setTo(destination);
+    		helper.setSubject(subject);
     		
     		helper.setText(html, true);
     		
@@ -36,7 +36,40 @@ public class EmailService {
     		
     	}catch(Exception e) {
     		 e.printStackTrace();
-    		throw new RuntimeException("Error while sending email");
+    		throw new RuntimeException("Error while sending verification email");
     	}
+    }
+    
+    @Async
+    public void sendPasswordResetEmail(String destination, String rawToken) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
+
+            helper.setTo(destination);
+            helper.setSubject("Redefinição de senha (TESTE)");
+
+            String html = """
+                <html>
+                    <body>
+                        <p><strong>EMAIL DE TESTE - REDEFINIÇÃO DE SENHA</strong></p>
+
+                        <p>Seu token de redefinição é:</p>
+
+                        <h2>%s</h2>
+
+                    </body>
+                </html>
+                """.formatted(rawToken);
+
+            helper.setText(html, true);
+
+            mailSender.send(mimeMessage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error while sending reset password email");
+        }
     }
 }

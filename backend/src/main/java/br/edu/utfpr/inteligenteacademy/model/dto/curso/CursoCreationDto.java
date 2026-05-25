@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 
 public class CursoCreationDto {
 
-    private Integer id;
+    private Long id;
 
     @NotBlank(message = "nome must not be blank")
     @Size(
@@ -29,7 +29,7 @@ public class CursoCreationDto {
     @NotBlank(message = "duracao must not be blank")
     private Integer duracao;
 
-    private List<@Positive Integer> etiquetasIds;
+    private List<@Positive Long> etiquetasIds;
     
     public CursoCreationDto() {
         
@@ -42,19 +42,19 @@ public class CursoCreationDto {
 //        this.duracao = curso.getDuracao();
 //    }
 
-    public CursoCreationDto(Integer id, String nome, String descricao, Integer duracao, List<Integer> etiquetasIds) {
-        this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.duracao = duracao;
-        this.etiquetasIds = etiquetasIds;
-    }
+//    public CursoCreationDto(Long id, String nome, String descricao, Integer duracao, List<Long> etiquetasIds) {
+//        this.id = id;
+//        this.nome = nome;
+//        this.descricao = descricao;
+//        this.duracao = duracao;
+//        this.etiquetasIds = etiquetasIds;
+//    }
 
-	public Integer getId() {
+	public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -82,11 +82,11 @@ public class CursoCreationDto {
         this.duracao = duracao;
     }
 
-	public List<Integer> getEtiquetasIds() {
+	public List<Long> getEtiquetasIds() {
 		return etiquetasIds;
 	}
 
-	public void setEtiquetasIds(List<Integer> etiquetasIds) {
+	public void setEtiquetasIds(List<Long> etiquetasIds) {
 		this.etiquetasIds = etiquetasIds;
 	}
     

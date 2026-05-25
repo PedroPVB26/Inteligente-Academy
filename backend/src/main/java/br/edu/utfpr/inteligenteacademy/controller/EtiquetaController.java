@@ -32,7 +32,7 @@ public class EtiquetaController {
     }
 
     @GetMapping("/{etiquetaId}")
-    public ResponseEntity<EtiquetaResponseDto> findById(@PathVariable Integer etiquetaId) {
+    public ResponseEntity<EtiquetaResponseDto> findById(@PathVariable Long etiquetaId) {
         EtiquetaResponseDto etiquetaResponseDto = etiquetaService.findById(etiquetaId);
         return ResponseEntity.status(HttpStatus.OK).body(etiquetaResponseDto);
     }

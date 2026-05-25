@@ -1,8 +1,11 @@
 package br.edu.utfpr.inteligenteacademy.service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
+import br.edu.utfpr.inteligenteacademy.entity.RefreshToken;
+import br.edu.utfpr.inteligenteacademy.security.RefreshTokenService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,23 +32,25 @@ public class AuthService {
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    
+    private final RefreshTokenService refreshTokenService;
     
 	public AuthService(
 			UsuarioService usuarioService,
 			TokenVerificacaoEmailRepository tokenVerificacaoEmailRepository,
 			EmailService emailService,
 			PasswordEncoder passwordEncoder,
-			JwtService jwtService
+			JwtService jwtService,
+			RefreshTokenService refreshTokenService
 			) {
 		this.usuarioService = usuarioService;
 		this.tokenVerificacaoEmailRepository = tokenVerificacaoEmailRepository;
 		this.emailService = emailService;
 		this.passwordEncoder = passwordEncoder;
 		this.jwtService = jwtService;
+		this.refreshTokenService = refreshTokenService;
 	}
     
-	@Transactional(readOnly = true)
+	@Transactional
 	public LoginResponseDto login(LoginRequestDto loginRequestDto) {
 		Usuario usuario = usuarioService.findEntityByEmail(loginRequestDto.getEmail());
 		
@@ -63,33 +68,36 @@ public class AuthService {
 	        throw new UserDeletedException("User deleted");
 	    }
 
-		String token = jwtService.gerarToken(usuario);
-		return new LoginResponseDto(token);
+		String accessToken = jwtService.generateAccessToken(usuario);
+		String refreshToken = refreshTokenService.generateRefreshToken(usuario).getRefreshToken();
+		return new LoginResponseDto(accessToken, refreshToken);
 	}
 	
-    @Transactional
-    public UsuarioResponseDto register(UsuarioCreationDto usuarioCreationDto) {
-    	Usuario usuarioSalvo = usuarioService.register(usuarioCreationDto);
-    	
-    	// Token
-    	String token = UUID.randomUUID().toString();
-    	TokenVerificacaoEmail tokenEntity = new TokenVerificacaoEmail();
-    	tokenEntity.setToken(token);
-    	tokenEntity.setUsuario(usuarioSalvo);
-    	tokenEntity.setExpiracao(LocalDateTime.now().plusHours(1));
-    	tokenVerificacaoEmailRepository.save(tokenEntity);
-    	
-    	// Email
-    	String link = "http://localhost:8081/auth/verificar-email?token=" + token;
-    	
-        emailService.enviarEmail(
-        		usuarioSalvo.getEmail(),
-                "Verifique seu email",
-                link
-        );
-        
-        return new UsuarioResponseDto(usuarioSalvo);
-    }
+	@Transactional
+	public UsuarioResponseDto register(UsuarioCreationDto usuarioCreationDto) {
+
+	    Usuario usuarioSalvo = usuarioService.register(usuarioCreationDto);
+
+	    String token = UUID.randomUUID().toString();
+
+	    TokenVerificacaoEmail tokenEntity = new TokenVerificacaoEmail();
+	    tokenEntity.setToken(token);
+	    tokenEntity.setUsuario(usuarioSalvo);
+	    tokenEntity.setExpiracao(Instant.now().plus(30, ChronoUnit.DAYS));
+
+	    tokenVerificacaoEmailRepository.save(tokenEntity);
+
+
+	    String link = "http://localhost:8081/auth/verify-email?token=" + token;
+
+	    emailService.sendVerificatioEmail(
+	            usuarioSalvo.getEmail(),
+	            "Verifique seu email",
+	            link
+	    );
+
+	    return new UsuarioResponseDto(usuarioSalvo);
+	}
     
     @Transactional
     public void verifyEmail(String token) {
@@ -105,7 +113,7 @@ public class AuthService {
     		throw new TokenAlreadyUsedException("Token already used");
     	}
     	
-    	if(tokenEntity.getExpiracao().isBefore(LocalDateTime.now())) {
+    	if(tokenEntity.getExpiracao().isBefore(Instant.now())) {
     		throw new TokenExpiredException("Token expired");
     	}
 
@@ -114,4 +122,10 @@ public class AuthService {
     
     	tokenVerificacaoEmailRepository.save(tokenEntity);
     }
+
+	@Transactional
+	public void logout(String refreshToken) {
+		RefreshToken token = refreshTokenService.findByToken(refreshToken);
+		refreshTokenService.delete(token);
+	}
 }

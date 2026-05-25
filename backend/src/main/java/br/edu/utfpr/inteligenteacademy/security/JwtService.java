@@ -1,6 +1,5 @@
 package br.edu.utfpr.inteligenteacademy.security;
 
-import java.security.Key;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 import br.edu.utfpr.inteligenteacademy.entity.Usuario;
 import br.edu.utfpr.inteligenteacademy.exception.token.TokenExpiredException;
 import br.edu.utfpr.inteligenteacademy.exception.token.TokenInvalidException;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -23,29 +23,45 @@ public class JwtService {
 	@Value("${jwt.secret}")
 	private String secretKey;
 
-	@Value("${jwt.expiration}")
+	@Value("${jwt.access-token-expiration}")
 	private Long expiration;
 
 
-	public String gerarToken(Usuario usuario) {
+	public String generateAccessToken(Usuario usuario) {
 		return Jwts
 				.builder()
 				.subject(usuario.getEmail()) // dono do token
 				.claim("id", usuario.getId()) // claim -> personalizado para o token
 				.claim("role", usuario.getTipoUsuario().name())
-				.issuedAt(new Date(System.currentTimeMillis()))
+				.issuedAt(new Date())
 				.expiration(new Date(System.currentTimeMillis() + expiration))
 				.signWith(getSignInKey()) // assinatura do token
 				.compact(); // gera
 	}
 	
 	// Converte string Base64 em uma chave criptográfica real.
-	private Key getSignInKey() {
+	private SecretKey getSignInKey() {
 		byte[] keyByte = Decoders.BASE64.decode(secretKey);
 		return Keys.hmacShaKeyFor(keyByte);
 	}
 	
-	public String extrairEmail(String token) {
+    public Date extractIssuedAt(String token) {
+        return extractClaims(token).getIssuedAt();
+    }
+
+    public String extractUserId(String token) {
+        return extractClaims(token).getSubject();
+    }
+	
+    private Claims extractClaims(String token) {
+        return Jwts.parser()
+            .verifyWith(getSignInKey())
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
+    }
+    
+	public String extractEmail(String token) {
 	    try {
 
 	        return Jwts
@@ -57,16 +73,13 @@ public class JwtService {
 	                .getSubject();
 
 	    } catch (ExpiredJwtException e) {
-
-	        throw new TokenExpiredException("JWT token has expired");
-
+	        throw new TokenExpiredException("Access token has expired");
 	    } catch (JwtException e) {
-
-	        throw new TokenInvalidException("JWT token is invalid");
+	        throw new TokenInvalidException("Access token is invalid");
 	    }
 	}
 	
-	public boolean tokenValid(String token) {
+	public boolean isTokenValid(String token) {
 		try {
 			Jwts
 			.parser()

@@ -1,12 +1,13 @@
 package br.edu.utfpr.inteligenteacademy.entity;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -20,15 +21,17 @@ public class TokenVerificacaoEmail {
     private String token;
 
     @OneToOne
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
 
-    private LocalDateTime expiracao;
+    @Column(nullable = false)
+    private Instant expiracao;
 
     private boolean usado = false;
 
     public TokenVerificacaoEmail() {}
     
-	public TokenVerificacaoEmail(String token, Usuario usuario, LocalDateTime expiracao, boolean usado) {
+	public TokenVerificacaoEmail(String token, Usuario usuario, Instant expiracao, boolean usado) {
 		this.token = token;
 		this.usuario = usuario;
 		this.expiracao = expiracao;
@@ -55,11 +58,11 @@ public class TokenVerificacaoEmail {
 		this.usuario = usuario;
 	}
 
-	public LocalDateTime getExpiracao() {
+	public Instant getExpiracao() {
 		return expiracao;
 	}
 
-	public void setExpiracao(LocalDateTime expiracao) {
+	public void setExpiracao(Instant expiracao) {
 		this.expiracao = expiracao;
 	}
 
