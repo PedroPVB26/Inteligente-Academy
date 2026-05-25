@@ -23,11 +23,11 @@ public class JwtService {
 	@Value("${jwt.secret}")
 	private String secretKey;
 
-	@Value("${jwt.expiration}")
+	@Value("${jwt.access-token-expiration}")
 	private Long expiration;
 
 
-	public String generateToken(Usuario usuario) {
+	public String generateAccessToken(Usuario usuario) {
 		return Jwts
 				.builder()
 				.subject(usuario.getEmail()) // dono do token
@@ -73,9 +73,9 @@ public class JwtService {
 	                .getSubject();
 
 	    } catch (ExpiredJwtException e) {
-	        throw new TokenExpiredException("JWT token has expired");
+	        throw new TokenExpiredException("Access token has expired");
 	    } catch (JwtException e) {
-	        throw new TokenInvalidException("JWT token is invalid");
+	        throw new TokenInvalidException("Access token is invalid");
 	    }
 	}
 	

@@ -32,7 +32,7 @@ public class CursoService {
 	
 	
 	@Transactional(readOnly = true)
-	public CursoResponseDto findById(Integer cursoId) {
+	public CursoResponseDto findById(Long cursoId) {
 		Curso Curso =
 		        cursoRepository.findById(cursoId)
 		        .orElseThrow(() ->
@@ -55,7 +55,7 @@ public class CursoService {
 		Curso curso = new Curso(cursoCreationDto);
 
 		if(cursoCreationDto.getEtiquetasIds() != null && !cursoCreationDto.getEtiquetasIds().isEmpty()) {
-			for (Integer etiquetaId : cursoCreationDto.getEtiquetasIds()) {
+			for (Long etiquetaId : cursoCreationDto.getEtiquetasIds()) {
 				Etiqueta etiqueta = etiquetaService.findEntityById(etiquetaId);
 				curso.adicionarEtiqueta(etiqueta);
 			}

@@ -15,20 +15,20 @@ import br.edu.utfpr.inteligenteacademy.exception.token.TokenExpiredException;
 import br.edu.utfpr.inteligenteacademy.model.dto.ChangePasswordRequestDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.ResetPasswordRequestDto;
 import br.edu.utfpr.inteligenteacademy.repository.PasswordResetTokenRepository;
-import br.edu.utfpr.inteligenteacademy.repository.UserRepository;
+import br.edu.utfpr.inteligenteacademy.repository.UsuarioRepository;
 
 @Service
 public class PasswordService {
-    private final UserRepository userRepository;
+    private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final EmailService emailService;
     
     
     
-	public PasswordService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-			PasswordResetTokenRepository passwordResetTokenRepository, EmailService emailService) {
-		this.userRepository = userRepository;
+	public PasswordService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder,
+                           PasswordResetTokenRepository passwordResetTokenRepository, EmailService emailService) {
+		this.usuarioRepository = usuarioRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.passwordResetTokenRepository = passwordResetTokenRepository;
 		this.emailService = emailService;
@@ -38,7 +38,7 @@ public class PasswordService {
 	// Usuário não logado aperta no botão "esqueci minha senha" e passa o email.
 	public void requestReset(String email) {
 		//  Sempre retorna sem erro, mesmo se o e-mail não existir - não descobrem quais emails estão cadastrados
-		userRepository.findByEmail(email).ifPresent(user ->{
+		usuarioRepository.findByEmail(email).ifPresent(user ->{
 			
 			// Invalidar tokens anteriores que não foram usados
 			passwordResetTokenRepository.deleteByUsuarioAndUsedFalse(user);
@@ -60,7 +60,7 @@ public class PasswordService {
 	
 	// Front enviou a requisição do usuário contendo a nova senha
 	public void resetPassword(ResetPasswordRequestDto resetPasswordRequestDto) {
-		Usuario user = userRepository.findByEmail(resetPasswordRequestDto.getEmail())
+		Usuario user = usuarioRepository.findByEmail(resetPasswordRequestDto.getEmail())
 		        .orElseThrow(() ->
 		        new ResourceNotFoundException(
 		                "User with email "
@@ -81,7 +81,7 @@ public class PasswordService {
         // Atualiza senha
         user.setSenha(passwordEncoder.encode(resetPasswordRequestDto.getNewPassword()));
         user.setPasswordChangedAt(Instant.now()); // invalida JWTs antigos
-        userRepository.save(user);
+        usuarioRepository.save(user);
 	
         resetToken.setUsed(true);
         passwordResetTokenRepository.save(resetToken);
@@ -95,7 +95,7 @@ public class PasswordService {
 	        throw new BadRequestException("Passwords do not match");
 	    }
 		
-		Usuario usuario = userRepository.findByEmail(email)
+		Usuario usuario = usuarioRepository.findByEmail(email)
 		        .orElseThrow(() ->
 		        new ResourceNotFoundException(
 		                "User with email "
@@ -114,7 +114,7 @@ public class PasswordService {
         
         usuario.setSenha(passwordEncoder.encode(request.getNewPassword()));
 		usuario.setPasswordChangedAt(Instant.now()); //invalida todos os tokens antigos
-		userRepository.save(usuario);
+		usuarioRepository.save(usuario);
 		
 	}
 	

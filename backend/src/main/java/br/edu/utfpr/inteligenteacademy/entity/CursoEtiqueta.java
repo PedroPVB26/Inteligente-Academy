@@ -11,7 +11,7 @@ import jakarta.persistence.ManyToOne;
 public class CursoEtiqueta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     
     @ManyToOne
     @JoinColumn(name = "curso_id", nullable = false)
@@ -44,7 +44,7 @@ public class CursoEtiqueta {
 		this.etiqueta = etiqueta;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
     

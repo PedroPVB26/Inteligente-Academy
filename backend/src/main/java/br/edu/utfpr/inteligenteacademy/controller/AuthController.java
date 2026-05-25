@@ -1,5 +1,8 @@
 package br.edu.utfpr.inteligenteacademy.controller;
 
+import br.edu.utfpr.inteligenteacademy.model.dto.token.AccessTokenResponseDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.token.RefreshTokenRequestDto;
+import br.edu.utfpr.inteligenteacademy.security.RefreshTokenService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,11 +33,17 @@ import jakarta.validation.Valid;
 @Tag(name = "Autenticação", description = "Para logar, cadastrar e verificar email")
 public class AuthController {
     private final AuthService authService;
+    private final RefreshTokenService  refreshTokenService;
     private final PasswordService passwordResetService;
     
-    public AuthController(AuthService authService, PasswordService passwordResetService) {
+    public AuthController(
+            AuthService authService,
+            PasswordService passwordResetService,
+            RefreshTokenService refreshTokenService
+    ) {
         this.authService = authService;
         this.passwordResetService = passwordResetService;
+        this.refreshTokenService = refreshTokenService;
     }
     
     @Operation(
@@ -74,9 +83,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<UsuarioResponseDto> register(@Valid @RequestBody UsuarioCreationDto dto) {
-    	System.out.println("➡️ CHEGOU NO CONTROLLER");
         UsuarioResponseDto response = authService.register(dto);
-        System.out.println("⬅️ SAIU DO SERVICE");
         return ResponseEntity.ok(response);
     }
     
@@ -99,5 +106,19 @@ public class AuthController {
         passwordResetService.resetPassword(request);
         return ResponseEntity.noContent().build(); // 204
     }
-    
+
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponseDto> refreshToken(@Valid @RequestBody RefreshTokenRequestDto request) {
+        LoginResponseDto response = refreshTokenService.refreshAccessToken(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+            @Valid @RequestBody RefreshTokenRequestDto request) {
+
+        authService.logout(request.getRefreshToken());
+
+        return ResponseEntity.noContent().build();
+    }
 }

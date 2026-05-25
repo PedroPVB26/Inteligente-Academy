@@ -32,9 +32,9 @@ public class CursoController {
     }
 
     @GetMapping("/{cursoId}")
-    public ResponseEntity<CursoResponseDto> findById(@PathVariable Integer cursoId) {
-        CursoResponseDto CursoResponseDto = cursoService.findById(cursoId);
-        return ResponseEntity.status(HttpStatus.OK).body(CursoResponseDto);
+    public ResponseEntity<CursoResponseDto> findById(@PathVariable Long cursoId) {
+        CursoResponseDto cursoResponseDto = cursoService.findById(cursoId);
+        return ResponseEntity.status(HttpStatus.OK).body(cursoResponseDto);
     }
 
     // ----- POST -----

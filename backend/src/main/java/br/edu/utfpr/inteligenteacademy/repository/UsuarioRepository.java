@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.edu.utfpr.inteligenteacademy.entity.Usuario;
 
-public interface UserRepository extends JpaRepository<Usuario, Integer>{
-    boolean existsById(Integer id);
+public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
+    boolean existsById(Long id);
 	boolean existsByCpf(String cpf);
     boolean existsByEmail(String email);
     Optional<Usuario> findByEmail(String email);

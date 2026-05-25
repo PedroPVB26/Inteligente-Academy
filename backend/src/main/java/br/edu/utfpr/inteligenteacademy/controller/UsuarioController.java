@@ -42,7 +42,7 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("/{usuarioId}")
-	public ResponseEntity<UsuarioResponseDto> findById(@PathVariable Integer usuarioId){
+	public ResponseEntity<UsuarioResponseDto> findById(@PathVariable Long usuarioId){
 		UsuarioResponseDto usuarioResponseDto = usuarioService.findById(usuarioId);
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioResponseDto);
 	}
@@ -69,7 +69,7 @@ public class UsuarioController {
 
 	// ----- DELETE -----
 	@DeleteMapping("/{usuarioId}")
-	public ResponseEntity<UsuarioSoftDeleteResponseDto> softDelete(@PathVariable Integer usuarioId){
+	public ResponseEntity<UsuarioSoftDeleteResponseDto> softDelete(@PathVariable Long usuarioId){
 		UsuarioSoftDeleteResponseDto usuarioExcluido = usuarioService.softDelete(usuarioId);
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioExcluido);
 	}

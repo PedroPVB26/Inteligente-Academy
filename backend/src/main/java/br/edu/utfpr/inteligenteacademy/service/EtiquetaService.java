@@ -29,7 +29,7 @@ public class EtiquetaService {
 	
 	
 	@Transactional(readOnly = true)
-	public EtiquetaResponseDto findById(Integer etiquetaId) {
+	public EtiquetaResponseDto findById(Long etiquetaId) {
 		Etiqueta etiqueta =
 		        etiquetaRepository.findById(etiquetaId)
 		        .orElseThrow(() ->
@@ -43,7 +43,7 @@ public class EtiquetaService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Etiqueta findEntityById(Integer etiquetaId) {
+	public Etiqueta findEntityById(Long etiquetaId) {
 		return etiquetaRepository.findById(etiquetaId)
 		        .orElseThrow(() ->
 			        new ResourceNotFoundException(

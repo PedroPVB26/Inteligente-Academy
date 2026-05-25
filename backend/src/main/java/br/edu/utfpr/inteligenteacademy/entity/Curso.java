@@ -20,7 +20,7 @@ import jakarta.persistence.OneToMany;
 public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     private String nome;
@@ -45,7 +45,7 @@ public class Curso {
 
 	}
 
-    public Curso(Integer id, String nome, String descricao, Integer duracao, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public Curso(Long id, String nome, String descricao, Integer duracao, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -74,11 +74,11 @@ public class Curso {
     }
     
     
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -34,7 +34,7 @@ import br.edu.utfpr.inteligenteacademy.entity.Usuario;
 })
 public class UsuarioResponseDto {
 
-    private Integer id;
+    private Long id;
 
     private String cpf;
 
@@ -60,30 +60,30 @@ public class UsuarioResponseDto {
 
     }
 
-    public UsuarioResponseDto(
-            Integer id,
-            String cpf,
-            String nome,
-            String email,
-            LocalDate dataNascimento,
-            Boolean verificado,
-            TipoUsuario tipoUsuario,
-            LocalDateTime createdAt,
-            LocalDateTime modifiedAt,
-            boolean statusExcluido,
-            LocalDateTime deletedAt) {
-        this.id = id;
-        this.cpf = cpf;
-        this.nome = nome;
-        this.email = email;
-        this.dataNascimento = dataNascimento;
-        this.verificado = verificado;
-        this.tipoUsuario = tipoUsuario;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-        this.statusExcluido = statusExcluido;
-        this.deletedAt = deletedAt;
-    }
+//    public UsuarioResponseDto(
+//            Long id,
+//            String cpf,
+//            String nome,
+//            String email,
+//            LocalDate dataNascimento,
+//            Boolean verificado,
+//            TipoUsuario tipoUsuario,
+//            LocalDateTime createdAt,
+//            LocalDateTime modifiedAt,
+//            boolean statusExcluido,
+//            LocalDateTime deletedAt) {
+//        this.id = id;
+//        this.cpf = cpf;
+//        this.nome = nome;
+//        this.email = email;
+//        this.dataNascimento = dataNascimento;
+//        this.verificado = verificado;
+//        this.tipoUsuario = tipoUsuario;
+//        this.createdAt = createdAt;
+//        this.modifiedAt = modifiedAt;
+//        this.statusExcluido = statusExcluido;
+//        this.deletedAt = deletedAt;
+//    }
 
     public UsuarioResponseDto(Usuario usuario) {
         this.id = usuario.getId();
@@ -99,11 +99,11 @@ public class UsuarioResponseDto {
         this.deletedAt = usuario.getDeletedAt();
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.edu.utfpr.inteligenteacademy.entity.Curso;
 
-public interface CursoRepository extends JpaRepository<Curso, Integer>{
+public interface CursoRepository extends JpaRepository<Curso, Long>{
     boolean existsById(Integer id);
 	boolean existsByNome(String nome);
     boolean existsByDescricao(String descricao);

@@ -1,4 +1,4 @@
-package br.edu.utfpr.inteligenteacademy.model.dto;
+package br.edu.utfpr.inteligenteacademy.model.dto.token;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

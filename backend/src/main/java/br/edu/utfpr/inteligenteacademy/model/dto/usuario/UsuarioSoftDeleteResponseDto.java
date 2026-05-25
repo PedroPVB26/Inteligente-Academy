@@ -6,13 +6,13 @@ import br.edu.utfpr.inteligenteacademy.entity.Usuario;
 
 public class UsuarioSoftDeleteResponseDto {
 
-    private Integer id;
+    private Long id;
 
     private Boolean statusExcluido;
 
     private LocalDateTime deletedAt;
 
-	public UsuarioSoftDeleteResponseDto(Integer id, Boolean statusExcluido, LocalDateTime deletedAt) {
+	public UsuarioSoftDeleteResponseDto(Long id, Boolean statusExcluido, LocalDateTime deletedAt) {
 		this.id = id;
 		this.statusExcluido = statusExcluido;
 		this.deletedAt = deletedAt;
@@ -24,11 +24,11 @@ public class UsuarioSoftDeleteResponseDto {
 		this.deletedAt = usuario.getDeletedAt();
 	}
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

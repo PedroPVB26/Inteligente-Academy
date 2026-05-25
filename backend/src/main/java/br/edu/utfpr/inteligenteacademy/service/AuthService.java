@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
+import br.edu.utfpr.inteligenteacademy.entity.RefreshToken;
+import br.edu.utfpr.inteligenteacademy.security.RefreshTokenService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,23 +32,25 @@ public class AuthService {
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    
+    private final RefreshTokenService refreshTokenService;
     
 	public AuthService(
 			UsuarioService usuarioService,
 			TokenVerificacaoEmailRepository tokenVerificacaoEmailRepository,
 			EmailService emailService,
 			PasswordEncoder passwordEncoder,
-			JwtService jwtService
+			JwtService jwtService,
+			RefreshTokenService refreshTokenService
 			) {
 		this.usuarioService = usuarioService;
 		this.tokenVerificacaoEmailRepository = tokenVerificacaoEmailRepository;
 		this.emailService = emailService;
 		this.passwordEncoder = passwordEncoder;
 		this.jwtService = jwtService;
+		this.refreshTokenService = refreshTokenService;
 	}
     
-	@Transactional(readOnly = true)
+	@Transactional
 	public LoginResponseDto login(LoginRequestDto loginRequestDto) {
 		Usuario usuario = usuarioService.findEntityByEmail(loginRequestDto.getEmail());
 		
@@ -64,8 +68,9 @@ public class AuthService {
 	        throw new UserDeletedException("User deleted");
 	    }
 
-		String token = jwtService.generateToken(usuario);
-		return new LoginResponseDto(token);
+		String accessToken = jwtService.generateAccessToken(usuario);
+		String refreshToken = refreshTokenService.generateRefreshToken(usuario).getRefreshToken();
+		return new LoginResponseDto(accessToken, refreshToken);
 	}
 	
 	@Transactional
@@ -117,4 +122,10 @@ public class AuthService {
     
     	tokenVerificacaoEmailRepository.save(tokenEntity);
     }
+
+	@Transactional
+	public void logout(String refreshToken) {
+		RefreshToken token = refreshTokenService.findByToken(refreshToken);
+		refreshTokenService.delete(token);
+	}
 }

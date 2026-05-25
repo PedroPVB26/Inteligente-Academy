@@ -28,7 +28,7 @@ import br.edu.utfpr.inteligenteacademy.entity.Etiqueta;
 })
 public class EtiquetaResponseDto {
 
-    private Integer id;
+    private Long id;
 
     private String nome;
 
@@ -40,7 +40,7 @@ public class EtiquetaResponseDto {
 
     }
 
-    public EtiquetaResponseDto(Integer id, String nome, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public EtiquetaResponseDto(Long id, String nome, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.nome = nome;
         this.createdAt = createdAt;
@@ -54,11 +54,11 @@ public class EtiquetaResponseDto {
         this.modifiedAt = etiqueta.getModifiedAt();
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
