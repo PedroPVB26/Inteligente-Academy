@@ -4,11 +4,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-@Schema(description = "Credenciais utilizadas para autenticação")
+@Schema(description = "Authentication credentials")
 public class LoginRequestDto {
 
     @Schema(
-            description = "Email do usuário",
+            description = "User email address",
             example = "admin@email.com"
     )
     @NotBlank(message = "email must not be blank")
@@ -16,15 +16,15 @@ public class LoginRequestDto {
     private String email;
 
     @Schema(
-            description = "Senha do usuário",
+            description = "User password",
             example = "123456789"
     )
-    @NotBlank(message = "senha must not be blank")
-    private String senha;
+    @NotBlank(message = "password must not be blank")
+    private String password;
 
-    public LoginRequestDto(String email, String senha) {
+    public LoginRequestDto(String email, String password) {
         this.email = email;
-        this.senha = senha;
+        this.password = password;
     }
 
     public String getEmail() {
@@ -35,12 +35,12 @@ public class LoginRequestDto {
         this.email = email;
     }
 
-    public String getSenha() {
-        return senha;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

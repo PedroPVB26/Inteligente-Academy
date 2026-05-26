@@ -15,20 +15,20 @@ import br.edu.utfpr.inteligenteacademy.exception.token.TokenExpiredException;
 import br.edu.utfpr.inteligenteacademy.model.dto.ChangePasswordRequestDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.ResetPasswordRequestDto;
 import br.edu.utfpr.inteligenteacademy.repository.PasswordResetTokenRepository;
-import br.edu.utfpr.inteligenteacademy.repository.UsuarioRepository;
+import br.edu.utfpr.inteligenteacademy.repository.UserRepository;
 
 @Service
 public class PasswordService {
-    private final UsuarioRepository usuarioRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final EmailService emailService;
     
     
     
-	public PasswordService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder,
-                           PasswordResetTokenRepository passwordResetTokenRepository, EmailService emailService) {
-		this.usuarioRepository = usuarioRepository;
+	public PasswordService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+	                       PasswordResetTokenRepository passwordResetTokenRepository, EmailService emailService) {
+		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.passwordResetTokenRepository = passwordResetTokenRepository;
 		this.emailService = emailService;
@@ -38,7 +38,7 @@ public class PasswordService {
 	// Usuário não logado aperta no botão "esqueci minha senha" e passa o email.
 	public void requestReset(String email) {
 		//  Sempre retorna sem erro, mesmo se o e-mail não existir - não descobrem quais emails estão cadastrados
-		usuarioRepository.findByEmail(email).ifPresent(user ->{
+		userRepository.findByEmail(email).ifPresent(user ->{
 			
 			// Invalidar tokens anteriores que não foram usados
 			passwordResetTokenRepository.deleteByUserAndUsedFalse(user);
@@ -47,7 +47,7 @@ public class PasswordService {
 			
 			PasswordResetToken resetToken = new PasswordResetToken();
 
-			resetToken.setUsuario(user);
+			resetToken.setUser(user);
 			resetToken.setToken(passwordEncoder.encode(rawToken));
 			resetToken.setExpiresAt(Instant.now().plus(30, ChronoUnit.MINUTES));
 			resetToken.setUsed(false);
@@ -60,7 +60,7 @@ public class PasswordService {
 	
 	// Front enviou a requisição do usuário contendo a nova senha
 	public void resetPassword(ResetPasswordRequestDto resetPasswordRequestDto) {
-		User user = usuarioRepository.findByEmail(resetPasswordRequestDto.getEmail())
+		User user = userRepository.findByEmail(resetPasswordRequestDto.getEmail())
 		        .orElseThrow(() ->
 		        new ResourceNotFoundException(
 		                "User with email "
@@ -71,17 +71,17 @@ public class PasswordService {
 		
 		PasswordResetToken resetToken = passwordResetTokenRepository
 	            .findByUserAndUsedFalse(user)
-	            .orElseThrow(() -> new BadRequestException("Token inválido ou expirado."));
+	            .orElseThrow(() -> new BadRequestException("Invalid or expired token"));
 		
 		// token bate com o hash no banco?
         if (!passwordEncoder.matches(resetPasswordRequestDto.getToken(), resetToken.getToken())) {
-            throw new TokenExpiredException("Token inválido.");
+            throw new TokenExpiredException("Invalid token.");
         }
         
         // Atualiza senha
         user.setPassword(passwordEncoder.encode(resetPasswordRequestDto.getNewPassword()));
         user.setPasswordChangedAt(Instant.now()); // invalida JWTs antigos
-        usuarioRepository.save(user);
+        userRepository.save(user);
 	
         resetToken.setUsed(true);
         passwordResetTokenRepository.save(resetToken);
@@ -95,7 +95,7 @@ public class PasswordService {
 	        throw new BadRequestException("Passwords do not match");
 	    }
 		
-		User user = usuarioRepository.findByEmail(email)
+		User user = userRepository.findByEmail(email)
 		        .orElseThrow(() ->
 		        new ResourceNotFoundException(
 		                "User with email "
@@ -114,7 +114,7 @@ public class PasswordService {
         
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
 		user.setPasswordChangedAt(Instant.now()); //invalida todos os tokens antigos
-		usuarioRepository.save(user);
+		userRepository.save(user);
 		
 	}
 	

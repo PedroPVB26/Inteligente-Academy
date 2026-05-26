@@ -7,7 +7,7 @@ import java.util.Set;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import br.edu.utfpr.inteligenteacademy.model.dto.curso.CursoCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.course.CourseCreationDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -54,21 +54,21 @@ public class Course {
         this.modifiedAt = modifiedAt;
     }
 
-    public Course(CursoCreationDto dto){
+    public Course(CourseCreationDto dto){
         this.id = dto.getId();
-        this.name = dto.getNome();
-        this.description = dto.getDescricao();
-        this.duration = dto.getDuracao();
+        this.name = dto.getName();
+        this.description = dto.getDescription();
+        this.duration = dto.getDuration();
     }
 
-    public void adicionarEtiqueta(Tag tag) {
+    public void addTag(Tag tag) {
 
         CourseTag courseTag =new CourseTag(this, tag);
 
         courseTags.add(courseTag);
     }
 
-    public void removerEtiqueta(Tag tag) {
+    public void removeTag(Tag tag) {
 
         courseTags.removeIf(relacao -> relacao.getEtiqueta().equals(tag));
     }

@@ -14,8 +14,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UserRole;
-import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.user.UserRole;
+import br.edu.utfpr.inteligenteacademy.model.dto.user.UserCreationDto;
 
 @Entity
 @Table(name = "users") // user eh uma palavra reservada no PostgreSQL
@@ -89,12 +89,12 @@ public class User implements UserDetails{
 		this.passwordChangedAt = passwordChangedAt;
 	}
 
-	public User(UsuarioCreationDto dto) {
+	public User(UserCreationDto dto) {
 	    this.cpf = dto.getCpf();
-	    this.fullName = dto.getNome();
+	    this.fullName = dto.getName();
 	    this.email = dto.getEmail();
-	    this.password = dto.getSenha();
-	    this.birthDate = dto.getDataNascimento();
+	    this.password = dto.getPassword();
+	    this.birthDate = dto.getBirthDate();
 	    this.role = dto.getTipoUsuario();
 	    this.deleted = false;
 	}

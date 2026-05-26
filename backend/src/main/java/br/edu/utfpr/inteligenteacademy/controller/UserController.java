@@ -16,42 +16,42 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.utfpr.inteligenteacademy.entity.User;
 import br.edu.utfpr.inteligenteacademy.model.dto.ChangePasswordRequestDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioCreationDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioResponseDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioSoftDeleteResponseDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.user.UserCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.user.UserResponseDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.user.UserSoftDeleteResponseDto;
 import br.edu.utfpr.inteligenteacademy.service.PasswordService;
-import br.edu.utfpr.inteligenteacademy.service.UsuarioService;
+import br.edu.utfpr.inteligenteacademy.service.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/usuario")
-public class UsuarioController {
+@RequestMapping("/user")
+public class UserController {
 
-	private UsuarioService usuarioService;
+	private UserService userService;
 	private PasswordService passwordService;
 	
-	public UsuarioController(UsuarioService usuarioService, PasswordService passwordService) {
-		this.usuarioService = usuarioService;
+	public UserController(UserService userService, PasswordService passwordService) {
+		this.userService = userService;
 		this.passwordService = passwordService;
 	}
 	
 	// ----- GET -----
 	@GetMapping
-	public ResponseEntity<List<UsuarioResponseDto>> findAll(){
-		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findAll());
+	public ResponseEntity<List<UserResponseDto>> findAll(){
+		return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
 	}
 	
-	@GetMapping("/{usuarioId}")
-	public ResponseEntity<UsuarioResponseDto> findById(@PathVariable Long usuarioId){
-		UsuarioResponseDto usuarioResponseDto = usuarioService.findById(usuarioId);
-		return ResponseEntity.status(HttpStatus.OK).body(usuarioResponseDto);
+	@GetMapping("/{userId}")
+	public ResponseEntity<UserResponseDto> findById(@PathVariable Long userId){
+		UserResponseDto userResponseDto = userService.findById(userId);
+		return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
 	}
 	
 	// ----- POST -----
 	@PostMapping
-	public ResponseEntity<UsuarioResponseDto> save(@Valid @RequestBody UsuarioCreationDto usuarioCreationDto){
-		UsuarioResponseDto usuarioSalvo = usuarioService.save(usuarioCreationDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioSalvo);
+	public ResponseEntity<UserResponseDto> save(@Valid @RequestBody UserCreationDto userCreationDto){
+		UserResponseDto savedUser = userService.save(userCreationDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
 	}
 	
 	// ----- PUT -----
@@ -68,9 +68,9 @@ public class UsuarioController {
 	
 
 	// ----- DELETE -----
-	@DeleteMapping("/{usuarioId}")
-	public ResponseEntity<UsuarioSoftDeleteResponseDto> softDelete(@PathVariable Long usuarioId){
-		UsuarioSoftDeleteResponseDto usuarioExcluido = usuarioService.softDelete(usuarioId);
-		return ResponseEntity.status(HttpStatus.OK).body(usuarioExcluido);
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<UserSoftDeleteResponseDto> softDelete(@PathVariable Long userId){
+		UserSoftDeleteResponseDto deletedUser = userService.softDelete(userId);
+		return ResponseEntity.status(HttpStatus.OK).body(deletedUser);
 	}
 }

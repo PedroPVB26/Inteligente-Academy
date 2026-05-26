@@ -1,4 +1,4 @@
-package br.edu.utfpr.inteligenteacademy.model.dto.etiqueta;
+package br.edu.utfpr.inteligenteacademy.model.dto.tag;
 
 import java.time.LocalDateTime;
 
@@ -22,34 +22,34 @@ import br.edu.utfpr.inteligenteacademy.entity.Tag;
  */
 @JsonPropertyOrder({
     "id",
-    "nome",
+    "name",
     "createdAt",
     "modifiedAt"
 })
-public class EtiquetaResponseDto {
+public class TagResponseDto {
 
     private Long id;
 
-    private String nome;
+    private String name;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
 
-    public EtiquetaResponseDto() {
+    public TagResponseDto() {
 
     }
 
-    public EtiquetaResponseDto(Long id, String nome, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public TagResponseDto(Long id, String name, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
-        this.nome = nome;
+        this.name = name;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
 
-    public EtiquetaResponseDto(Tag tag) {
+    public TagResponseDto(Tag tag) {
         this.id = tag.getId();
-        this.nome = tag.getName();
+        this.name = tag.getName();
         this.createdAt = tag.getCreatedAt();
         this.modifiedAt = tag.getModifiedAt();
     }
@@ -62,12 +62,12 @@ public class EtiquetaResponseDto {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LocalDateTime getCreatedAt() {

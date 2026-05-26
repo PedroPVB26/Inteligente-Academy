@@ -1,4 +1,4 @@
-package br.edu.utfpr.inteligenteacademy.model.dto.curso;
+package br.edu.utfpr.inteligenteacademy.model.dto.course;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import br.edu.utfpr.inteligenteacademy.entity.Course;
-import br.edu.utfpr.inteligenteacademy.model.dto.etiqueta.EtiquetaResponseDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.tag.TagResponseDto;
 
 /*
  * DTO responsável por representar os dados retornados pela API
@@ -32,7 +32,7 @@ import br.edu.utfpr.inteligenteacademy.model.dto.etiqueta.EtiquetaResponseDto;
     "createdAt",
     "modifiedAt"
 })
-public class CursoResponseDto {
+public class CourseResponseDto {
 
     private Long id;
 
@@ -42,13 +42,13 @@ public class CursoResponseDto {
 
     private Integer duracao;
 
-    private List<EtiquetaResponseDto> etiquetas;
+    private List<TagResponseDto> etiquetas;
     
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
 
-    public CursoResponseDto() {
+    public CourseResponseDto() {
 
     }
 
@@ -61,7 +61,7 @@ public class CursoResponseDto {
 //        this.modifiedAt = modifiedAt;
 //    }
 
-    public CursoResponseDto(Course course) {
+    public CourseResponseDto(Course course) {
         this.id = course.getId();
         this.nome = course.getName();
         this.descricao = course.getDescription();
@@ -71,7 +71,7 @@ public class CursoResponseDto {
         this.etiquetas = course.getCourseTags()
                 .stream()
                 .map(cursoEtiqueta ->
-                        new EtiquetaResponseDto(
+                        new TagResponseDto(
                                 cursoEtiqueta.getEtiqueta()
                         )
                 )
@@ -126,11 +126,11 @@ public class CursoResponseDto {
         this.duracao = duracao;
     }
 
-	public List<EtiquetaResponseDto> getEtiquetas() {
+	public List<TagResponseDto> getEtiquetas() {
 		return etiquetas;
 	}
 
-	public void setEtiquetas(List<EtiquetaResponseDto> etiquetas) {
+	public void setEtiquetas(List<TagResponseDto> etiquetas) {
 		this.etiquetas = etiquetas;
 	}
     

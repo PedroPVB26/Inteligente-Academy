@@ -4,11 +4,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-@Schema(description = "Dados utilizados para solicitar redefinição de senha")
+@Schema(description = "Data used to request a password reset")
 public class ForgotPasswordRequestDto {
 
     @Schema(
-        description = "Email do usuário",
+        description = "User email address",
         example = "admin@email.com"
     )
     @NotBlank(message = "email must not be blank")

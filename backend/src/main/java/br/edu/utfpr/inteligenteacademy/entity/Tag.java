@@ -7,7 +7,7 @@ import java.util.Set;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import br.edu.utfpr.inteligenteacademy.model.dto.etiqueta.EtiquetaCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.tag.TagCreationDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,8 +42,8 @@ public class Tag {
         this.name = name;
     }
 
-    public Tag(EtiquetaCreationDto dto){
-        this.name = dto.getNome();
+    public Tag(TagCreationDto dto){
+        this.name = dto.getName();
     }
 
     public Long getId() {

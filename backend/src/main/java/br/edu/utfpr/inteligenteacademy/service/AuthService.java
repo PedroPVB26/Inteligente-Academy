@@ -20,30 +20,30 @@ import br.edu.utfpr.inteligenteacademy.exception.token.TokenExpiredException;
 import br.edu.utfpr.inteligenteacademy.exception.token.TokenInvalidException;
 import br.edu.utfpr.inteligenteacademy.model.dto.login.LoginRequestDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.login.LoginResponseDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioCreationDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioResponseDto;
-import br.edu.utfpr.inteligenteacademy.repository.TokenVerificacaoEmailRepository;
+import br.edu.utfpr.inteligenteacademy.model.dto.user.UserCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.user.UserResponseDto;
+import br.edu.utfpr.inteligenteacademy.repository.EmailVerificationTokenRepository;
 import br.edu.utfpr.inteligenteacademy.security.JwtService;
 
 @Service
 public class AuthService {
-    private final UsuarioService usuarioService;
-    private final TokenVerificacaoEmailRepository tokenVerificacaoEmailRepository;
+    private final UserService userService;
+    private final EmailVerificationTokenRepository emailVerificationTokenRepository;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
     
 	public AuthService(
-			UsuarioService usuarioService,
-			TokenVerificacaoEmailRepository tokenVerificacaoEmailRepository,
+			UserService userService,
+			EmailVerificationTokenRepository emailVerificationTokenRepository,
 			EmailService emailService,
 			PasswordEncoder passwordEncoder,
 			JwtService jwtService,
 			RefreshTokenService refreshTokenService
 			) {
-		this.usuarioService = usuarioService;
-		this.tokenVerificacaoEmailRepository = tokenVerificacaoEmailRepository;
+		this.userService = userService;
+		this.emailVerificationTokenRepository = emailVerificationTokenRepository;
 		this.emailService = emailService;
 		this.passwordEncoder = passwordEncoder;
 		this.jwtService = jwtService;
@@ -52,11 +52,11 @@ public class AuthService {
     
 	@Transactional
 	public LoginResponseDto login(LoginRequestDto loginRequestDto) {
-		User user = usuarioService.findEntityByEmail(loginRequestDto.getEmail());
+		User user = userService.findEntityByEmail(loginRequestDto.getEmail());
 		
-		boolean senhaCorreta = passwordEncoder.matches(loginRequestDto.getSenha(), user.getPassword());
+		boolean passwordMatches = passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword());
 		
-		if(!senhaCorreta) {
+		if(!passwordMatches) {
 			throw new InvalidCredentialsException("Invalid email or password");
 		}
 		
@@ -74,35 +74,35 @@ public class AuthService {
 	}
 	
 	@Transactional
-	public UsuarioResponseDto register(UsuarioCreationDto usuarioCreationDto) {
+	public UserResponseDto register(UserCreationDto userCreationDto) {
 
-	    User userSalvo = usuarioService.register(usuarioCreationDto);
+	    User savedUser = userService.register(userCreationDto);
 
 	    String token = UUID.randomUUID().toString();
 
 	    EmailVerificationToken tokenEntity = new EmailVerificationToken();
 	    tokenEntity.setToken(token);
-	    tokenEntity.setUser(userSalvo);
+	    tokenEntity.setUser(savedUser);
 	    tokenEntity.setExpiresAt(Instant.now().plus(30, ChronoUnit.DAYS));
 
-	    tokenVerificacaoEmailRepository.save(tokenEntity);
+	    emailVerificationTokenRepository.save(tokenEntity);
 
 
 	    String link = "http://localhost:8081/auth/verify-email?token=" + token;
 
-	    emailService.sendVerificatioEmail(
-	            userSalvo.getEmail(),
+	    emailService.sendVerificationEmail(
+	            savedUser.getEmail(),
 	            "Verifique seu email",
 	            link
 	    );
 
-	    return new UsuarioResponseDto(userSalvo);
+	    return new UserResponseDto(savedUser);
 	}
     
     @Transactional
     public void verifyEmail(String token) {
     	// Busca token
-    	EmailVerificationToken tokenEntity = tokenVerificacaoEmailRepository
+    	EmailVerificationToken tokenEntity = emailVerificationTokenRepository
     			.findByToken(token)
     			.orElseThrow(() -> new TokenInvalidException("Token does not exists"));
     	
@@ -120,7 +120,7 @@ public class AuthService {
     	user.setVerified(true);
     	tokenEntity.setUsed(true);
     
-    	tokenVerificacaoEmailRepository.save(tokenEntity);
+    	emailVerificationTokenRepository.save(tokenEntity);
     }
 
 	@Transactional

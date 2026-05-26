@@ -7,7 +7,7 @@ import br.edu.utfpr.inteligenteacademy.exception.token.TokenInvalidException;
 import br.edu.utfpr.inteligenteacademy.model.dto.login.LoginResponseDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.token.RefreshTokenRequestDto;
 import br.edu.utfpr.inteligenteacademy.repository.RefreshTokenRepository;
-import br.edu.utfpr.inteligenteacademy.repository.UsuarioRepository;
+import br.edu.utfpr.inteligenteacademy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,16 +21,16 @@ public class RefreshTokenService {
     private Long refreshTokenExpiration;
 
     private final RefreshTokenRepository refreshTokenRepository;
-    private final UsuarioRepository  usuarioRepository;
+    private final UserRepository userRepository;
     private final JwtService jwtService;
 
     public RefreshTokenService(
             RefreshTokenRepository refreshTokenRepository,
-            UsuarioRepository usuarioRepository,
+            UserRepository userRepository,
             JwtService jwtService
     ) {
         this.refreshTokenRepository = refreshTokenRepository;
-        this.usuarioRepository = usuarioRepository;
+        this.userRepository = userRepository;
         this.jwtService = jwtService;
     }
 

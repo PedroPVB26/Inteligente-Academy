@@ -18,7 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import br.edu.utfpr.inteligenteacademy.exception.CustomAccessDeniedHandler;
 import br.edu.utfpr.inteligenteacademy.exception.CustomAuthenticationEntryPoint;
-import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UserRole;
+import br.edu.utfpr.inteligenteacademy.model.dto.user.UserRole;
 import br.edu.utfpr.inteligenteacademy.security.JwtAuthenticationFilter;
 
 @Configuration
