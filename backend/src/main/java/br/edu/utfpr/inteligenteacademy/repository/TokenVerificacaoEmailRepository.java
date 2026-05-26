@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.edu.utfpr.inteligenteacademy.entity.TokenVerificacaoEmail;
+import br.edu.utfpr.inteligenteacademy.entity.EmailVerificationToken;
 
-public interface TokenVerificacaoEmailRepository extends JpaRepository<TokenVerificacaoEmail, Long>{
-	Optional<TokenVerificacaoEmail> findByToken(String token);
+public interface TokenVerificacaoEmailRepository extends JpaRepository<EmailVerificationToken, Long>{
+	Optional<EmailVerificationToken> findByToken(String token);
 }

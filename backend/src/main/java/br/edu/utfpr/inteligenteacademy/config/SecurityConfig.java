@@ -18,7 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import br.edu.utfpr.inteligenteacademy.exception.CustomAccessDeniedHandler;
 import br.edu.utfpr.inteligenteacademy.exception.CustomAuthenticationEntryPoint;
-import br.edu.utfpr.inteligenteacademy.model.dto.usuario.TipoUsuario;
+import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UserRole;
 import br.edu.utfpr.inteligenteacademy.security.JwtAuthenticationFilter;
 
 @Configuration
@@ -58,9 +58,9 @@ public class SecurityConfig {
             HttpSecurity http
     ) throws Exception {
 
-    	String admin = TipoUsuario.ADMIN.name();
-    	String educador = TipoUsuario.EDUCADOR.name();
-    	String aluno = TipoUsuario.ALUNO.name();
+    	String admin = UserRole.ADMIN.name();
+    	String educador = UserRole.EDUCADOR.name();
+    	String aluno = UserRole.ALUNO.name();
     	
         http
             .cors(Customizer.withDefaults())

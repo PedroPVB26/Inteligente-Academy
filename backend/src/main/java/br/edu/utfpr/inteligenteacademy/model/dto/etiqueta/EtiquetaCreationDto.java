@@ -1,6 +1,6 @@
 package br.edu.utfpr.inteligenteacademy.model.dto.etiqueta;
 
-import br.edu.utfpr.inteligenteacademy.entity.Etiqueta;
+import br.edu.utfpr.inteligenteacademy.entity.Tag;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -18,8 +18,8 @@ public class EtiquetaCreationDto {
 
     }
 
-    public EtiquetaCreationDto(Etiqueta etiqueta) {
-        this.nome = etiqueta.getNome();
+    public EtiquetaCreationDto(Tag tag) {
+        this.nome = tag.getName();
     }
 
     public EtiquetaCreationDto(String nome) {

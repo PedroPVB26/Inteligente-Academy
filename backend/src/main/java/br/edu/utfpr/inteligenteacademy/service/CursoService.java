@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.edu.utfpr.inteligenteacademy.entity.Curso;
-import br.edu.utfpr.inteligenteacademy.entity.Etiqueta;
+import br.edu.utfpr.inteligenteacademy.entity.Course;
+import br.edu.utfpr.inteligenteacademy.entity.Tag;
 import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
 import br.edu.utfpr.inteligenteacademy.model.dto.curso.CursoCreationDto;
@@ -26,14 +26,14 @@ public class CursoService {
 	
 	@Transactional(readOnly = true)
 	public List<CursoResponseDto> findAll(){
-		List<Curso> Cursos = cursoRepository.findAll();
-		return Cursos.stream().map(x -> new CursoResponseDto(x)).toList();
+		List<Course> courses = cursoRepository.findAll();
+		return courses.stream().map(x -> new CursoResponseDto(x)).toList();
 	}
 	
 	
 	@Transactional(readOnly = true)
 	public CursoResponseDto findById(Long cursoId) {
-		Curso Curso =
+		Course Course =
 		        cursoRepository.findById(cursoId)
 		        .orElseThrow(() ->
 			        new ResourceNotFoundException(
@@ -42,28 +42,28 @@ public class CursoService {
 			                + " not found"
 			        )
 		        );
-		return new CursoResponseDto(Curso);
+		return new CursoResponseDto(Course);
 	}
 	
 	@Transactional
 	public CursoResponseDto save(CursoCreationDto cursoCreationDto) {
 
-		if(cursoRepository.existsByNome(cursoCreationDto.getNome())) {
+		if(cursoRepository.existsByName(cursoCreationDto.getNome())) {
 			throw new DatabaseException("Nome already exists in the database");
 		}
 		
-		Curso curso = new Curso(cursoCreationDto);
+		Course course = new Course(cursoCreationDto);
 
 		if(cursoCreationDto.getEtiquetasIds() != null && !cursoCreationDto.getEtiquetasIds().isEmpty()) {
 			for (Long etiquetaId : cursoCreationDto.getEtiquetasIds()) {
-				Etiqueta etiqueta = etiquetaService.findEntityById(etiquetaId);
-				curso.adicionarEtiqueta(etiqueta);
+				Tag tag = etiquetaService.findEntityById(etiquetaId);
+				course.adicionarEtiqueta(tag);
 			}
 		}
 		
 		
-		Curso CursoSalvo = cursoRepository.save(curso);
+		Course courseSalvo = cursoRepository.save(course);
 		
-		return new CursoResponseDto(CursoSalvo);
+		return new CursoResponseDto(courseSalvo);
 	}
 }

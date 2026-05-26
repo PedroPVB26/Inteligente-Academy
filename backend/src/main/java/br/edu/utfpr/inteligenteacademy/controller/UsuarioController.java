@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.utfpr.inteligenteacademy.entity.Usuario;
+import br.edu.utfpr.inteligenteacademy.entity.User;
 import br.edu.utfpr.inteligenteacademy.model.dto.ChangePasswordRequestDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioCreationDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioResponseDto;
@@ -59,10 +59,10 @@ public class UsuarioController {
 	// Logado alterando senha
 	@PutMapping("/password")
 	public ResponseEntity<Void> changePassword(
-			@AuthenticationPrincipal Usuario usuario,
+			@AuthenticationPrincipal User user,
 			@Valid @RequestBody ChangePasswordRequestDto changePasswordRequestDto){
 		
-		passwordService.changePassword(usuario.getEmail(), changePasswordRequestDto);
+		passwordService.changePassword(user.getEmail(), changePasswordRequestDto);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	

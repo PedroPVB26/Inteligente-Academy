@@ -10,8 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.edu.utfpr.inteligenteacademy.entity.TokenVerificacaoEmail;
-import br.edu.utfpr.inteligenteacademy.entity.Usuario;
+import br.edu.utfpr.inteligenteacademy.entity.EmailVerificationToken;
+import br.edu.utfpr.inteligenteacademy.entity.User;
 import br.edu.utfpr.inteligenteacademy.exception.auth.EmailNotVerifiedException;
 import br.edu.utfpr.inteligenteacademy.exception.auth.InvalidCredentialsException;
 import br.edu.utfpr.inteligenteacademy.exception.auth.UserDeletedException;
@@ -52,38 +52,38 @@ public class AuthService {
     
 	@Transactional
 	public LoginResponseDto login(LoginRequestDto loginRequestDto) {
-		Usuario usuario = usuarioService.findEntityByEmail(loginRequestDto.getEmail());
+		User user = usuarioService.findEntityByEmail(loginRequestDto.getEmail());
 		
-		boolean senhaCorreta = passwordEncoder.matches(loginRequestDto.getSenha(), usuario.getSenha());
+		boolean senhaCorreta = passwordEncoder.matches(loginRequestDto.getSenha(), user.getPassword());
 		
 		if(!senhaCorreta) {
 			throw new InvalidCredentialsException("Invalid email or password");
 		}
 		
-		if(!usuario.getVerificado()) {
+		if(!user.getVerified()) {
 			throw new EmailNotVerifiedException("Email not verified");
 		}
 		
-		if (usuario.getStatusExcluido()) {
+		if (user.getDeleted()) {
 	        throw new UserDeletedException("User deleted");
 	    }
 
-		String accessToken = jwtService.generateAccessToken(usuario);
-		String refreshToken = refreshTokenService.generateRefreshToken(usuario).getRefreshToken();
+		String accessToken = jwtService.generateAccessToken(user);
+		String refreshToken = refreshTokenService.generateRefreshToken(user).getRefreshToken();
 		return new LoginResponseDto(accessToken, refreshToken);
 	}
 	
 	@Transactional
 	public UsuarioResponseDto register(UsuarioCreationDto usuarioCreationDto) {
 
-	    Usuario usuarioSalvo = usuarioService.register(usuarioCreationDto);
+	    User userSalvo = usuarioService.register(usuarioCreationDto);
 
 	    String token = UUID.randomUUID().toString();
 
-	    TokenVerificacaoEmail tokenEntity = new TokenVerificacaoEmail();
+	    EmailVerificationToken tokenEntity = new EmailVerificationToken();
 	    tokenEntity.setToken(token);
-	    tokenEntity.setUsuario(usuarioSalvo);
-	    tokenEntity.setExpiracao(Instant.now().plus(30, ChronoUnit.DAYS));
+	    tokenEntity.setUser(userSalvo);
+	    tokenEntity.setExpiresAt(Instant.now().plus(30, ChronoUnit.DAYS));
 
 	    tokenVerificacaoEmailRepository.save(tokenEntity);
 
@@ -91,34 +91,34 @@ public class AuthService {
 	    String link = "http://localhost:8081/auth/verify-email?token=" + token;
 
 	    emailService.sendVerificatioEmail(
-	            usuarioSalvo.getEmail(),
+	            userSalvo.getEmail(),
 	            "Verifique seu email",
 	            link
 	    );
 
-	    return new UsuarioResponseDto(usuarioSalvo);
+	    return new UsuarioResponseDto(userSalvo);
 	}
     
     @Transactional
     public void verifyEmail(String token) {
     	// Busca token
-    	TokenVerificacaoEmail tokenEntity = tokenVerificacaoEmailRepository
+    	EmailVerificationToken tokenEntity = tokenVerificacaoEmailRepository
     			.findByToken(token)
     			.orElseThrow(() -> new TokenInvalidException("Token does not exists"));
     	
     	// Verifica se já foi utilizado
-    	Usuario usuario = tokenEntity.getUsuario();
+    	User user = tokenEntity.getUser();
 
-    	if(tokenEntity.isUsado() || usuario.getVerificado()) {
+    	if(tokenEntity.isUsed() || user.getVerified()) {
     		throw new TokenAlreadyUsedException("Token already used");
     	}
     	
-    	if(tokenEntity.getExpiracao().isBefore(Instant.now())) {
+    	if(tokenEntity.getExpiresAt().isBefore(Instant.now())) {
     		throw new TokenExpiredException("Token expired");
     	}
 
-    	usuario.setVerificado(true);
-    	tokenEntity.setUsado(true);
+    	user.setVerified(true);
+    	tokenEntity.setUsed(true);
     
     	tokenVerificacaoEmailRepository.save(tokenEntity);
     }

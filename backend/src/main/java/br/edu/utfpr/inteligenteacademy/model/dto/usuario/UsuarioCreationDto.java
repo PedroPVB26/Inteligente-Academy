@@ -49,7 +49,7 @@ public class UsuarioCreationDto {
     private LocalDate dataNascimento;
 
     @NotNull(message = "tipoUsuario must not be null")
-    private TipoUsuario tipoUsuario;
+    private UserRole userRole;
 
 
     public UsuarioCreationDto() {
@@ -75,14 +75,14 @@ public class UsuarioCreationDto {
             String email,
             String senha,
             LocalDate dataNascimento,
-            TipoUsuario tipoUsuario
+            UserRole userRole
     ) {
         this.cpf = cpf;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.dataNascimento = dataNascimento;
-        this.tipoUsuario = tipoUsuario;
+        this.userRole = userRole;
     }
 
     public String getCpf() {
@@ -125,11 +125,11 @@ public class UsuarioCreationDto {
         this.dataNascimento = dataNascimento;
     }
 
-    public TipoUsuario getTipoUsuario() {
-        return tipoUsuario;
+    public UserRole getTipoUsuario() {
+        return userRole;
     }
 
-    public void setTipoUsuario(TipoUsuario tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
+    public void setTipoUsuario(UserRole userRole) {
+        this.userRole = userRole;
     }
 }

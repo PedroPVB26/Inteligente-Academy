@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import br.edu.utfpr.inteligenteacademy.entity.Curso;
+import br.edu.utfpr.inteligenteacademy.entity.Course;
 import br.edu.utfpr.inteligenteacademy.model.dto.etiqueta.EtiquetaResponseDto;
 
 /*
@@ -61,14 +61,14 @@ public class CursoResponseDto {
 //        this.modifiedAt = modifiedAt;
 //    }
 
-    public CursoResponseDto(Curso curso) {
-        this.id = curso.getId();
-        this.nome = curso.getNome();
-        this.descricao = curso.getDescricao();
-        this.duracao = curso.getDuracao();
-        this.createdAt = curso.getCreatedAt();
-        this.modifiedAt = curso.getModifiedAt();
-        this.etiquetas = curso.getCursoEtiquetas()
+    public CursoResponseDto(Course course) {
+        this.id = course.getId();
+        this.nome = course.getName();
+        this.descricao = course.getDescription();
+        this.duracao = course.getDuration();
+        this.createdAt = course.getCreatedAt();
+        this.modifiedAt = course.getModifiedAt();
+        this.etiquetas = course.getCourseTags()
                 .stream()
                 .map(cursoEtiqueta ->
                         new EtiquetaResponseDto(

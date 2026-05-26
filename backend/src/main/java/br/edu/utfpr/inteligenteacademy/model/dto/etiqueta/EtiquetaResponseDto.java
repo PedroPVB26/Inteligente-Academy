@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import br.edu.utfpr.inteligenteacademy.entity.Etiqueta;
+import br.edu.utfpr.inteligenteacademy.entity.Tag;
 
 /*
  * DTO responsável por representar os dados retornados pela API
@@ -47,11 +47,11 @@ public class EtiquetaResponseDto {
         this.modifiedAt = modifiedAt;
     }
 
-    public EtiquetaResponseDto(Etiqueta etiqueta) {
-        this.id = etiqueta.getId();
-        this.nome = etiqueta.getNome();
-        this.createdAt = etiqueta.getCreatedAt();
-        this.modifiedAt = etiqueta.getModifiedAt();
+    public EtiquetaResponseDto(Tag tag) {
+        this.id = tag.getId();
+        this.nome = tag.getName();
+        this.createdAt = tag.getCreatedAt();
+        this.modifiedAt = tag.getModifiedAt();
     }
 
     public Long getId() {

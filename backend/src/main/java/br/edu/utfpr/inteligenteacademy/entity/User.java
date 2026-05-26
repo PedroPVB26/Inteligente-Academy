@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.jspecify.annotations.Nullable;
@@ -13,18 +14,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import br.edu.utfpr.inteligenteacademy.model.dto.usuario.TipoUsuario;
+import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UserRole;
 import br.edu.utfpr.inteligenteacademy.model.dto.usuario.UsuarioCreationDto;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 @Entity
-public class Usuario implements UserDetails{
+@Table(name = "users") // user eh uma palavra reservada no PostgreSQL
+public class User implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,26 +29,26 @@ public class Usuario implements UserDetails{
     private String cpf;
 
     @Column(nullable = false)
-    private String nome;
+    private String fullName;
 
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
-    private String senha;
+    private String password;
 
     @Column(nullable = false)
-    private LocalDate dataNascimento;
+    private LocalDate birthDate;
 
     @Column(nullable = false)
-    private Boolean verificado;
+    private Boolean verified;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TipoUsuario tipoUsuario; // Internamente tratar como Enum (int -> Tipo) e.g ALUNO -> 1, ADMIN -> 3
+    private UserRole role; // Internamente tratar como Enum (int -> Tipo) e.g ALUNO -> 1, ADMIN -> 3
 
     @Column(nullable = false)
-    private Boolean statusExcluido;
+    private Boolean deleted;
 
     private Instant passwordChangedAt;
     
@@ -67,41 +62,41 @@ public class Usuario implements UserDetails{
     private LocalDateTime modifiedAt;
 
     
-    public Usuario() {
+    public User() {
 
 	}
 
 
-	public Usuario(
+	public User(
 			String cpf, 
-			String nome, 
+			String fullName,
 			String email, 
-			String senha, 
-			LocalDate dataNascimento,
-			Boolean verificado, 
-			TipoUsuario tipoUsuario, 
-			Boolean statusExcluido, 
+			String password,
+			LocalDate birthDate,
+			Boolean verified,
+			UserRole role,
+			Boolean deleted,
 			LocalDateTime deletedAt,
 			Instant passwordChangedAt) {
 		this.cpf = cpf;
-		this.nome = nome;
+		this.fullName = fullName;
 		this.email = email;
-		this.senha = senha;
-		this.dataNascimento = dataNascimento;
-		this.verificado = verificado;
-		this.tipoUsuario = tipoUsuario;
-		this.statusExcluido = statusExcluido;
+		this.password = password;
+		this.birthDate = birthDate;
+		this.verified = verified;
+		this.role = role;
+		this.deleted = deleted;
 		this.passwordChangedAt = passwordChangedAt;
 	}
 
-	public Usuario(UsuarioCreationDto dto) {
+	public User(UsuarioCreationDto dto) {
 	    this.cpf = dto.getCpf();
-	    this.nome = dto.getNome();
+	    this.fullName = dto.getNome();
 	    this.email = dto.getEmail();
-	    this.senha = dto.getSenha();
-	    this.dataNascimento = dto.getDataNascimento();
-	    this.tipoUsuario = dto.getTipoUsuario();
-	    this.statusExcluido = false;
+	    this.password = dto.getSenha();
+	    this.birthDate = dto.getDataNascimento();
+	    this.role = dto.getTipoUsuario();
+	    this.deleted = false;
 	}
 	
 	public Long getId() {
@@ -124,13 +119,13 @@ public class Usuario implements UserDetails{
 	}
 
 
-	public String getNome() {
-		return nome;
+	public String getFullName() {
+		return fullName;
 	}
 
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 
@@ -144,53 +139,48 @@ public class Usuario implements UserDetails{
 	}
 
 
-	public String getSenha() {
-		return senha;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public LocalDate getBirthDate() {
+		return birthDate;
 	}
 
 
-	public LocalDate getDataNascimento() {
-		return dataNascimento;
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
 	}
 
 
-	public void setDataNascimento(LocalDate dataNascimento) {
-		this.dataNascimento = dataNascimento;
+	public Boolean getVerified() {
+		return verified;
 	}
 
 
-	public Boolean getVerificado() {
-		return verificado;
+	public void setVerified(Boolean verified) {
+		this.verified = verified;
 	}
 
 
-	public void setVerificado(Boolean verificado) {
-		this.verificado = verificado;
+	public UserRole getRole() {
+		return role;
 	}
 
 
-	public TipoUsuario getTipoUsuario() {
-		return tipoUsuario;
+	public void setRole(UserRole role) {
+		this.role = role;
 	}
 
 
-	public void setTipoUsuario(TipoUsuario tipoUsuario) {
-		this.tipoUsuario = tipoUsuario;
+	public Boolean getDeleted() {
+		return deleted;
 	}
 
 
-	public Boolean getStatusExcluido() {
-		return statusExcluido;
-	}
-
-
-	public void setStatusExcluido(Boolean statusExcluido) {
-		this.statusExcluido = statusExcluido;
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 
@@ -235,13 +225,13 @@ public class Usuario implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority("ROLE_" + tipoUsuario.name()));
+		return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
 	}
 
 
 	@Override
 	public @Nullable String getPassword() {
-		return senha;
+		return password;
 	}
 
 
@@ -252,12 +242,12 @@ public class Usuario implements UserDetails{
     
 	@Override
 	public boolean isAccountNonLocked() {
-	    return !statusExcluido;
+	    return !deleted;
 	}
     
 	@Override
 	public boolean isEnabled() {
-	    return verificado;
+	    return verified;
 	}
 	
 	@Override

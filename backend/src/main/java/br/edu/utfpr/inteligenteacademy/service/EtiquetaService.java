@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.edu.utfpr.inteligenteacademy.entity.Etiqueta;
+import br.edu.utfpr.inteligenteacademy.entity.Tag;
 import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
 import br.edu.utfpr.inteligenteacademy.model.dto.etiqueta.EtiquetaCreationDto;
@@ -23,14 +23,14 @@ public class EtiquetaService {
 	
 	@Transactional(readOnly = true)
 	public List<EtiquetaResponseDto> findAll(){
-		List<Etiqueta> etiquetas = etiquetaRepository.findAll();
-		return etiquetas.stream().map(x -> new EtiquetaResponseDto(x)).toList();
+		List<Tag> tags = etiquetaRepository.findAll();
+		return tags.stream().map(x -> new EtiquetaResponseDto(x)).toList();
 	}
 	
 	
 	@Transactional(readOnly = true)
 	public EtiquetaResponseDto findById(Long etiquetaId) {
-		Etiqueta etiqueta =
+		Tag tag =
 		        etiquetaRepository.findById(etiquetaId)
 		        .orElseThrow(() ->
 			        new ResourceNotFoundException(
@@ -39,11 +39,11 @@ public class EtiquetaService {
 			                + " not found"
 			        )
 		        );
-		return new EtiquetaResponseDto(etiqueta);
+		return new EtiquetaResponseDto(tag);
 	}
 	
 	@Transactional(readOnly = true)
-	public Etiqueta findEntityById(Long etiquetaId) {
+	public Tag findEntityById(Long etiquetaId) {
 		return etiquetaRepository.findById(etiquetaId)
 		        .orElseThrow(() ->
 			        new ResourceNotFoundException(
@@ -57,14 +57,14 @@ public class EtiquetaService {
 	@Transactional
 	public EtiquetaResponseDto save(EtiquetaCreationDto EtiquetaCreationDto) {
 
-		if(etiquetaRepository.existsByNome(EtiquetaCreationDto.getNome())) {
+		if(etiquetaRepository.existsByName(EtiquetaCreationDto.getNome())) {
 			throw new DatabaseException("Nome already exists in the database");
 		}
 		
-		Etiqueta Etiqueta = new Etiqueta(EtiquetaCreationDto);
+		Tag Tag = new Tag(EtiquetaCreationDto);
 		
-		Etiqueta EtiquetaSalvo = etiquetaRepository.save(Etiqueta);
+		Tag tagSalvo = etiquetaRepository.save(Tag);
 		
-		return new EtiquetaResponseDto(EtiquetaSalvo);
+		return new EtiquetaResponseDto(tagSalvo);
 	}
 }

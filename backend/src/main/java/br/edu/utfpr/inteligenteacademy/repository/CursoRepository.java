@@ -2,11 +2,11 @@ package br.edu.utfpr.inteligenteacademy.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.edu.utfpr.inteligenteacademy.entity.Curso;
+import br.edu.utfpr.inteligenteacademy.entity.Course;
 
-public interface CursoRepository extends JpaRepository<Curso, Long>{
+public interface CursoRepository extends JpaRepository<Course, Long>{
     boolean existsById(Integer id);
-	boolean existsByNome(String nome);
-    boolean existsByDescricao(String descricao);
-	boolean existsByDuracao(Integer duracao);
+	boolean existsByName(String name);
+    boolean existsByDescription(String description);
+	boolean existsByDuration(Integer duration);
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import br.edu.utfpr.inteligenteacademy.entity.Usuario;
+import br.edu.utfpr.inteligenteacademy.entity.User;
 import br.edu.utfpr.inteligenteacademy.exception.PasswordChangedException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -67,8 +67,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	    		// Busca usuario no banco
 	    		UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-	    		Usuario usuario = (Usuario) userDetails;
-	    		Instant passwordChangedAt = usuario.getPasswordChangedAt();
+	    		User user = (User) userDetails;
+	    		Instant passwordChangedAt = user.getPasswordChangedAt();
 
 	    		if(passwordChangedAt != null) {
 	    			Instant tokenIssuedAt = jwtService.extractIssuedAt(token).toInstant();

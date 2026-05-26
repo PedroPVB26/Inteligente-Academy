@@ -16,7 +16,7 @@ public class PasswordResetToken {
     private String id;
 
     @ManyToOne
-    private Usuario usuario;
+    private User user;
 
     private String token;       // hash do token
     private Instant expiresAt;
@@ -24,23 +24,23 @@ public class PasswordResetToken {
     
     public PasswordResetToken() {}
 
-	public PasswordResetToken(Usuario usuario, String token, Instant expiresAt, boolean used) {
-		this.usuario = usuario;
-		this.token = token;
-		this.expiresAt = expiresAt;
-		this.used = used;
-	}
+//	public PasswordResetToken(User user, String token, Instant expiresAt, boolean used) {
+//		this.user = user;
+//		this.token = token;
+//		this.expiresAt = expiresAt;
+//		this.used = used;
+//	}
 
 	public String getId() {
 		return id;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public User getUsuario() {
+		return user;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setUsuario(User user) {
+		this.user = user;
 	}
 
 	public String getToken() {

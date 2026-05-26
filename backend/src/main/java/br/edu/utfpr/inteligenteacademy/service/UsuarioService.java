@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.edu.utfpr.inteligenteacademy.entity.Usuario;
+import br.edu.utfpr.inteligenteacademy.entity.User;
 import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
 import br.edu.utfpr.inteligenteacademy.exception.auth.InvalidCredentialsException;
@@ -29,13 +29,13 @@ public class UsuarioService {
 	
 	@Transactional(readOnly = true)
 	public List<UsuarioResponseDto> findAll(){
-		List<Usuario> usuarios = usuarioRepository.findAll();
-		return usuarios.stream().map(x -> new UsuarioResponseDto(x)).toList();
+		List<User> users = usuarioRepository.findAll();
+		return users.stream().map(x -> new UsuarioResponseDto(x)).toList();
 	}
 	
 	
 	@Transactional(readOnly = true)
-	public Usuario findEntityByEmail(String email) {
+	public User findEntityByEmail(String email) {
 		return usuarioRepository.findByEmail(email)
 				.orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
 		
@@ -43,7 +43,7 @@ public class UsuarioService {
 	
 	@Transactional(readOnly = true)
 	public UsuarioResponseDto findById(Long usuarioId) {
-		Usuario usuario =
+		User user =
 		        usuarioRepository.findById(usuarioId)
 		        .orElseThrow(() ->
 			        new ResourceNotFoundException(
@@ -52,7 +52,7 @@ public class UsuarioService {
 			                + " not found"
 			        )
 		        );
-		return new UsuarioResponseDto(usuario);
+		return new UsuarioResponseDto(user);
 	}
 	
 	@Transactional
@@ -65,21 +65,21 @@ public class UsuarioService {
 	        throw new DatabaseException("Email already exists in the database");
 	    }
 		
-		Usuario usuario = new Usuario(usuarioCreationDto);
+		User user = new User(usuarioCreationDto);
 		
-		String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
+		String senhaCriptografada = passwordEncoder.encode(user.getPassword());
 		
-		usuario.setSenha(senhaCriptografada);
-		usuario.setVerificado(false);
-		usuario.setStatusExcluido(false);
+		user.setPassword(senhaCriptografada);
+		user.setVerified(false);
+		user.setDeleted(false);
 		
-		Usuario usuarioSalvo = usuarioRepository.save(usuario);
+		User userSalvo = usuarioRepository.save(user);
 		
-		return new UsuarioResponseDto(usuarioSalvo);
+		return new UsuarioResponseDto(userSalvo);
 	}
 	
 	@Transactional
-	public Usuario register(UsuarioCreationDto usuarioCreationDto) {
+	public User register(UsuarioCreationDto usuarioCreationDto) {
 		if(usuarioRepository.existsByCpf(usuarioCreationDto.getCpf())) {
 			throw new DatabaseException("CPF already exists in the database");
 		}
@@ -88,31 +88,31 @@ public class UsuarioService {
 	        throw new DatabaseException("Email already exists in the database");
 	    }
 		
-		Usuario usuario = new Usuario(usuarioCreationDto);
+		User user = new User(usuarioCreationDto);
 		
-		String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
+		String senhaCriptografada = passwordEncoder.encode(user.getPassword());
 		
-		usuario.setSenha(senhaCriptografada);
-		usuario.setVerificado(false);
-		usuario.setStatusExcluido(false);
+		user.setPassword(senhaCriptografada);
+		user.setVerified(false);
+		user.setDeleted(false);
 		
-		return usuarioRepository.save(usuario);
+		return usuarioRepository.save(user);
 	}
 	
 	@Transactional
 	public UsuarioSoftDeleteResponseDto softDelete(Long usuarioId) {
-	    Usuario usuario = usuarioRepository.findById(usuarioId)
+	    User user = usuarioRepository.findById(usuarioId)
 	        .orElseThrow(() ->
 	            new ResourceNotFoundException(
 	                "User with id " + usuarioId + " not found"
 	            )
 	        );
 	    
-	    usuario.setStatusExcluido(true);
-	    usuario.setDeletedAt(LocalDateTime.now());
+	    user.setDeleted(true);
+	    user.setDeletedAt(LocalDateTime.now());
 	    
-	    usuarioRepository.save(usuario);
+	    usuarioRepository.save(user);
 	    
-	    return new UsuarioSoftDeleteResponseDto(usuario);
+	    return new UsuarioSoftDeleteResponseDto(user);
 	}
 }

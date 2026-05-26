@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.edu.utfpr.inteligenteacademy.entity.PasswordResetToken;
-import br.edu.utfpr.inteligenteacademy.entity.Usuario;
+import br.edu.utfpr.inteligenteacademy.entity.User;
 import br.edu.utfpr.inteligenteacademy.exception.BadRequestException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
 import br.edu.utfpr.inteligenteacademy.exception.token.TokenExpiredException;
@@ -41,7 +41,7 @@ public class PasswordService {
 		usuarioRepository.findByEmail(email).ifPresent(user ->{
 			
 			// Invalidar tokens anteriores que não foram usados
-			passwordResetTokenRepository.deleteByUsuarioAndUsedFalse(user);
+			passwordResetTokenRepository.deleteByUserAndUsedFalse(user);
 			
 			String rawToken = UUID.randomUUID().toString();
 			
@@ -60,7 +60,7 @@ public class PasswordService {
 	
 	// Front enviou a requisição do usuário contendo a nova senha
 	public void resetPassword(ResetPasswordRequestDto resetPasswordRequestDto) {
-		Usuario user = usuarioRepository.findByEmail(resetPasswordRequestDto.getEmail())
+		User user = usuarioRepository.findByEmail(resetPasswordRequestDto.getEmail())
 		        .orElseThrow(() ->
 		        new ResourceNotFoundException(
 		                "User with email "
@@ -70,7 +70,7 @@ public class PasswordService {
 	        );
 		
 		PasswordResetToken resetToken = passwordResetTokenRepository
-	            .findByUsuarioAndUsedFalse(user)
+	            .findByUserAndUsedFalse(user)
 	            .orElseThrow(() -> new BadRequestException("Token inválido ou expirado."));
 		
 		// token bate com o hash no banco?
@@ -79,7 +79,7 @@ public class PasswordService {
         }
         
         // Atualiza senha
-        user.setSenha(passwordEncoder.encode(resetPasswordRequestDto.getNewPassword()));
+        user.setPassword(passwordEncoder.encode(resetPasswordRequestDto.getNewPassword()));
         user.setPasswordChangedAt(Instant.now()); // invalida JWTs antigos
         usuarioRepository.save(user);
 	
@@ -95,7 +95,7 @@ public class PasswordService {
 	        throw new BadRequestException("Passwords do not match");
 	    }
 		
-		Usuario usuario = usuarioRepository.findByEmail(email)
+		User user = usuarioRepository.findByEmail(email)
 		        .orElseThrow(() ->
 		        new ResourceNotFoundException(
 		                "User with email "
@@ -104,17 +104,17 @@ public class PasswordService {
 		        )
 	        );
 		
-	    if (!passwordEncoder.matches(request.getCurrentPassword(), usuario.getPassword())) {
+	    if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
 	        throw new BadRequestException("Current password is incorrect.");
 	    }
 		
-	    if (passwordEncoder.matches(request.getNewPassword(), usuario.getPassword())) {
+	    if (passwordEncoder.matches(request.getNewPassword(), user.getPassword())) {
 	        throw new BadRequestException("New password must be different from the old password");
 	    }
         
-        usuario.setSenha(passwordEncoder.encode(request.getNewPassword()));
-		usuario.setPasswordChangedAt(Instant.now()); //invalida todos os tokens antigos
-		usuarioRepository.save(usuario);
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+		user.setPasswordChangedAt(Instant.now()); //invalida todos os tokens antigos
+		usuarioRepository.save(user);
 		
 	}
 	

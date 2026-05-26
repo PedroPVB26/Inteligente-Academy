@@ -16,13 +16,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Etiqueta {
+public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String nome;
+    private String name;
 
     @CreationTimestamp // Preenche automaticamente quando o registro é criado.
     @Column(nullable = false, updatable = false)
@@ -31,19 +31,19 @@ public class Etiqueta {
     @UpdateTimestamp // Atualiza automaticamente sempre que houver alteração na entidade.
     private LocalDateTime modifiedAt;
 
-    @OneToMany(mappedBy = "etiqueta")
-    private Set<CursoEtiqueta> cursoEtiquetas = new HashSet<>();
+    @OneToMany(mappedBy = "tag")
+    private Set<CourseTag> courseTags = new HashSet<>();
     
-    public Etiqueta() {
+    public Tag() {
 
 	}
 
-    public Etiqueta(String nome, LocalDateTime createdAt) {
-        this.nome = nome;
+    public Tag(String name, LocalDateTime createdAt) {
+        this.name = name;
     }
 
-    public Etiqueta(EtiquetaCreationDto dto){   
-        this.nome = dto.getNome();
+    public Tag(EtiquetaCreationDto dto){
+        this.name = dto.getNome();
     }
 
     public Long getId() {
@@ -54,12 +54,12 @@ public class Etiqueta {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -78,8 +78,8 @@ public class Etiqueta {
         this.modifiedAt = modifiedAt;
     }
     
-    public Set<CursoEtiqueta> getCursoEtiquetas() {
-        return cursoEtiquetas;
+    public Set<CourseTag> getCursoEtiquetas() {
+        return courseTags;
     }
 
 }

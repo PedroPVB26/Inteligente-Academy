@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import br.edu.utfpr.inteligenteacademy.entity.Usuario;
+import br.edu.utfpr.inteligenteacademy.entity.User;
 
 /*
  * DTO responsável por representar os dados retornados pela API
@@ -46,7 +46,7 @@ public class UsuarioResponseDto {
 
     private Boolean verificado;
 
-    private TipoUsuario tipoUsuario;
+    private UserRole userRole;
 
     private Boolean statusExcluido;
 
@@ -85,18 +85,18 @@ public class UsuarioResponseDto {
 //        this.deletedAt = deletedAt;
 //    }
 
-    public UsuarioResponseDto(Usuario usuario) {
-        this.id = usuario.getId();
-        this.cpf = usuario.getCpf();
-        this.nome = usuario.getNome();
-        this.email = usuario.getEmail();
-        this.dataNascimento = usuario.getDataNascimento();
-        this.verificado = usuario.getVerificado();
-        this.tipoUsuario = usuario.getTipoUsuario();
-        this.createdAt = usuario.getCreatedAt();
-        this.modifiedAt = usuario.getModifiedAt();
-        this.statusExcluido = usuario.getStatusExcluido();
-        this.deletedAt = usuario.getDeletedAt();
+    public UsuarioResponseDto(User user) {
+        this.id = user.getId();
+        this.cpf = user.getCpf();
+        this.nome = user.getFullName();
+        this.email = user.getEmail();
+        this.dataNascimento = user.getBirthDate();
+        this.verificado = user.getVerified();
+        this.userRole = user.getRole();
+        this.createdAt = user.getCreatedAt();
+        this.modifiedAt = user.getModifiedAt();
+        this.statusExcluido = user.getDeleted();
+        this.deletedAt = user.getDeletedAt();
     }
 
     public Long getId() {
@@ -147,12 +147,12 @@ public class UsuarioResponseDto {
         this.verificado = verificado;
     }
 
-    public TipoUsuario getTipoUsuario() {
-        return tipoUsuario;
+    public UserRole getTipoUsuario() {
+        return userRole;
     }
 
-    public void setTipoUsuario(TipoUsuario tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
+    public void setTipoUsuario(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     public LocalDateTime getCreatedAt() {

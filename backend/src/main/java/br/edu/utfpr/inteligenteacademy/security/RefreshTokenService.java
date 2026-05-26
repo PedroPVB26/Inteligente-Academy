@@ -1,12 +1,10 @@
 package br.edu.utfpr.inteligenteacademy.security;
 
 import br.edu.utfpr.inteligenteacademy.entity.RefreshToken;
-import br.edu.utfpr.inteligenteacademy.entity.Usuario;
-import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
+import br.edu.utfpr.inteligenteacademy.entity.User;
 import br.edu.utfpr.inteligenteacademy.exception.token.TokenExpiredException;
 import br.edu.utfpr.inteligenteacademy.exception.token.TokenInvalidException;
 import br.edu.utfpr.inteligenteacademy.model.dto.login.LoginResponseDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.token.AccessTokenResponseDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.token.RefreshTokenRequestDto;
 import br.edu.utfpr.inteligenteacademy.repository.RefreshTokenRepository;
 import br.edu.utfpr.inteligenteacademy.repository.UsuarioRepository;
@@ -50,22 +48,22 @@ public class RefreshTokenService {
 
         isTokenExpired(oldToken);
 
-        Usuario usuario = oldToken.getUsuario();
+        User user = oldToken.getUsuario();
 
         // Revoga o refreshToken antigo
         oldToken.setRevoked(true);
         refreshTokenRepository.save(oldToken);
 
-        RefreshToken newRefreshToken = generateRefreshToken(usuario);
-        String newAccessToken = jwtService.generateAccessToken(usuario);
+        RefreshToken newRefreshToken = generateRefreshToken(user);
+        String newAccessToken = jwtService.generateAccessToken(user);
 
         return new LoginResponseDto(newAccessToken, newRefreshToken.getRefreshToken());
     }
 
-    public RefreshToken generateRefreshToken(Usuario usuario) {
+    public RefreshToken generateRefreshToken(User user) {
         RefreshToken refreshToken = new RefreshToken();
 
-        refreshToken.setUsuario(usuario);
+        refreshToken.setUsuario(user);
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenExpiration));
         refreshToken.setRefreshToken(UUID.randomUUID().toString());
 

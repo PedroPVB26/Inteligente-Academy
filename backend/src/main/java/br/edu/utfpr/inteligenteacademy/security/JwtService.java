@@ -7,7 +7,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import br.edu.utfpr.inteligenteacademy.entity.Usuario;
+import br.edu.utfpr.inteligenteacademy.entity.User;
 import br.edu.utfpr.inteligenteacademy.exception.token.TokenExpiredException;
 import br.edu.utfpr.inteligenteacademy.exception.token.TokenInvalidException;
 import io.jsonwebtoken.Claims;
@@ -27,12 +27,12 @@ public class JwtService {
 	private Long expiration;
 
 
-	public String generateAccessToken(Usuario usuario) {
+	public String generateAccessToken(User user) {
 		return Jwts
 				.builder()
-				.subject(usuario.getEmail()) // dono do token
-				.claim("id", usuario.getId()) // claim -> personalizado para o token
-				.claim("role", usuario.getTipoUsuario().name())
+				.subject(user.getEmail()) // dono do token
+				.claim("id", user.getId()) // claim -> personalizado para o token
+				.claim("role", user.getRole().name())
 				.issuedAt(new Date())
 				.expiration(new Date(System.currentTimeMillis() + expiration))
 				.signWith(getSignInKey()) // assinatura do token

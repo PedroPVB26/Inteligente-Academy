@@ -17,19 +17,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Curso {
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String nome;
+    private String name;
 
     @Column(nullable = true, columnDefinition = "TEXT")
-    private String descricao;
+    private String description;
 
     @Column(nullable = false)
-    private Integer duracao; // Em horas
+    private Integer duration; // in hours
 
     @CreationTimestamp // Preenche automaticamente quando o registro é criado.
     @Column(nullable = false, updatable = false)
@@ -38,42 +38,42 @@ public class Curso {
     @UpdateTimestamp // Atualiza automaticamente sempre que houver alteração na entidade.
     private LocalDateTime modifiedAt;
 
-    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CursoEtiqueta> cursoEtiquetas = new HashSet<>();
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CourseTag> courseTags = new HashSet<>();
     
-    public Curso() {
+    public Course() {
 
 	}
 
-    public Curso(Long id, String nome, String descricao, Integer duracao, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public Course(Long id, String name, String description, Integer duration, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.duracao = duracao;
+        this.name = name;
+        this.description = description;
+        this.duration = duration;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
 
-    public Curso(CursoCreationDto dto){ 
+    public Course(CursoCreationDto dto){
         this.id = dto.getId();
-        this.nome = dto.getNome();
-        this.descricao = dto.getDescricao();
-        this.duracao = dto.getDuracao();
+        this.name = dto.getNome();
+        this.description = dto.getDescricao();
+        this.duration = dto.getDuracao();
     }
 
-    public void adicionarEtiqueta(Etiqueta etiqueta) {
+    public void adicionarEtiqueta(Tag tag) {
 
-        CursoEtiqueta cursoEtiqueta =new CursoEtiqueta(this, etiqueta);
+        CourseTag courseTag =new CourseTag(this, tag);
 
-        cursoEtiquetas.add(cursoEtiqueta);
+        courseTags.add(courseTag);
     }
 
-    public void removerEtiqueta(Etiqueta etiqueta) {
+    public void removerEtiqueta(Tag tag) {
 
-        cursoEtiquetas.removeIf(relacao -> relacao.getEtiqueta().equals(etiqueta));
+        courseTags.removeIf(relacao -> relacao.getEtiqueta().equals(tag));
     }
-    
-    
+
+
     public Long getId() {
         return id;
     }
@@ -82,28 +82,28 @@ public class Curso {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Integer getDuracao() {
-        return duracao;
+    public Integer getDuration() {
+        return duration;
     }
 
-    public void setDuracao(Integer duracao) {
-        this.duracao = duracao;
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -122,11 +122,11 @@ public class Curso {
         this.modifiedAt = modifiedAt;
     }
 
-    
-    public Set<CursoEtiqueta> getCursoEtiquetas() {
-        return cursoEtiquetas;
+
+    public Set<CourseTag> getCourseTags() {
+        return courseTags;
     }
 
-    
-    
+
+
 }

@@ -11,8 +11,8 @@ public class RefreshToken {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(nullable = false, unique = true)
     private String refreshToken;
@@ -24,8 +24,8 @@ public class RefreshToken {
     public RefreshToken() {}
 
 
-    public RefreshToken(Usuario usuario, String refreshToken, Instant expiryDate, boolean revoked) {
-        this.usuario = usuario;
+    public RefreshToken(User user, String refreshToken, Instant expiryDate, boolean revoked) {
+        this.user = user;
         this.refreshToken = refreshToken;
         this.expiryDate = expiryDate;
         this.revoked = revoked;
@@ -39,12 +39,12 @@ public class RefreshToken {
         this.id = id;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public User getUsuario() {
+        return user;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuario(User user) {
+        this.user = user;
     }
 
     public String getRefreshToken() {

@@ -2,7 +2,7 @@ package br.edu.utfpr.inteligenteacademy.model.dto.usuario;
 
 import java.time.LocalDateTime;
 
-import br.edu.utfpr.inteligenteacademy.entity.Usuario;
+import br.edu.utfpr.inteligenteacademy.entity.User;
 
 public class UsuarioSoftDeleteResponseDto {
 
@@ -18,10 +18,10 @@ public class UsuarioSoftDeleteResponseDto {
 		this.deletedAt = deletedAt;
 	}
 
-	public UsuarioSoftDeleteResponseDto(Usuario usuario) {
-		this.id = usuario.getId();
-		this.statusExcluido = usuario.getStatusExcluido();
-		this.deletedAt = usuario.getDeletedAt();
+	public UsuarioSoftDeleteResponseDto(User user) {
+		this.id = user.getId();
+		this.statusExcluido = user.getDeleted();
+		this.deletedAt = user.getDeletedAt();
 	}
 	
 	public Long getId() {
