@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.utfpr.inteligenteacademy.entity.User;
-import br.edu.utfpr.inteligenteacademy.model.dto.ChangePasswordRequestDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.password.ChangePasswordRequestDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.user.UserCreationDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.user.UserResponseDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.user.UserSoftDeleteResponseDto;
@@ -24,7 +24,7 @@ import br.edu.utfpr.inteligenteacademy.service.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
 	private UserService userService;

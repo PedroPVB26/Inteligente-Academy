@@ -12,8 +12,7 @@ import br.edu.utfpr.inteligenteacademy.entity.User;
 import br.edu.utfpr.inteligenteacademy.exception.BadRequestException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
 import br.edu.utfpr.inteligenteacademy.exception.token.TokenExpiredException;
-import br.edu.utfpr.inteligenteacademy.model.dto.ChangePasswordRequestDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.ResetPasswordRequestDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.password.ChangePasswordRequestDto;
 import br.edu.utfpr.inteligenteacademy.repository.PasswordResetTokenRepository;
 import br.edu.utfpr.inteligenteacademy.repository.UserRepository;
 
@@ -59,7 +58,7 @@ public class PasswordService {
 	}
 	
 	// Front enviou a requisição do usuário contendo a nova senha
-	public void resetPassword(ResetPasswordRequestDto resetPasswordRequestDto) {
+	public void resetPassword(ChangePasswordRequestDto.ResetPasswordRequestDto resetPasswordRequestDto) {
 		User user = userRepository.findByEmail(resetPasswordRequestDto.getEmail())
 		        .orElseThrow(() ->
 		        new ResourceNotFoundException(

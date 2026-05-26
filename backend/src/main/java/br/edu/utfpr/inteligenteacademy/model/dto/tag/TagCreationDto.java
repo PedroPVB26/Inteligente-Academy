@@ -8,9 +8,9 @@ public class TagCreationDto {
 
     @NotBlank(message = "name must not be blank")
     @Size(
-        min = 3,
+        min = 2,
         max = 120,
-        message = "name must contain between 3 and 120 characters"
+        message = "name must contain between 2 and 120 characters"
     )
     private String name;
 

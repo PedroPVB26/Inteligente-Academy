@@ -2,6 +2,7 @@ package br.edu.utfpr.inteligenteacademy.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ import br.edu.utfpr.inteligenteacademy.service.CourseService;
 
 
 @RestController
-@RequestMapping("/course")
+@RequestMapping("/courses")
 public class CourseController {
     private CourseService courseService;
 
@@ -39,7 +40,7 @@ public class CourseController {
 
     // ----- POST -----
     @PostMapping
-    public ResponseEntity<CourseResponseDto> save(@RequestBody CourseCreationDto courseCreationDto) {
+    public ResponseEntity<CourseResponseDto> save(@RequestBody @Valid CourseCreationDto courseCreationDto) {
         CourseResponseDto CursoSalvo = courseService.save(courseCreationDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(CursoSalvo);
     }

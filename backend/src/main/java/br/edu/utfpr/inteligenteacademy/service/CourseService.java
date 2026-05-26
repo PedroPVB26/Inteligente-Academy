@@ -27,7 +27,7 @@ public class CourseService {
 	@Transactional(readOnly = true)
 	public List<CourseResponseDto> findAll(){
 		List<Course> courses = courseRepository.findAll();
-		return courses.stream().map(x -> new CourseResponseDto(x)).toList();
+		return courses.stream().map(CourseResponseDto::new).toList();
 	}
 	
 	

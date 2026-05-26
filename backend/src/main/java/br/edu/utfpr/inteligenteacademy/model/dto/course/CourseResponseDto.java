@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.edu.utfpr.inteligenteacademy.model.dto.PublicationStatus;
+import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleResponseDto;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import br.edu.utfpr.inteligenteacademy.entity.Course;
@@ -25,10 +27,12 @@ import br.edu.utfpr.inteligenteacademy.model.dto.tag.TagResponseDto;
  */
 @JsonPropertyOrder({
     "id",
-    "nome",
-    "descricao",
-    "duracao",
-    "etiquetas",
+    "name",
+    "description",
+    "duration",
+    "tags",
+    "publicationStatus",
+    "courseModules",
     "createdAt",
     "modifiedAt"
 })
@@ -36,45 +40,47 @@ public class CourseResponseDto {
 
     private Long id;
 
-    private String nome;
+    private String name;
 
-    private String descricao;
+    private String description;
 
-    private Integer duracao;
+    private Integer duration;
 
-    private List<TagResponseDto> etiquetas;
-    
+    private PublicationStatus  publicationStatus;
+
+    private List<TagResponseDto> tags;
+
+    private List<CourseModuleResponseDto> courseModules;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
+
+
 
     public CourseResponseDto() {
 
     }
 
-//    public CursoResponseDto(Integer id, String nome, String descricao, Integer duracao, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-//        this.id = id;
-//        this.nome = nome;
-//        this.descricao = descricao;
-//        this.duracao = duracao;
-//        this.createdAt = createdAt;
-//        this.modifiedAt = modifiedAt;
-//    }
-
     public CourseResponseDto(Course course) {
         this.id = course.getId();
-        this.nome = course.getName();
-        this.descricao = course.getDescription();
-        this.duracao = course.getDuration();
+        this.name = course.getName();
+        this.description = course.getDescription();
+        this.duration = course.getDuration();
         this.createdAt = course.getCreatedAt();
         this.modifiedAt = course.getModifiedAt();
-        this.etiquetas = course.getCourseTags()
+        this.tags = course.getCourseTags()
                 .stream()
                 .map(cursoEtiqueta ->
                         new TagResponseDto(
                                 cursoEtiqueta.getEtiqueta()
                         )
                 )
+                .collect(Collectors.toList());
+        this.publicationStatus = course.getPublicationStatus();
+        this.courseModules = course.getModules()
+                .stream()
+                .map(CourseModuleResponseDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -86,12 +92,12 @@ public class CourseResponseDto {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -110,29 +116,43 @@ public class CourseResponseDto {
         this.modifiedAt = modifiedAt;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Integer getDuracao() {
-        return duracao;
+    public Integer getDuration() {
+        return duration;
     }
 
-    public void setDuracao(Integer duracao) {
-        this.duracao = duracao;
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
-	public List<TagResponseDto> getEtiquetas() {
-		return etiquetas;
+	public List<TagResponseDto> getTags() {
+		return tags;
 	}
 
-	public void setEtiquetas(List<TagResponseDto> etiquetas) {
-		this.etiquetas = etiquetas;
+	public void setTags(List<TagResponseDto> tags) {
+		this.tags = tags;
 	}
-    
-    
+
+    public PublicationStatus getPublicationStatus() {
+        return publicationStatus;
+    }
+
+    public void setPublicationStatus(PublicationStatus publicationStatus) {
+        this.publicationStatus = publicationStatus;
+    }
+
+    public List<CourseModuleResponseDto> getCourseModules() {
+        return courseModules;
+    }
+
+    public void setCourseModules(List<CourseModuleResponseDto> courseModules) {
+        this.courseModules = courseModules;
+    }
 }

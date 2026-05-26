@@ -2,6 +2,7 @@ package br.edu.utfpr.inteligenteacademy.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ import br.edu.utfpr.inteligenteacademy.service.TagService;
 
 
 @RestController
-@RequestMapping("/tag")
+@RequestMapping("/tags")
 public class TagController {
     private TagService tagService;
 
@@ -39,7 +40,7 @@ public class TagController {
 
     // ----- POST -----
     @PostMapping
-    public ResponseEntity<TagResponseDto> save(@RequestBody TagCreationDto tagCreationDto) {
+    public ResponseEntity<TagResponseDto> save(@RequestBody @Valid TagCreationDto tagCreationDto) {
         TagResponseDto savedTag = tagService.save(tagCreationDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTag);
     }

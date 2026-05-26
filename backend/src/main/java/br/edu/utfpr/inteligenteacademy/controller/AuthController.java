@@ -1,5 +1,6 @@
 package br.edu.utfpr.inteligenteacademy.controller;
 
+import br.edu.utfpr.inteligenteacademy.model.dto.password.ChangePasswordRequestDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.token.RefreshTokenRequestDto;
 import br.edu.utfpr.inteligenteacademy.security.RefreshTokenService;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.utfpr.inteligenteacademy.exception.StandardError;
-import br.edu.utfpr.inteligenteacademy.model.dto.ForgotPasswordRequestDto;
-import br.edu.utfpr.inteligenteacademy.model.dto.ResetPasswordRequestDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.login.LoginRequestDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.login.LoginResponseDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.user.UserCreationDto;
@@ -99,14 +98,14 @@ public class AuthController {
 
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<Void> forgotPassword(@RequestBody ForgotPasswordRequestDto request) {
+    public ResponseEntity<Void> forgotPassword(@RequestBody @Valid ChangePasswordRequestDto.ForgotPasswordRequestDto request) {
         passwordResetService.requestReset(request.getEmail());
         return ResponseEntity.ok().build(); // sempre 200, mesmo se e-mail não existir
     }
 
 
     @PostMapping("/reset-password")
-    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequestDto request) {
+    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ChangePasswordRequestDto.ResetPasswordRequestDto request) {
         passwordResetService.resetPassword(request);
         return ResponseEntity.noContent().build(); // 204
     }

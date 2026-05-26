@@ -1,20 +1,17 @@
 package br.edu.utfpr.inteligenteacademy.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import br.edu.utfpr.inteligenteacademy.model.dto.PublicationStatus;
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import br.edu.utfpr.inteligenteacademy.model.dto.course.CourseCreationDto;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
 @Entity
 public class Course {
@@ -25,11 +22,15 @@ public class Course {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = true, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Column(nullable = false)
     private Integer duration; // in hours
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PublicationStatus publicationStatus = PublicationStatus.DRAFT;
 
     @CreationTimestamp // Preenche automaticamente quando o registro é criado.
     @Column(nullable = false, updatable = false)
@@ -39,20 +40,15 @@ public class Course {
     private LocalDateTime modifiedAt;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CourseTag> courseTags = new HashSet<>();
-    
+    private final Set<CourseTag> courseTags = new HashSet<>();
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("position ASC")
+    private final List<CourseModule> courseModules = new ArrayList<>();
+
     public Course() {
 
 	}
-
-    public Course(Long id, String name, String description, Integer duration, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.duration = duration;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-    }
 
     public Course(CourseCreationDto dto){
         this.id = dto.getId();
@@ -61,15 +57,22 @@ public class Course {
         this.duration = dto.getDuration();
     }
 
+    public void addModule(CourseModule courseModule){
+        courseModules.add(courseModule);
+        courseModule.setCourse(this);
+    }
+
+    public void removeModule(CourseModule courseModule){
+        courseModules.remove(courseModule);
+        courseModule.setCourse(null);
+    }
+
     public void addTag(Tag tag) {
-
         CourseTag courseTag =new CourseTag(this, tag);
-
         courseTags.add(courseTag);
     }
 
     public void removeTag(Tag tag) {
-
         courseTags.removeIf(relacao -> relacao.getEtiqueta().equals(tag));
     }
 
@@ -106,6 +109,14 @@ public class Course {
         this.duration = duration;
     }
 
+    public PublicationStatus getPublicationStatus() {
+        return publicationStatus;
+    }
+
+    public void setPublicationStatus(PublicationStatus publicationStatus) {
+        this.publicationStatus = publicationStatus;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -122,11 +133,11 @@ public class Course {
         this.modifiedAt = modifiedAt;
     }
 
-
     public Set<CourseTag> getCourseTags() {
         return courseTags;
     }
 
-
-
+    public List<CourseModule> getModules() {
+        return courseModules;
+    }
 }

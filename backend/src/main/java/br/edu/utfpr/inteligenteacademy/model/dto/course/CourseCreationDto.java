@@ -3,6 +3,7 @@ package br.edu.utfpr.inteligenteacademy.model.dto.course;
 import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -26,7 +27,8 @@ public class CourseCreationDto {
     )
     private String description;
 
-    @NotBlank(message = "duration must not be blank")
+    @NotNull(message = "duration must not be blank")
+    @Positive(message = "duration must be greater than zero")
     private Integer duration;
 
     private List<@Positive Long> tagsIds;
