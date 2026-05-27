@@ -5,9 +5,9 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.edu.utfpr.inteligenteacademy.entity.PasswordResetToken;
-import br.edu.utfpr.inteligenteacademy.entity.Usuario;
+import br.edu.utfpr.inteligenteacademy.entity.User;
 
 public interface PasswordResetTokenRepository extends JpaRepository<PasswordResetToken, String>{
-	void deleteByUsuarioAndUsedFalse(Usuario usuario);
-	Optional<PasswordResetToken> findByUsuarioAndUsedFalse(Usuario usuario);
+	void deleteByUserAndUsedFalse(User user);
+	Optional<PasswordResetToken> findByUserAndUsedFalse(User user);
 }

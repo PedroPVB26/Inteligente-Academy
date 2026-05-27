@@ -2,11 +2,11 @@ package br.edu.utfpr.inteligenteacademy.model.dto.token;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "Resposta contendo o access token JWT")
+@Schema(description = "JWT access token response")
 public class AccessTokenResponseDto {
 
     @Schema(
-        description = "JWT utilizado para autenticação do usuário",
+        description = "JWT access token",
         example = "eyJhbGciOiJIUzI1NiJ9..."
     )
     private String accessToken;

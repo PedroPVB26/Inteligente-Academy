@@ -5,22 +5,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import br.edu.utfpr.inteligenteacademy.repository.UsuarioRepository;
+import br.edu.utfpr.inteligenteacademy.repository.UserRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService{
 
-    private final UsuarioRepository usuarioRepository;
+    private final UserRepository userRepository;
 
     public CustomUserDetailsService(
-            UsuarioRepository usuarioRepository
+            UserRepository userRepository
     ) {
-        this.usuarioRepository = usuarioRepository;
+        this.userRepository = userRepository;
     }
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return usuarioRepository
+        return userRepository
                 .findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 	}

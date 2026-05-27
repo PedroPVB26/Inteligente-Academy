@@ -4,16 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class LoginResponseDto {
 
-	@Schema(
-			description = "Token JWT de autenticação",
-			example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-	)
 	private String accessToken;
 
-	@Schema(
-			description = "Refresh token para renovar o access token",
-			example = "dGhpc0lzUmVmcmVzaFRva2Vu"
-	)
 	private String refreshToken;
 
 	public LoginResponseDto(String accessToken, String refreshToken) {

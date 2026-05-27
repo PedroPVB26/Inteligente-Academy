@@ -20,7 +20,7 @@ public class EmailService {
     }
     
     @Async
-    public void sendVerificatioEmail(String destination, String subject, String html) { // MUDAR AQUI, POIS O EMAIL QUE DEVE GERAR O HTML COM BASE NOS DADOS RECEBIDOS
+    public void sendVerificationEmail(String destination, String subject, String html) { // MUDAR AQUI, POIS O EMAIL QUE DEVE GERAR O HTML COM BASE NOS DADOS RECEBIDOS
     	try {
     		MimeMessage message = mailSender.createMimeMessage();
     		
