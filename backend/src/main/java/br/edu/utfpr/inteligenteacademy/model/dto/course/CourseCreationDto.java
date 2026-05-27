@@ -9,8 +9,6 @@ import jakarta.validation.constraints.Size;
 
 public class CourseCreationDto {
 
-    private Long id;
-
     @NotBlank(message = "name must not be blank")
     @Size(
         min = 3,
@@ -51,14 +49,6 @@ public class CourseCreationDto {
 //        this.duracao = duracao;
 //        this.etiquetasIds = etiquetasIds;
 //    }
-
-	public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

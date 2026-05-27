@@ -3,6 +3,7 @@ package br.edu.utfpr.inteligenteacademy.model.dto.module;
 import br.edu.utfpr.inteligenteacademy.entity.CourseModule;
 import br.edu.utfpr.inteligenteacademy.entity.Lesson;
 import br.edu.utfpr.inteligenteacademy.model.dto.PublicationStatus;
+import br.edu.utfpr.inteligenteacademy.model.dto.lesson.LessonResponseDto;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.time.LocalDateTime;
@@ -30,7 +31,7 @@ public class CourseModuleResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private List<Lesson> lessons;
+    private List<LessonResponseDto> lessons;
 
     public CourseModuleResponseDto() {
     }
@@ -62,7 +63,10 @@ public class CourseModuleResponseDto {
         this.title = courseModule.getTitle();
         this.description = courseModule.getDescription();
         this.position = courseModule.getPosition();
-        this.lessons = courseModule.getLessons();
+        this.lessons = courseModule.getLessons()
+                .stream()
+                .map(LessonResponseDto::new)
+                .toList();
         this.publicationStatus = courseModule.getPublicationStatus();
         this.courseId = courseModule.getCourse().getId();
         this.createdAt = courseModule.getCreatedAt();
@@ -98,7 +102,7 @@ public class CourseModuleResponseDto {
         return modifiedAt;
     }
 
-    public List<Lesson> getLessons() {
+    public List<LessonResponseDto> getLessons() {
         return lessons;
     }
 

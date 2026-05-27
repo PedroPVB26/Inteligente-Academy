@@ -13,22 +13,28 @@ import java.util.List;
 @RestController
 @RequestMapping("courses/{courseId}/modules")
 public class CourseModuleController {
-    private CourseModuleService courseModuleService;
+    private final CourseModuleService courseModuleService;
 
     public CourseModuleController(CourseModuleService courseModuleService) {
         this.courseModuleService = courseModuleService;
     }
 
     // ----- GET -----
-    @GetMapping
-    public ResponseEntity<List<CourseModuleResponseDto>> findAllByCourseId(@PathVariable Long courseId){
-        return ResponseEntity.ok(courseModuleService.findByCourseId(courseId));
+    @GetMapping("/{moduleId}")
+    public ResponseEntity<CourseModuleResponseDto> findById(
+            @PathVariable Long moduleId,
+            @PathVariable Long courseId
+    ){
+        return ResponseEntity.ok(courseModuleService.findById(moduleId, courseId));
     }
 
-    @GetMapping("{moduleId}")
-    public ResponseEntity<CourseModuleResponseDto> findById(@PathVariable Long moduleId){
-        return ResponseEntity.ok(courseModuleService.findById(moduleId));
+    @GetMapping
+    public ResponseEntity<List<CourseModuleResponseDto>> findAllByCourseId(
+            @PathVariable Long courseId
+    ){
+        return ResponseEntity.ok(courseModuleService.findAllByCourseId(courseId));
     }
+
 
     // ----- POST -----
     @PostMapping
@@ -36,7 +42,9 @@ public class CourseModuleController {
             @RequestBody @Valid CourseModuleCreationDto courseModuleCreationDto,
             @PathVariable Long courseId
     ){
-        CourseModuleResponseDto courseModuleResponseDto = courseModuleService.save(courseModuleCreationDto, courseId);
+        CourseModuleResponseDto courseModuleResponseDto = courseModuleService.save(
+                courseModuleCreationDto, courseId
+        );
         return ResponseEntity.status(HttpStatus.CREATED).body(courseModuleResponseDto);
     }
 }

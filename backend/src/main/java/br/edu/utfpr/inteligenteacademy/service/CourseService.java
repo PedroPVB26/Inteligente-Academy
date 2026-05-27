@@ -29,8 +29,19 @@ public class CourseService {
 		List<Course> courses = courseRepository.findAll();
 		return courses.stream().map(CourseResponseDto::new).toList();
 	}
-	
-	
+
+	@Transactional(readOnly = true)
+	public Course findEntityById(Long courseId) {
+		return courseRepository.findById(courseId)
+				.orElseThrow(() ->
+						new ResourceNotFoundException(
+								"Course with id: "
+										+ courseId
+										+ " not found."
+						)
+				);
+	}
+
 	@Transactional(readOnly = true)
 	public CourseResponseDto findById(Long courseId) {
 		Course course =

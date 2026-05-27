@@ -51,7 +51,6 @@ public class Course {
 	}
 
     public Course(CourseCreationDto dto){
-        this.id = dto.getId();
         this.name = dto.getName();
         this.description = dto.getDescription();
         this.duration = dto.getDuration();
