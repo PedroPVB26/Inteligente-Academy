@@ -72,7 +72,6 @@ public class CourseService {
 			}
 		}
 		
-		
 		Course savedCourse = courseRepository.save(course);
 		
 		return new CourseResponseDto(savedCourse);

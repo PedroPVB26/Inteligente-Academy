@@ -2,6 +2,10 @@ package br.edu.utfpr.inteligenteacademy.model.dto.user;
 
 import java.time.LocalDate;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
 import jakarta.validation.constraints.Email;
@@ -11,6 +15,10 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserCreationDto {
     @NotBlank(message = "cpf must not be blank")
     @CPF(message = "cpf must be valid")
@@ -50,73 +58,4 @@ public class UserCreationDto {
 
     @NotNull(message = "userRole must not be null")
     private UserRole userRole;
-
-
-    public UserCreationDto() {
-        
-    }
-    
-    public UserCreationDto(
-            String cpf,
-            String name,
-            String email,
-            String password,
-            LocalDate birthDate,
-            UserRole userRole
-    ) {
-        this.cpf = cpf;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.birthDate = birthDate;
-        this.userRole = userRole;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public UserRole getTipoUsuario() {
-        return userRole;
-    }
-
-    public void setTipoUsuario(UserRole userRole) {
-        this.userRole = userRole;
-    }
 }

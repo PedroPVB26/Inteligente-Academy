@@ -14,19 +14,19 @@ import java.util.List;
 
 @Service
 public class CourseModuleService {
-    private CourseModuleRepository courseModuleRepository;
-    private CourseService courseService;
+    private final CourseModuleRepository courseModuleRepository;
+    private final CourseService courseService;
 
     public CourseModuleService(CourseModuleRepository courseModuleRepository, CourseService courseService) {
         this.courseModuleRepository = courseModuleRepository;
         this.courseService = courseService;
     }
 
-    @Transactional(readOnly = true)
-    public List<CourseModuleResponseDto> findAll() {
-        List<CourseModule> courseModules = courseModuleRepository.findAll();
-        return courseModules.stream().map(CourseModuleResponseDto::new).toList();
-    }
+//    @Transactional(readOnly = true)
+//    public List<CourseModuleResponseDto> findAll() {
+//        List<CourseModule> courseModules = courseModuleRepository.findAll();
+//        return courseModules.stream().map(CourseModuleResponseDto::new).toList();
+//    }
 
     @Transactional(readOnly = true)
     public CourseModuleResponseDto findById(Long moduleId, Long courseId) {
@@ -57,12 +57,9 @@ public class CourseModuleService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
-    public CourseModule findEntityByIdAndCourseId(
-            Long moduleId,
-            Long courseId
-    ) {
 
+    @Transactional(readOnly = true)
+    public CourseModule findEntityByIdAndCourseId(Long moduleId,Long courseId) {
         return courseModuleRepository
                 .findByIdAndCourseId(moduleId, courseId)
                 .orElseThrow(() ->
@@ -74,6 +71,7 @@ public class CourseModuleService {
                         )
                 );
     }
+
 
     @Transactional
     public CourseModuleResponseDto save(CourseModuleCreationDto courseModuleCreationDto, Long courseId) {

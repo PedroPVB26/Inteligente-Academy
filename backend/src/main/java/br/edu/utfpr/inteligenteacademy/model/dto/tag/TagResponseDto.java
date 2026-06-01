@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import br.edu.utfpr.inteligenteacademy.entity.Tag;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @JsonPropertyOrder({
@@ -13,26 +16,14 @@ import br.edu.utfpr.inteligenteacademy.entity.Tag;
     "createdAt",
     "modifiedAt"
 })
+@Getter
+@Setter
+@NoArgsConstructor
 public class TagResponseDto {
-
     private Long id;
-
     private String name;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime modifiedAt;
-
-    public TagResponseDto() {
-
-    }
-
-    public TagResponseDto(Long id, String name, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.id = id;
-        this.name = name;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-    }
 
     public TagResponseDto(Tag tag) {
         this.id = tag.getId();
@@ -40,22 +31,4 @@ public class TagResponseDto {
         this.createdAt = tag.getCreatedAt();
         this.modifiedAt = tag.getModifiedAt();
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
 }

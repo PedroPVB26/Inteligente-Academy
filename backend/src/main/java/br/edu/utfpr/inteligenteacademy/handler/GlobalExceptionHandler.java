@@ -1,7 +1,10 @@
 package br.edu.utfpr.inteligenteacademy.handler;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
+
+import br.edu.utfpr.inteligenteacademy.model.dto.user.UserRole;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -103,13 +106,16 @@ public class GlobalExceptionHandler {
 
 	    Throwable cause = e.getCause();
 
-	    if (cause != null && cause.getMessage().contains("TipoUsuario")) {
-	        error.addMessage("tipoUsuario: must be one of [ALUNO, EDUCADOR, ADMIN]");
+	    if (cause != null && cause.getMessage().contains("UserRole")) {
+			error.addMessage(
+					"userRole: must be one of " +
+							Arrays.toString(UserRole.values())
+			);
 
 	    } else if (cause instanceof InvalidFormatException invalidFormat) {
 
 	        String fieldName =
-	            invalidFormat.getPath().get(0).getFieldName();
+	            invalidFormat.getPath().getFirst().getFieldName();
 
 	        error.addMessage(fieldName + ": invalid value type");
 	    }else {

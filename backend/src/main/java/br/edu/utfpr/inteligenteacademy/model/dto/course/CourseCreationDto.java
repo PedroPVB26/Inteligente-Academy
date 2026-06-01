@@ -3,10 +3,17 @@ package br.edu.utfpr.inteligenteacademy.model.dto.course;
 import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CourseCreationDto {
 
     @NotBlank(message = "name must not be blank")
@@ -25,62 +32,6 @@ public class CourseCreationDto {
     )
     private String description;
 
-    @NotNull(message = "duration must not be blank")
-    @Positive(message = "duration must be greater than zero")
-    private Integer duration;
-
     private List<@Positive Long> tagsIds;
-    
-    public CourseCreationDto() {
-        
-    }
-    
-//    public CursoCreationDto(Curso curso) {
-//        this.id = curso.getId();
-//        this.nome = curso.getNome();
-//        this.descricao = curso.getDescricao();
-//        this.duracao = curso.getDuracao();
-//    }
 
-//    public CursoCreationDto(Long id, String nome, String descricao, Integer duracao, List<Long> etiquetasIds) {
-//        this.id = id;
-//        this.nome = nome;
-//        this.descricao = descricao;
-//        this.duracao = duracao;
-//        this.etiquetasIds = etiquetasIds;
-//    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
-
-	public List<Long> getTagsIds() {
-		return tagsIds;
-	}
-
-	public void setTagsIds(List<Long> tagsIds) {
-		this.tagsIds = tagsIds;
-	}
-    
-    
 }

@@ -6,14 +6,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import br.edu.utfpr.inteligenteacademy.model.dto.PublicationStatus;
+import br.edu.utfpr.inteligenteacademy.model.PublicationStatus;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import br.edu.utfpr.inteligenteacademy.model.dto.course.CourseCreationDto;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +32,7 @@ public class Course {
     private String description;
 
     @Column(nullable = false)
-    private Integer duration; // in hours
+    private Long durationInMinutes = 0L; // in minutes. É calculado automaticamente a partir das suas aulas
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -46,14 +52,10 @@ public class Course {
     @OrderBy("position ASC")
     private final List<CourseModule> courseModules = new ArrayList<>();
 
-    public Course() {
-
-	}
 
     public Course(CourseCreationDto dto){
         this.name = dto.getName();
         this.description = dto.getDescription();
-        this.duration = dto.getDuration();
     }
 
     public void addModule(CourseModule courseModule){
@@ -72,71 +74,7 @@ public class Course {
     }
 
     public void removeTag(Tag tag) {
-        courseTags.removeIf(relacao -> relacao.getEtiqueta().equals(tag));
+        courseTags.removeIf(relacao -> relacao.getTag().equals(tag));
     }
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
-
-    public PublicationStatus getPublicationStatus() {
-        return publicationStatus;
-    }
-
-    public void setPublicationStatus(PublicationStatus publicationStatus) {
-        this.publicationStatus = publicationStatus;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
-    public Set<CourseTag> getCourseTags() {
-        return courseTags;
-    }
-
-    public List<CourseModule> getModules() {
-        return courseModules;
-    }
 }

@@ -1,8 +1,11 @@
 package br.edu.utfpr.inteligenteacademy.entity;
 
-import br.edu.utfpr.inteligenteacademy.model.dto.PublicationStatus;
+import br.edu.utfpr.inteligenteacademy.model.PublicationStatus;
 import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleCreationDto;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -11,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class CourseModule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +32,10 @@ public class CourseModule {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
+    private Long durationInMinutes = 0L; // in minutes. É calculado automaticamente a partir das suas aulas
+
+    @Column(nullable = false)
     private Integer position; // primeiro modulo do curso? segundo modulo? isso eh o que este campo responde
 
     @Enumerated(EnumType.STRING)
@@ -44,89 +53,22 @@ public class CourseModule {
     @OrderBy("position ASC")
     private final List<Lesson> lessons = new ArrayList<>();
 
-    public CourseModule() {
-    }
-
     public CourseModule(CourseModuleCreationDto courseModuleCreationDto, Course course) {
         this.title = courseModuleCreationDto.getTitle();
         this.description = courseModuleCreationDto.getDescription();
         this.position = courseModuleCreationDto.getPosition();
         this.course = course;
+        this.durationInMinutes = course.getDurationInMinutes();
     }
 
     public void addLesson(Lesson lesson) {
         lessons.add(lesson);
-        lesson.setModule(this);
+        lesson.setCourseModule(this);
     }
 
     public void removeLesson(Lesson lesson) {
         lessons.remove(lesson);
-        lesson.setModule(null);
+        lesson.setCourseModule(null);
     }
-
-    public PublicationStatus getPublicationStatus() {
-        return publicationStatus;
-    }
-
-    public void setPublicationStatus(PublicationStatus publicationStatus) {
-        this.publicationStatus = publicationStatus;
-    }
-
-    public List<Lesson> getLessons() {
-        return lessons;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getPosition() {
-        return position;
-    }
-
-    public void setPosition(Integer position) {
-        this.position = position;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
 
 }

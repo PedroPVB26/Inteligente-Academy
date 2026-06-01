@@ -7,7 +7,9 @@ import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
 import br.edu.utfpr.inteligenteacademy.model.dto.lesson.LessonCreationDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.lesson.LessonResponseDto;
+import br.edu.utfpr.inteligenteacademy.model.event.LessonModifiedEvent;
 import br.edu.utfpr.inteligenteacademy.repository.LessonRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,10 +19,15 @@ import java.util.List;
 public class LessonService {
     private final LessonRepository lessonRepository;
     private final CourseModuleService courseModuleService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    public LessonService(LessonRepository lessonRepository, CourseModuleService courseModuleService) {
+    public LessonService(
+            LessonRepository lessonRepository,
+            CourseModuleService courseModuleService,
+            ApplicationEventPublisher applicationEventPublisher) {
         this.lessonRepository = lessonRepository;
         this.courseModuleService = courseModuleService;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Transactional(readOnly = true)
@@ -30,6 +37,14 @@ public class LessonService {
                         "Lesson with id: " + lessonId + " not found."
                 ));
         return new LessonResponseDto(lesson);
+    }
+
+    @Transactional(readOnly = true)
+    public Lesson findEntityById(Long lessonId) {
+        return lessonRepository.findById(lessonId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Lesson with id: " + lessonId + " not found."
+                ));
     }
 
     @Transactional(readOnly = true)
@@ -64,6 +79,12 @@ public class LessonService {
 
         Lesson lesson = new Lesson(lessonCreationDto, courseModule);
         Lesson saved = lessonRepository.save(lesson);
+
+        publishEvent(new LessonModifiedEvent(courseModule.getId()));
         return new LessonResponseDto(saved);
+    }
+
+    private void publishEvent(LessonModifiedEvent lessonModifiedEvent) {
+        applicationEventPublisher.publishEvent(lessonModifiedEvent);
     }
 }
