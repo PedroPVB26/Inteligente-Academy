@@ -74,7 +74,6 @@ public class SecurityConfig {
                 )
             .authorizeHttpRequests(auth -> auth
             	// PARA TESTAR O FRONT
-<<<<<<< HEAD
             	.anyRequest().permitAll()	
             		
             	// // VALIDA QUEM PODE ACESSAR O QUE
@@ -103,36 +102,6 @@ public class SecurityConfig {
                 // 	    "/swagger-resources/**",
                 // 	    "/webjars/**"
                 // 	).permitAll()
-=======
-            	.anyRequest().permitAll()
-            		
-            	// VALIDA QUEM PODE ACESSAR O QUE
-                // Públicas
-//                .requestMatchers("/auth/**").permitAll()
-//
-//                // Cursos
-//                .requestMatchers(HttpMethod.GET, "/course/**").authenticated()
-//
-//                .requestMatchers("/courses/**").hasRole(admin)
-//
-//                // Usuários
-//                .requestMatchers("/users/**").hasRole(admin)
-//
-//                // Etiquetas
-//                .requestMatchers(HttpMethod.GET, "/tags/**").authenticated()
-//
-//                .requestMatchers("/tags/**").hasRole(admin)
-//
-//                // Swagger
-//                .requestMatchers(
-//                	    "/swagger-ui/**",
-//                	    "/swagger-ui.html",
-//                	    "/v3/api-docs/**",
-//                	    "/v3/api-docs",
-//                	    "/swagger-resources/**",
-//                	    "/webjars/**"
-//                	).permitAll()
->>>>>>> f197c638dbf541f530903886d1240c66c57c0aad
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

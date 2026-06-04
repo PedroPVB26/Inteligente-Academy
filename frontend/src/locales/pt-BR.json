@@ -23,6 +23,8 @@
     },
 
     "tags": {
-        "title": "Etiquetas"
+        "title": "Etiquetas",
+        "placeholder": "Nome da Etiqueta",
+        "button": "Adicionar Etiqueta"
     }
 }

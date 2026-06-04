@@ -23,6 +23,8 @@
     },
 
     "tags": {
-        "title": "Tags"
+        "title": "Tags",
+        "placeholder": "Tag Name",
+        "button": "Add Tag"
     }
 }

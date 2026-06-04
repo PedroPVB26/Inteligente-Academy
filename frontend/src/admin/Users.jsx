@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 
-import "../styles/usuarios.css";
+import "../styles/users.css";
 
-import UserCard from "../components/UserCard";
+import UserCard from "../components/UserCard/UserCard";
 
 import {
-    listarUsuarios,
-    criarUsuario
-} from "../services/usuarioService";
+    listUsers,
+    createUser
+} from "../services/userService";
 
-function Usuarios() {
+function Users() {
 
-    const [usuarios, setUsuarios] = useState([]);
+    const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
 
     const [cpf, setCpf] = useState("");
@@ -22,13 +22,13 @@ function Usuarios() {
     const [tipoUsuario, setTipoUsuario] = useState("ALUNO");
 
 
-    async function carregar() {
+    async function load() {
 
         try {
 
-            const dados = await listarUsuarios();
+            const dados = await listUsers();
 
-            setUsuarios(dados);
+            setUsers(dados);
 
             setError(null);
 
@@ -44,12 +44,12 @@ function Usuarios() {
 
     useEffect(() => {
 
-        carregar();
+        load();
 
     }, []);
 
 
-    async function cadastrarUsuario() {
+    async function registerUser() {
 
         if (
             !cpf ||
@@ -65,7 +65,7 @@ function Usuarios() {
 
         try {
 
-            await criarUsuario({
+            await createUser({
 
                 cpf,
                 nome,
@@ -76,7 +76,7 @@ function Usuarios() {
 
             });
 
-            carregar();
+            load();
 
             setCpf("");
             setNome("");
@@ -169,7 +169,7 @@ function Usuarios() {
                 </select>
 
                 <button
-                    onClick={cadastrarUsuario}
+                    onClick={registerUser}
                 >
                     Cadastrar
                 </button>
@@ -182,7 +182,7 @@ function Usuarios() {
 
             {
 
-                usuarios.map(usuario => (
+                users.map(usuario => (
 
                     <UserCard
                         key={usuario.id}
@@ -199,4 +199,4 @@ function Usuarios() {
 
 }
 
-export default Usuarios;
+export default Users;

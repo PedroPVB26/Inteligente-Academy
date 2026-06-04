@@ -13,17 +13,17 @@ export default defineConfig({
     // Garante que o Vite force o roteamento do React Router mesmo após um F5
     historyApiFallback: true, 
     proxy: {
-      '/usuario': {
+      '/users': {
         target: 'http://127.0.0.1:8081',
         changeOrigin: true,
         secure: false
       },
-      '/curso': {
+      '/courses': {
         target: 'http://127.0.0.1:8081',
         changeOrigin: true,
         secure: false
       },
-      '/etiqueta': {
+      '/tags': {
         target: 'http://127.0.0.1:8081',
         changeOrigin: true,
         secure: false

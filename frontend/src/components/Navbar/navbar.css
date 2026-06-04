@@ -1,8 +1,14 @@
+
+/* 📁 src/components/Navbar/Navbar.css */
 .navbar-container{
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background-color: #333;
-    padding: 10px 20px;
+    background-color: var(--bg-main);
+    padding: 10px 30px 0 30px;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 20px;
 }

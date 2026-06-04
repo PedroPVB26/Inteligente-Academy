@@ -17,7 +17,7 @@ function Cursos() {
 
     try {
 
-      const resposta = await fetch(`${API}/curso`);
+      const resposta = await fetch(`${API}/courses`);
 
       if (!resposta.ok) {
         throw new Error(`HTTP ${resposta.status}`);
@@ -52,12 +52,12 @@ function Cursos() {
     try {
 
       const novoCurso = {
-        nome,
-        descricao,
-        duracao: Number(duracao)
+        name: nome,
+        description: descricao,
+        duration: Number(duracao)
       };
 
-      const resposta = await fetch(`${API}/curso`, {
+      const resposta = await fetch(`${API}/courses`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -139,15 +139,15 @@ function Cursos() {
           >
 
             <p>
-              <strong>Nome:</strong> {curso.nome}
+              <strong>Nome:</strong> {curso.name}
             </p>
 
             <p>
-              <strong>Descrição:</strong> {curso.descricao}
+              <strong>Descrição:</strong> {curso.description}
             </p>
 
             <p>
-              <strong>Duração:</strong> {curso.duracao}
+              <strong>Duração:</strong> {curso.duration}
             </p>
 
             <p>
