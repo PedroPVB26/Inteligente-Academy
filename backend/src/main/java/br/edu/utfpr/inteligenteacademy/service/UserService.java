@@ -30,7 +30,7 @@ public class UserService {
 	@Transactional(readOnly = true)
 	public List<UserResponseDto> findAll(){
 		List<User> users = userRepository.findAll();
-		return users.stream().map(x -> new UserResponseDto(x)).toList();
+		return users.stream().map(UserResponseDto::new).toList();
 	}
 	
 	
@@ -40,7 +40,17 @@ public class UserService {
 				.orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
 		
 	}
-	
+
+	@Transactional(readOnly = true)
+	public User findEntityById(Long userId) {
+		return userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException(
+						"User with id "
+						+ userId
+						+ " not found"
+				));
+	}
+
 	@Transactional(readOnly = true)
 	public UserResponseDto findById(Long userId) {
 		User user =

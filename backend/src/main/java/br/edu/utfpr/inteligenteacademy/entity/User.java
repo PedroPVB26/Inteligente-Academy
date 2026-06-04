@@ -3,6 +3,7 @@ package br.edu.utfpr.inteligenteacademy.entity;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -66,6 +67,13 @@ public class User implements UserDetails{
 
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
+
+	@OneToMany(
+			mappedBy = "user",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private List<Enrollment> enrollments = new ArrayList<>();
 
 	public User(UserCreationDto dto) {
 	    this.cpf = dto.getCpf();

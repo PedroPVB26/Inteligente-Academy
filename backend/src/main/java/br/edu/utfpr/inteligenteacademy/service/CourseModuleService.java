@@ -6,6 +6,7 @@ import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
 import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleCreationDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleResponseDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleSummaryDto;
 import br.edu.utfpr.inteligenteacademy.repository.CourseModuleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,13 +48,13 @@ public class CourseModuleService {
 
 
     @Transactional(readOnly = true)
-    public List<CourseModuleResponseDto> findAllByCourseId(Long courseId) {
+    public List<CourseModuleSummaryDto> findAllByCourseId(Long courseId) {
         courseService.findEntityById(courseId);
 
         List<CourseModule> courseModules = courseModuleRepository.findByCourseId(courseId);
 
         return courseModules.stream()
-                .map(CourseModuleResponseDto::new)
+                .map(CourseModuleSummaryDto::new)
                 .toList();
     }
 

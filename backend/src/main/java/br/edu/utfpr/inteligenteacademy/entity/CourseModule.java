@@ -49,7 +49,7 @@ public class CourseModule {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
-    @OneToMany(mappedBy = "courseModule", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "courseModule", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("position ASC")
     private final List<Lesson> lessons = new ArrayList<>();
 

@@ -48,7 +48,7 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<CourseTag> courseTags = new HashSet<>();
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("position ASC")
     private final List<CourseModule> courseModules = new ArrayList<>();
 

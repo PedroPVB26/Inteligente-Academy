@@ -2,6 +2,7 @@ package br.edu.utfpr.inteligenteacademy.controller;
 
 import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleCreationDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleResponseDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleSummaryDto;
 import br.edu.utfpr.inteligenteacademy.service.CourseModuleService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class CourseModuleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CourseModuleResponseDto>> findAllByCourseId(
+    public ResponseEntity<List<CourseModuleSummaryDto>> findAllByCourseId(
             @PathVariable Long courseId
     ){
         return ResponseEntity.ok(courseModuleService.findAllByCourseId(courseId));
