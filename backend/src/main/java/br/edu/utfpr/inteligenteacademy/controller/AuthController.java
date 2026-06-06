@@ -1,6 +1,8 @@
 package br.edu.utfpr.inteligenteacademy.controller;
 
 import br.edu.utfpr.inteligenteacademy.model.dto.password.ChangePasswordRequestDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.password.ForgotPasswordRequestDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.password.ResetPasswordRequestDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.token.RefreshTokenRequestDto;
 import br.edu.utfpr.inteligenteacademy.security.RefreshTokenService;
 import org.springframework.http.ResponseEntity;
@@ -98,14 +100,14 @@ public class AuthController {
 
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<Void> forgotPassword(@RequestBody @Valid ChangePasswordRequestDto.ForgotPasswordRequestDto request) {
+    public ResponseEntity<Void> forgotPassword(@RequestBody @Valid ForgotPasswordRequestDto request) {
         passwordResetService.requestReset(request.getEmail());
         return ResponseEntity.ok().build(); // sempre 200, mesmo se e-mail não existir
     }
 
 
     @PostMapping("/reset-password")
-    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ChangePasswordRequestDto.ResetPasswordRequestDto request) {
+    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequestDto request) {
         passwordResetService.resetPassword(request);
         return ResponseEntity.noContent().build(); // 204
     }

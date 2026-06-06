@@ -7,8 +7,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class PasswordResetToken {
 
     @Id
@@ -21,52 +28,4 @@ public class PasswordResetToken {
     private String token;       // hash do token
     private Instant expiresAt;
     private boolean used;
-    
-    public PasswordResetToken() {}
-
-//	public PasswordResetToken(User user, String token, Instant expiresAt, boolean used) {
-//		this.user = user;
-//		this.token = token;
-//		this.expiresAt = expiresAt;
-//		this.used = used;
-//	}
-
-	public String getId() {
-		return id;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public Instant getExpiresAt() {
-		return expiresAt;
-	}
-
-	public void setExpiresAt(Instant expiresAt) {
-		this.expiresAt = expiresAt;
-	}
-
-	public boolean isUsed() {
-		return used;
-	}
-
-	public void setUsed(boolean used) {
-		this.used = used;
-	}
-    
-	
-    
 }

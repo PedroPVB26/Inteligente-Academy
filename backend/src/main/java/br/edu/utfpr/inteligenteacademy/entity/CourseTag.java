@@ -6,8 +6,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class CourseTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,32 +27,9 @@ public class CourseTag {
     @JoinColumn(name = "tag_id", nullable = false)
     private Tag tag;
 
-    public CourseTag() {}
     
 	public CourseTag(Course course, Tag tag) {
 		this.course = course;
 		this.tag = tag;
 	}
-
-	public Course getCurso() {
-		return course;
-	}
-
-	public void setCurso(Course course) {
-		this.course = course;
-	}
-
-	public Tag getEtiqueta() {
-		return tag;
-	}
-
-	public void setEtiqueta(Tag tag) {
-		this.tag = tag;
-	}
-
-	public Long getId() {
-		return id;
-	}
-    
-    
 }

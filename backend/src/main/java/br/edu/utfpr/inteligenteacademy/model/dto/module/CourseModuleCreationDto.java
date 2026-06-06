@@ -5,8 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Schema(description = "DTO used to create a module inside a course")
+@Getter
+@Setter
+@AllArgsConstructor
 public class CourseModuleCreationDto {
 
     @Schema(
@@ -34,36 +40,4 @@ public class CourseModuleCreationDto {
     @Positive(message = "position must be a positive number")
     private Integer position;
 
-    public CourseModuleCreationDto() {
-    }
-
-    public CourseModuleCreationDto(String title, String description, Integer position) {
-        this.title = title;
-        this.description = description;
-        this.position = position;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getPosition() {
-        return position;
-    }
-
-    public void setPosition(Integer position) {
-        this.position = position;
-    }
 }

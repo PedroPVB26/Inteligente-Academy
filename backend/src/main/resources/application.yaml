@@ -33,5 +33,14 @@ jwt:
   access-token-expiration: 900000
   refresh-token-expiration: 604800000
 
+
 server:
   port: 8081
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.springframework.transaction: TRACE
+    org.springframework.orm.jpa: DEBUG
+    org.springframework.web: DEBUG

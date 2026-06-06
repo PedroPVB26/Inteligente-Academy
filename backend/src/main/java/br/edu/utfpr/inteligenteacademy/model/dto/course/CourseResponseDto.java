@@ -4,12 +4,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.edu.utfpr.inteligenteacademy.model.dto.PublicationStatus;
+import br.edu.utfpr.inteligenteacademy.model.PublicationStatus;
 import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleResponseDto;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import br.edu.utfpr.inteligenteacademy.entity.Course;
 import br.edu.utfpr.inteligenteacademy.model.dto.tag.TagResponseDto;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /*
  * DTO responsável por representar os dados retornados pela API
@@ -36,123 +39,40 @@ import br.edu.utfpr.inteligenteacademy.model.dto.tag.TagResponseDto;
     "createdAt",
     "modifiedAt"
 })
+@Getter
+@Setter
+@NoArgsConstructor
 public class CourseResponseDto {
-
     private Long id;
-
     private String name;
-
     private String description;
-
-    private Integer duration;
-
+    private Long duration;
     private PublicationStatus  publicationStatus;
-
     private List<TagResponseDto> tags;
-
     private List<CourseModuleResponseDto> courseModules;
-
     private LocalDateTime createdAt;
-
     private LocalDateTime modifiedAt;
-
-
-
-    public CourseResponseDto() {
-
-    }
 
     public CourseResponseDto(Course course) {
         this.id = course.getId();
         this.name = course.getName();
         this.description = course.getDescription();
-        this.duration = course.getDuration();
+        this.duration = course.getDurationInMinutes();
         this.createdAt = course.getCreatedAt();
         this.modifiedAt = course.getModifiedAt();
         this.tags = course.getCourseTags()
                 .stream()
                 .map(cursoEtiqueta ->
                         new TagResponseDto(
-                                cursoEtiqueta.getEtiqueta()
+                                cursoEtiqueta.getTag()
                         )
                 )
                 .collect(Collectors.toList());
         this.publicationStatus = course.getPublicationStatus();
-        this.courseModules = course.getModules()
+        this.courseModules = course.getCourseModules()
                 .stream()
                 .map(CourseModuleResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
-
-	public List<TagResponseDto> getTags() {
-		return tags;
-	}
-
-	public void setTags(List<TagResponseDto> tags) {
-		this.tags = tags;
-	}
-
-    public PublicationStatus getPublicationStatus() {
-        return publicationStatus;
-    }
-
-    public void setPublicationStatus(PublicationStatus publicationStatus) {
-        this.publicationStatus = publicationStatus;
-    }
-
-    public List<CourseModuleResponseDto> getCourseModules() {
-        return courseModules;
-    }
-
-    public void setCourseModules(List<CourseModuleResponseDto> courseModules) {
-        this.courseModules = courseModules;
-    }
 }

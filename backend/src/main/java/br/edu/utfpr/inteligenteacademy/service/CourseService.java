@@ -2,6 +2,7 @@ package br.edu.utfpr.inteligenteacademy.service;
 
 import java.util.List;
 
+import br.edu.utfpr.inteligenteacademy.model.dto.course.CourseSummaryDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,25 +24,30 @@ public class CourseService {
 		this.courseRepository = courseRepository;
 		this.tagService = tagService;
 	}
-	
+
 	@Transactional(readOnly = true)
-	public List<CourseResponseDto> findAll(){
+	public List<CourseSummaryDto> findAll() {
 		List<Course> courses = courseRepository.findAll();
-		return courses.stream().map(CourseResponseDto::new).toList();
+		return courses.stream()
+				.map(CourseSummaryDto::new)
+				.toList();
 	}
-	
-	
+
+	@Transactional(readOnly = true)
+	Course findEntityById(Long courseId) {
+		return courseRepository.findById(courseId)
+				.orElseThrow(() ->
+						new ResourceNotFoundException(
+								"Course with id: "
+										+ courseId
+										+ " not found."
+						)
+				);
+	}
+
 	@Transactional(readOnly = true)
 	public CourseResponseDto findById(Long courseId) {
-		Course course =
-		        courseRepository.findById(courseId)
-		        .orElseThrow(() ->
-			        new ResourceNotFoundException(
-			                "Course with id "
-			                + courseId
-			                + " not found"
-			        )
-		        );
+		Course course = findEntityById(courseId);
 		return new CourseResponseDto(course);
 	}
 	
@@ -60,7 +66,6 @@ public class CourseService {
 				course.addTag(tag);
 			}
 		}
-		
 		
 		Course savedCourse = courseRepository.save(course);
 		

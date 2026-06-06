@@ -3,8 +3,14 @@ package br.edu.utfpr.inteligenteacademy.model.dto.login;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Schema(description = "Authentication credentials")
+@Getter
+@Setter
+@AllArgsConstructor
 public class LoginRequestDto {
 
     @Schema(
@@ -21,26 +27,4 @@ public class LoginRequestDto {
     )
     @NotBlank(message = "password must not be blank")
     private String password;
-
-    public LoginRequestDto(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
 }

@@ -48,7 +48,7 @@ public class RefreshTokenService {
 
         isTokenExpired(oldToken);
 
-        User user = oldToken.getUsuario();
+        User user = oldToken.getUser();
 
         // Revoga o refreshToken antigo
         oldToken.setRevoked(true);
@@ -63,7 +63,7 @@ public class RefreshTokenService {
     public RefreshToken generateRefreshToken(User user) {
         RefreshToken refreshToken = new RefreshToken();
 
-        refreshToken.setUsuario(user);
+        refreshToken.setUser(user);
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenExpiration));
         refreshToken.setRefreshToken(UUID.randomUUID().toString());
 

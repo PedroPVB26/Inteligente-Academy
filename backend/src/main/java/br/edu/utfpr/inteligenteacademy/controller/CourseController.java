@@ -2,7 +2,9 @@ package br.edu.utfpr.inteligenteacademy.controller;
 
 import java.util.List;
 
+import br.edu.utfpr.inteligenteacademy.model.dto.course.CourseSummaryDto;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,16 +21,13 @@ import br.edu.utfpr.inteligenteacademy.service.CourseService;
 
 @RestController
 @RequestMapping("/courses")
+@AllArgsConstructor
 public class CourseController {
-    private CourseService courseService;
-
-    public CourseController(CourseService courseService) {
-        this.courseService = courseService;
-    }
+    private final CourseService courseService;
 
     // ----- GET -----
     @GetMapping
-    public ResponseEntity<List<CourseResponseDto>> findAll() {
+    public ResponseEntity<List<CourseSummaryDto>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll());
     }
 
@@ -46,6 +45,7 @@ public class CourseController {
     }
 
     // ----- PUT -----
+
 
     // ----- DELETE -----
 
