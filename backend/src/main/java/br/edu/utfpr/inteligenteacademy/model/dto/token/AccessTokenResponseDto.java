@@ -1,8 +1,16 @@
 package br.edu.utfpr.inteligenteacademy.model.dto.token;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Schema(description = "JWT access token response")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccessTokenResponseDto {
 
     @Schema(
@@ -10,19 +18,4 @@ public class AccessTokenResponseDto {
         example = "eyJhbGciOiJIUzI1NiJ9..."
     )
     private String accessToken;
-
-    public AccessTokenResponseDto() {
-    }
-
-    public AccessTokenResponseDto(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
 }

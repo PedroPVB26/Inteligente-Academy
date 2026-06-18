@@ -11,7 +11,6 @@ import jakarta.mail.internet.MimeMessage;
 @Service
 public class EmailService {
     private final JavaMailSender mailSender;
-    
     private final String fromEmail;
     
     public EmailService(JavaMailSender mailSender, @Value("${spring.mail.username}") String fromEmail) {

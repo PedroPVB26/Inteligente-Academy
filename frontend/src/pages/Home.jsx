@@ -3,8 +3,6 @@ import heroRobot from "../assets/hero_intelirob.webp";
 import carouselBook from "../assets/carrossel1_livro.webp";
 import academyAd from "../assets/ad_cursos.webp";
 import certificateAd from "../assets/ad_certificado.webp";
-import "./Home.css";
-
 function Home() {
   return (
     <main className="home-page">

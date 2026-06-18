@@ -5,8 +5,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.validator.constraints.URL;
 
 @Schema(description = "DTO used to create a lesson inside a module")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LessonCreationDto {
 
     @Schema(
@@ -25,27 +34,25 @@ public class LessonCreationDto {
     @Positive(message = "position must be a positive number")
     private Integer position;
 
-    public LessonCreationDto() {
-    }
+    @Schema(
+            description = "Lesson duration in minutes",
+            example = "15",
+            minimum = "1"
+    )
+    @NotNull(message = "duration must not be null")
+    @Positive(message = "duration must be a positive number")
+    private Long duration;
 
-    public LessonCreationDto(String title, Integer position) {
-        this.title = title;
-        this.position = position;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Integer getPosition() {
-        return position;
-    }
-
-    public void setPosition(Integer position) {
-        this.position = position;
-    }
+    @Schema(
+            description = "Lesson video URL",
+            example = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    )
+    @NotBlank(message = "videoUrl must not be blank")
+    @Size(
+            min = 10,
+            max = 2048,
+            message = "videoUrl must contain between 10 and 2048 characters"
+    )
+    @URL(message = "videoUrl must be a valid URL")
+    private String videoUrl;
 }

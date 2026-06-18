@@ -9,8 +9,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmailVerificationToken {
 
     @Id
@@ -28,51 +36,4 @@ public class EmailVerificationToken {
     private Instant expiresAt;
 
     private boolean used = false;
-
-    public EmailVerificationToken() {}
-    
-	public EmailVerificationToken(String token, User user, Instant expiresAt, boolean used) {
-		this.token = token;
-		this.user = user;
-		this.expiresAt = expiresAt;
-		this.used = used;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Instant getExpiresAt() {
-		return expiresAt;
-	}
-
-	public void setExpiresAt(Instant expiresAt) {
-		this.expiresAt = expiresAt;
-	}
-
-	public boolean isUsed() {
-		return used;
-	}
-
-	public void setUsed(boolean used) {
-		this.used = used;
-	}
-    
-    
 }

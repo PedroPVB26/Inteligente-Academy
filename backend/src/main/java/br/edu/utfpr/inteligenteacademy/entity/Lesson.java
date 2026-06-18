@@ -1,14 +1,21 @@
 package br.edu.utfpr.inteligenteacademy.entity;
 
-import br.edu.utfpr.inteligenteacademy.model.dto.PublicationStatus;
+import br.edu.utfpr.inteligenteacademy.model.PublicationStatus;
 import br.edu.utfpr.inteligenteacademy.model.dto.lesson.LessonCreationDto;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +28,18 @@ public class Lesson {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Integer position; // primeira, segunda aula do modulo?
+
+    @Column(nullable = false)
+    private Long durationInMinutes;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PublicationStatus publicationStatus = PublicationStatus.DRAFT;
+
+    @Column(nullable = false)
+    private String videoUrl;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -35,64 +48,13 @@ public class Lesson {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
-    public Lesson() {
-    }
-
     public Lesson(LessonCreationDto  lessonCreationDto, CourseModule courseModule) {
         this.title = lessonCreationDto.getTitle();
         this.position = lessonCreationDto.getPosition();
         this.courseModule = courseModule;
+        this.durationInMinutes = lessonCreationDto.getDuration();
+        this.videoUrl = lessonCreationDto.getVideoUrl();
     }
 
-    public CourseModule getModule() {
-        return courseModule;
-    }
 
-    public void setModule(CourseModule courseModule) {
-        this.courseModule = courseModule;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
-    public Integer getPosition() {
-        return position;
-    }
-
-    public void setPosition(Integer position) {
-        this.position = position;
-    }
-
-    public PublicationStatus getPublicationStatus() {
-        return publicationStatus;
-    }
-
-    public void setPublicationStatus(PublicationStatus publicationStatus) {
-        this.publicationStatus = publicationStatus;
-    }
 }

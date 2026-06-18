@@ -20,26 +20,16 @@ import br.edu.utfpr.inteligenteacademy.exception.CustomAccessDeniedHandler;
 import br.edu.utfpr.inteligenteacademy.exception.CustomAuthenticationEntryPoint;
 import br.edu.utfpr.inteligenteacademy.model.dto.user.UserRole;
 import br.edu.utfpr.inteligenteacademy.security.JwtAuthenticationFilter;
+import lombok.AllArgsConstructor;
 
 @Configuration
+@AllArgsConstructor
 public class SecurityConfig {
-
     private final AsyncConfig asyncConfig;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-    SecurityConfig(
-            AsyncConfig asyncConfig,
-            JwtAuthenticationFilter jwtAuthenticationFilter,
-            CustomAccessDeniedHandler customAccessDeniedHandler,
-            CustomAuthenticationEntryPoint customAuthenticationEntryPoint
-    ) {
-        this.asyncConfig = asyncConfig;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.customAccessDeniedHandler = customAccessDeniedHandler;
-        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
-    }
 
 	/*
 	 * Configuração temporária utilizada durante a fase inicial
@@ -75,6 +65,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
             	// PARA TESTAR O FRONT
             	.anyRequest().permitAll()	
+           
             		
             	// // VALIDA QUEM PODE ACESSAR O QUE
                 // // Públicas
@@ -102,6 +93,42 @@ public class SecurityConfig {
                 // 	    "/swagger-resources/**",
                 // 	    "/webjars/**"
                 // 	).permitAll()
+
+//            	.anyRequest().permitAll()
+            		
+            	// VALIDA QUEM PODE ACESSAR O QUE
+                // Públicas
+                .requestMatchers("/auth/**").permitAll()
+
+                // Courses
+                .requestMatchers(HttpMethod.GET, "/course/**").authenticated()
+                .requestMatchers("/courses/**").hasRole(admin)
+
+                // Users
+                .requestMatchers("/users/**").hasRole(admin)
+
+                // Tags
+                .requestMatchers(HttpMethod.GET, "/tags/**").authenticated()
+                .requestMatchers("/tags/**").hasRole(admin)
+
+                // Enrollments
+                .requestMatchers(HttpMethod.POST, "/enrollment-requests/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/enrollment-requests/pending").hasAnyRole(educador, admin)
+                .requestMatchers(HttpMethod.GET, "/enrollment-requests/**").hasAnyRole(educador, admin)
+                .requestMatchers(HttpMethod.PATCH, "/enrollment-requests/**").hasAnyRole(educador, admin)
+
+                .requestMatchers(HttpMethod.PATCH, "/enrollment/**").hasAnyRole(educador, admin)
+
+
+                // Swagger
+                .requestMatchers(
+                	    "/swagger-ui/**",
+                	    "/swagger-ui.html",
+                	    "/v3/api-docs/**",
+                	    "/v3/api-docs",
+                	    "/swagger-resources/**",
+                	    "/webjars/**"
+                	).permitAll()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -118,7 +145,7 @@ public class SecurityConfig {
     	CorsConfiguration corsConfiguration = new CorsConfiguration();
     	
     	corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
-    	corsConfiguration.setAllowedMethods(List.of("GET", "POST", "DELETE", "PUT", "OPTIONS"));
+    	corsConfiguration.setAllowedMethods(List.of("GET", "PATCH", "POST", "DELETE", "PUT", "OPTIONS"));
     	corsConfiguration.setAllowedHeaders(List.of("*"));
     
     	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

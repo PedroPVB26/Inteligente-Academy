@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
+import br.edu.utfpr.inteligenteacademy.model.dto.password.ResetPasswordRequestDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +59,7 @@ public class PasswordService {
 	}
 	
 	// Front enviou a requisição do usuário contendo a nova senha
-	public void resetPassword(ChangePasswordRequestDto.ResetPasswordRequestDto resetPasswordRequestDto) {
+	public void resetPassword(ResetPasswordRequestDto resetPasswordRequestDto) {
 		User user = userRepository.findByEmail(resetPasswordRequestDto.getEmail())
 		        .orElseThrow(() ->
 		        new ResourceNotFoundException(
