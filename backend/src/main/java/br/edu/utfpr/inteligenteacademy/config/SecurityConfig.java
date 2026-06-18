@@ -21,7 +21,6 @@ import br.edu.utfpr.inteligenteacademy.exception.CustomAccessDeniedHandler;
 import br.edu.utfpr.inteligenteacademy.exception.CustomAuthenticationEntryPoint;
 import br.edu.utfpr.inteligenteacademy.model.dto.user.UserRole;
 import br.edu.utfpr.inteligenteacademy.security.JwtAuthenticationFilter;
-import lombok.AllArgsConstructor;
 
 @Configuration
 @AllArgsConstructor
@@ -67,7 +66,6 @@ public class SecurityConfig {
             	// PARA TESTAR O FRONT
 <<<<<<< HEAD
             	.anyRequest().permitAll()	
-           
             		
             	// // VALIDA QUEM PODE ACESSAR O QUE
                 // // Públicas
@@ -95,11 +93,7 @@ public class SecurityConfig {
                 // 	    "/swagger-resources/**",
                 // 	    "/webjars/**"
                 // 	).permitAll()
-<<<<<<< HEAD
 =======
-=======
-
->>>>>>> add85f21881e4706e58b674908a2ad62b222936f
 //            	.anyRequest().permitAll()
             		
             	// VALIDA QUEM PODE ACESSAR O QUE
@@ -135,10 +129,7 @@ public class SecurityConfig {
                 	    "/swagger-resources/**",
                 	    "/webjars/**"
                 	).permitAll()
-<<<<<<< HEAD
 >>>>>>> 1c78b6648e675c28103bf0bd1686183906df2899
-=======
->>>>>>> add85f21881e4706e58b674908a2ad62b222936f
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
