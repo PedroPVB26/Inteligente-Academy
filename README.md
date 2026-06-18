@@ -13,5 +13,8 @@ Abra outro terminal e digite:
 ## Frontend
 <details><summary>Execução do Frontend</summary>
 
-Para rodar o frontend, digite:
+Para baixar todas as dependências, digite no terminal:
+`npm install`
+
+Em seguida, para rodar o Frontend, digite:
 `npm run dev`
