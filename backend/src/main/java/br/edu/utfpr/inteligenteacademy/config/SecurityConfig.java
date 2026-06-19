@@ -2,6 +2,7 @@ package br.edu.utfpr.inteligenteacademy.config;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,7 +21,6 @@ import br.edu.utfpr.inteligenteacademy.exception.CustomAccessDeniedHandler;
 import br.edu.utfpr.inteligenteacademy.exception.CustomAuthenticationEntryPoint;
 import br.edu.utfpr.inteligenteacademy.model.dto.user.UserRole;
 import br.edu.utfpr.inteligenteacademy.security.JwtAuthenticationFilter;
-import lombok.AllArgsConstructor;
 
 @Configuration
 @AllArgsConstructor
@@ -64,8 +64,8 @@ public class SecurityConfig {
                 )
             .authorizeHttpRequests(auth -> auth
             	// PARA TESTAR O FRONT
+<<<<<<< HEAD
             	.anyRequest().permitAll()	
-           
             		
             	// // VALIDA QUEM PODE ACESSAR O QUE
                 // // Públicas
@@ -93,7 +93,7 @@ public class SecurityConfig {
                 // 	    "/swagger-resources/**",
                 // 	    "/webjars/**"
                 // 	).permitAll()
-
+=======
 //            	.anyRequest().permitAll()
             		
             	// VALIDA QUEM PODE ACESSAR O QUE
@@ -129,6 +129,7 @@ public class SecurityConfig {
                 	    "/swagger-resources/**",
                 	    "/webjars/**"
                 	).permitAll()
+>>>>>>> 1c78b6648e675c28103bf0bd1686183906df2899
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
