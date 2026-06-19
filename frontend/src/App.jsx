@@ -6,6 +6,7 @@ import Usuarios from "./admin/Users";
 import Cursos from "./pages/RegisterCourses";
 import Etiquetas from "./pages/Tags";
 import Navbar from "./components/Navbar/Navbar";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   const { t } = useTranslation();
@@ -31,7 +32,7 @@ function App() {
         </Routes>
 
       </div>
-
+      <Footer />
     </BrowserRouter>
   );
 }
