@@ -63,27 +63,33 @@ public class SecurityConfig {
                     .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
             .authorizeHttpRequests(auth -> auth
-            	// PARA TESTAR O FRONT
-<<<<<<< HEAD
-            	.anyRequest().permitAll()	
+                // PARA TESTAR O FRONT
+                .anyRequest().permitAll()
             		
             	// // VALIDA QUEM PODE ACESSAR O QUE
                 // // Públicas
                 // .requestMatchers("/auth/**").permitAll()
 
-                // // Cursos
-                // .requestMatchers(HttpMethod.GET, "/curso/**").authenticated()
+                // // Courses
+                // .requestMatchers(HttpMethod.GET, "/course/**").authenticated()
+                // .requestMatchers("/courses/**").hasRole(admin)
 
-                // .requestMatchers("/curso/**").hasRole(admin)
+                // // Users
+                // .requestMatchers("/users/**").hasRole(admin)
 
-                // // Usuários
-                // .requestMatchers("/usuario/**").hasRole(admin)
+                // // Tags
+                // .requestMatchers(HttpMethod.GET, "/tags/**").authenticated()
+                // .requestMatchers("/tags/**").hasRole(admin)
 
-                // // Etiquetas
-                // .requestMatchers(HttpMethod.GET, "/etiqueta/**").authenticated()
+                // // Enrollments
+                // .requestMatchers(HttpMethod.POST, "/enrollment-requests/**").authenticated()
+                // .requestMatchers(HttpMethod.GET, "/enrollment-requests/pending").hasAnyRole(educador, admin)
+                // .requestMatchers(HttpMethod.GET, "/enrollment-requests/**").hasAnyRole(educador, admin)
+                // .requestMatchers(HttpMethod.PATCH, "/enrollment-requests/**").hasAnyRole(educador, admin)
 
-                // .requestMatchers("/etiqueta/**").hasRole(admin)
-                
+                // .requestMatchers(HttpMethod.PATCH, "/enrollment/**").hasAnyRole(educador, admin)
+
+
                 // // Swagger
                 // .requestMatchers(
                 // 	    "/swagger-ui/**",
@@ -93,43 +99,6 @@ public class SecurityConfig {
                 // 	    "/swagger-resources/**",
                 // 	    "/webjars/**"
                 // 	).permitAll()
-=======
-//            	.anyRequest().permitAll()
-            		
-            	// VALIDA QUEM PODE ACESSAR O QUE
-                // Públicas
-                .requestMatchers("/auth/**").permitAll()
-
-                // Courses
-                .requestMatchers(HttpMethod.GET, "/course/**").authenticated()
-                .requestMatchers("/courses/**").hasRole(admin)
-
-                // Users
-                .requestMatchers("/users/**").hasRole(admin)
-
-                // Tags
-                .requestMatchers(HttpMethod.GET, "/tags/**").authenticated()
-                .requestMatchers("/tags/**").hasRole(admin)
-
-                // Enrollments
-                .requestMatchers(HttpMethod.POST, "/enrollment-requests/**").authenticated()
-                .requestMatchers(HttpMethod.GET, "/enrollment-requests/pending").hasAnyRole(educador, admin)
-                .requestMatchers(HttpMethod.GET, "/enrollment-requests/**").hasAnyRole(educador, admin)
-                .requestMatchers(HttpMethod.PATCH, "/enrollment-requests/**").hasAnyRole(educador, admin)
-
-                .requestMatchers(HttpMethod.PATCH, "/enrollment/**").hasAnyRole(educador, admin)
-
-
-                // Swagger
-                .requestMatchers(
-                	    "/swagger-ui/**",
-                	    "/swagger-ui.html",
-                	    "/v3/api-docs/**",
-                	    "/v3/api-docs",
-                	    "/swagger-resources/**",
-                	    "/webjars/**"
-                	).permitAll()
->>>>>>> 1c78b6648e675c28103bf0bd1686183906df2899
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import Home from './pages/Home'; 
 import Login from './pages/Login';
 import Usuarios from "./admin/Users";
-import Cursos from "./pages/RegisterCourses";
+import Cursos from "./admin/RegisterCourses";
 import Etiquetas from "./pages/Tags";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
