@@ -1,6 +1,5 @@
 import CourseCard from "../components/CourseCard";
 
-
 export default function Courses() {
     return (
         <main class-name="courses-page">
