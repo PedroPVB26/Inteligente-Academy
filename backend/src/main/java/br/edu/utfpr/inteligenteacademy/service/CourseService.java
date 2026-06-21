@@ -2,7 +2,10 @@ package br.edu.utfpr.inteligenteacademy.service;
 
 import java.util.List;
 
+import br.edu.utfpr.inteligenteacademy.model.PublicationStatus;
+import br.edu.utfpr.inteligenteacademy.model.dto.course.CourseEditionDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.course.CourseSummaryDto;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,19 +18,22 @@ import br.edu.utfpr.inteligenteacademy.model.dto.course.CourseResponseDto;
 import br.edu.utfpr.inteligenteacademy.repository.CourseRepository;
 
 
+@AllArgsConstructor
 @Service
 public class CourseService {
 	private final CourseRepository courseRepository;
 	private final TagService tagService;
-	
-	public CourseService(CourseRepository courseRepository, TagService tagService) {
-		this.courseRepository = courseRepository;
-		this.tagService = tagService;
-	}
 
 	@Transactional(readOnly = true)
-	public List<CourseSummaryDto> findAll() {
-		List<Course> courses = courseRepository.findAll();
+	public List<CourseSummaryDto> findAll(PublicationStatus publicationStatus) {
+		List<Course> courses;
+
+		if (publicationStatus == null) {
+			courses = courseRepository.findAll();
+		} else {
+			courses = courseRepository.findByPublicationStatus(publicationStatus);
+		}
+
 		return courses.stream()
 				.map(CourseSummaryDto::new)
 				.toList();
@@ -70,5 +76,39 @@ public class CourseService {
 		Course savedCourse = courseRepository.save(course);
 		
 		return new CourseResponseDto(savedCourse);
+	}
+
+	@Transactional
+	public CourseSummaryDto update(Long courseId, CourseEditionDto courseEditionDto) {
+		Course course = findEntityById(courseId);
+
+		if (courseEditionDto.name() != null
+				&& courseRepository.existsByNameAndIdNot(courseEditionDto.name(), courseId)) {
+			throw new DatabaseException("Name already exists in the database");
+		}
+
+		if (courseEditionDto.name() != null) {
+			course.setName(courseEditionDto.name());
+		}
+
+		if (courseEditionDto.description() != null) {
+			course.setDescription(courseEditionDto.description());
+		}
+
+		if (courseEditionDto.publicationStatus() != null) {
+			course.setPublicationStatus(courseEditionDto.publicationStatus());
+		}
+
+		if (courseEditionDto.tagsIds() != null) {
+			course.getCourseTags().clear();
+
+			for (Long tagId : courseEditionDto.tagsIds()) {
+				Tag tag = tagService.findEntityById(tagId);
+				course.addTag(tag);
+			}
+		}
+
+		Course updatedCourse = courseRepository.save(course);
+		return new CourseSummaryDto(updatedCourse);
 	}
 }

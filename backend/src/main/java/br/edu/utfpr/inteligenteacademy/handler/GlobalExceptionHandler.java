@@ -1,9 +1,10 @@
 package br.edu.utfpr.inteligenteacademy.handler;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Arrays;
 
 
+import br.edu.utfpr.inteligenteacademy.model.PublicationStatus;
 import br.edu.utfpr.inteligenteacademy.model.dto.user.UserRole;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ import br.edu.utfpr.inteligenteacademy.exception.token.TokenAlreadyUsedException
 import br.edu.utfpr.inteligenteacademy.exception.token.TokenExpiredException;
 import br.edu.utfpr.inteligenteacademy.exception.token.TokenInvalidException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -36,8 +38,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<StandardError>
     resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
 
-        StandardError error = new StandardError(
-                LocalDateTime.now(),
+		StandardError error = new StandardError(
+				Instant.now(),
                 HttpStatus.NOT_FOUND.value(),
                 "Resource not found",
                 e.getMessage(),
@@ -48,12 +50,56 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(error);
     }
-	
+
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<ValidationError> handleMethodArgumentTypeMismatch(
+			MethodArgumentTypeMismatchException e,
+			HttpServletRequest request
+	) {
+		ValidationError error = new ValidationError(
+				Instant.now(),
+				HttpStatus.BAD_REQUEST.value(),
+				"Validation exception",
+				"Invalid request parameter",
+				request.getRequestURI()
+		);
+
+		if ("publicationStatus".equals(e.getName())) {
+			error.addMessage("publicationStatus: must be one of " + Arrays.toString(PublicationStatus.values()));
+		} else if ("userRole".equals(e.getName())) {
+			error.addMessage("userRole: must be one of " + Arrays.toString(UserRole.values()));
+		} else {
+			error.addMessage(e.getName() + ": invalid value");
+		}
+
+		return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(error);
+	}
+
+	@ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+	public ResponseEntity<StandardError> accessDenied(
+			org.springframework.security.access.AccessDeniedException e,
+			HttpServletRequest request) {
+
+		StandardError error = new StandardError(
+				Instant.now(),
+				HttpStatus.FORBIDDEN.value(),
+				"Access denied",
+				e.getMessage(),
+				request.getRequestURI()
+		);
+
+		return ResponseEntity
+				.status(HttpStatus.FORBIDDEN)
+				.body(error);
+	}
+
 	@ExceptionHandler(DatabaseException.class)
 	public ResponseEntity<StandardError> databaseException(DatabaseException e, HttpServletRequest request) {
 		
 		StandardError error = new StandardError(
-                LocalDateTime.now(),
+				Instant.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Database exception",
                 e.getMessage(),
@@ -69,7 +115,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ValidationError> validationException(MethodArgumentNotValidException e, HttpServletRequest request){
 		
 		ValidationError error = new ValidationError(
-                LocalDateTime.now(),
+				Instant.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Validation exception",
                 "Validation error",
@@ -96,8 +142,8 @@ public class GlobalExceptionHandler {
 	        HttpServletRequest request
 	) {
 
-	    ValidationError error = new ValidationError(
-                LocalDateTime.now(),
+		ValidationError error = new ValidationError(
+				Instant.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Validation exception",
                 "Invalid request body",
@@ -112,7 +158,10 @@ public class GlobalExceptionHandler {
 							Arrays.toString(UserRole.values())
 			);
 
-	    } else if (cause instanceof InvalidFormatException invalidFormat) {
+	    } else if (cause != null && cause.getMessage().contains("PublicationStatus")) {
+			error.addMessage("publicationStatus: must be one of " + Arrays.toString(PublicationStatus.values()));
+
+		} else if (cause instanceof InvalidFormatException invalidFormat) {
 
 	        String fieldName =
 	            invalidFormat.getPath().getFirst().getFieldName();
@@ -130,8 +179,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(TokenInvalidException.class)
 	public ResponseEntity<StandardError> tokenInvalid(TokenInvalidException e, HttpServletRequest request) {
 
-	    StandardError error = new StandardError(
-	            LocalDateTime.now(),
+					StandardError error = new StandardError(
+							Instant.now(),
 	            HttpStatus.BAD_REQUEST.value(),
 	            "Invalid token",
 	            e.getMessage(),
@@ -144,8 +193,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(TokenExpiredException.class)
 	public ResponseEntity<StandardError> tokenExpired(TokenExpiredException e, HttpServletRequest request) {
 
-	    StandardError error = new StandardError(
-	            LocalDateTime.now(),
+					StandardError error = new StandardError(
+							Instant.now(),
 	            HttpStatus.GONE.value(), // 410 (bem correto aqui)
 	            "Expired token",
 	            e.getMessage(),
@@ -158,8 +207,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(TokenAlreadyUsedException.class)
 	public ResponseEntity<StandardError> tokenUsed(TokenAlreadyUsedException e, HttpServletRequest request) {
 
-	    StandardError error = new StandardError(
-	            LocalDateTime.now(),
+					StandardError error = new StandardError(
+							Instant.now(),
 	            HttpStatus.CONFLICT.value(),
 	            "Token already used",
 	            e.getMessage(),
@@ -175,8 +224,8 @@ public class GlobalExceptionHandler {
 	        HttpServletRequest request
 	) {
 
-	    StandardError error = new StandardError(
-	            LocalDateTime.now(),
+					StandardError error = new StandardError(
+							Instant.now(),
 	            HttpStatus.UNAUTHORIZED.value(),
 	            "Invalid credentials",
 	            e.getMessage(),
@@ -194,8 +243,8 @@ public class GlobalExceptionHandler {
 	        HttpServletRequest request
 	) {
 
-	    StandardError error = new StandardError(
-	            LocalDateTime.now(),
+					StandardError error = new StandardError(
+							Instant.now(),
 	            HttpStatus.FORBIDDEN.value(),
 	            "Email not verified",
 	            e.getMessage(),
@@ -213,8 +262,8 @@ public class GlobalExceptionHandler {
 	        HttpServletRequest request
 	) {
 
-	    StandardError error = new StandardError(
-	            LocalDateTime.now(),
+					StandardError error = new StandardError(
+							Instant.now(),
 	            HttpStatus.FORBIDDEN.value(),
 	            "User deleted",
 	            e.getMessage(),
@@ -232,8 +281,8 @@ public class GlobalExceptionHandler {
 	        HttpServletRequest request
 	) {
 
-	    StandardError error = new StandardError(
-	            LocalDateTime.now(),
+					StandardError error = new StandardError(
+							Instant.now(),
 	            HttpStatus.UNAUTHORIZED.value(),
 	            "Password changed",
 	            ex.getMessage(),
@@ -251,8 +300,8 @@ public class GlobalExceptionHandler {
 	        HttpServletRequest request
 	) {
 
-	    StandardError error = new StandardError(
-	            LocalDateTime.now(),
+					StandardError error = new StandardError(
+							Instant.now(),
 	            HttpStatus.BAD_REQUEST.value(),
 	            "Bad request",
 	            e.getMessage(),

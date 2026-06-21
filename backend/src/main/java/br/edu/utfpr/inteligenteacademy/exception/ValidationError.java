@@ -1,6 +1,6 @@
 package br.edu.utfpr.inteligenteacademy.exception;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +10,8 @@ public class ValidationError extends StandardError{
 	
 	public ValidationError() {}
 
-	public ValidationError(
-            LocalDateTime timestamp,
+    public ValidationError(
+            Instant timestamp,
             Integer status,
             String error,
             String message,

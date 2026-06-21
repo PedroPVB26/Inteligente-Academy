@@ -11,7 +11,7 @@ import lombok.Setter;
         "title",
         "description",
         "position",
-        "duration"
+        "durationInSeconds"
 })
 @Getter
 @Setter
@@ -22,13 +22,13 @@ public class CourseModuleSummaryDto {
     private String title;
     private String description;
     private Integer position;
-    private Long duration;
+    private Long durationInSeconds;
 
     public CourseModuleSummaryDto(CourseModule courseModule) {
         this.id = courseModule.getId();
         this.title = courseModule.getTitle();
         this.description = courseModule.getDescription();
         this.position = courseModule.getPosition();
-        this.duration = courseModule.getDurationInMinutes();
+        this.durationInSeconds = courseModule.getDurationInSeconds();
     }
 }

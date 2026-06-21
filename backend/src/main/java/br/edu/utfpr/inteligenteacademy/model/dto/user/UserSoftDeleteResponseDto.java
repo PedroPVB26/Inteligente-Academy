@@ -1,6 +1,6 @@
 package br.edu.utfpr.inteligenteacademy.model.dto.user;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import br.edu.utfpr.inteligenteacademy.entity.User;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import lombok.Setter;
 public class UserSoftDeleteResponseDto {
     private Long id;
     private Boolean deleted;
-    private LocalDateTime deletedAt;
+	private Instant deletedAt;
 
 	public UserSoftDeleteResponseDto(User user) {
 		this.id = user.getId();

@@ -1,7 +1,7 @@
 package br.edu.utfpr.inteligenteacademy.model.dto.user;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -35,9 +35,9 @@ public class UserResponseDto {
     private Boolean verified;
     private UserRole userRole;
     private Boolean deleted;
-    private LocalDateTime deletedAt;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private Instant deletedAt;
+    private Instant createdAt;
+    private Instant modifiedAt;
 
     public UserResponseDto(User user) {
         this.id = user.getId();

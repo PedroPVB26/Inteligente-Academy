@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 @JsonPropertyOrder({
@@ -18,7 +18,7 @@ import java.util.List;
         "courseId",
         "lessons",
         "publicationStatus",
-        "duration",
+        "durationInSeconds",
         "createdAt",
         "modifiedAt"
 })
@@ -32,9 +32,9 @@ public class CourseModuleResponseDto {
     private Integer position;
     private Long courseId;
     private PublicationStatus  publicationStatus;
-    private Long duration;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private Long durationInSeconds;
+    private Instant createdAt;
+    private Instant modifiedAt;
     private List<LessonResponseDto> lessons;
 
 
@@ -48,7 +48,7 @@ public class CourseModuleResponseDto {
                 .map(LessonResponseDto::new)
                 .toList();
         this.publicationStatus = courseModule.getPublicationStatus();
-        this.duration = courseModule.getDurationInMinutes();
+        this.durationInSeconds = courseModule.getDurationInSeconds();
         this.courseId = courseModule.getCourse().getId();
         this.createdAt = courseModule.getCreatedAt();
         this.modifiedAt = courseModule.getModifiedAt();

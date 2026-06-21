@@ -1,6 +1,7 @@
 package br.edu.utfpr.inteligenteacademy.controller;
 
 import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleEditionDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleResponseDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleSummaryDto;
 import br.edu.utfpr.inteligenteacademy.service.CourseModuleService;
@@ -47,5 +48,20 @@ public class CourseModuleController {
                 courseModuleCreationDto, courseId
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(courseModuleResponseDto);
+    }
+
+    // ----- PATCH -----
+    @PatchMapping("/{moduleId}")
+    public ResponseEntity<CourseModuleResponseDto> update(
+            @PathVariable Long courseId,
+            @PathVariable Long moduleId,
+            @RequestBody @Valid CourseModuleEditionDto courseModuleEditionDto
+    ) {
+        CourseModuleResponseDto updatedModule = courseModuleService.update(
+                courseId,
+                moduleId,
+                courseModuleEditionDto
+        );
+        return ResponseEntity.ok(updatedModule);
     }
 }

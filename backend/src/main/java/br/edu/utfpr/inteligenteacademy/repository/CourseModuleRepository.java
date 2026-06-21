@@ -9,10 +9,15 @@ import java.util.Optional;
 
 public interface CourseModuleRepository extends JpaRepository<CourseModule, Long> {
     List<CourseModule> findByCourseId(Long courseId);
+
     boolean existsByCourseIdAndPosition(Long courseId, Integer position);
+
     Optional<CourseModule> findByIdAndCourseId(Long moduleId, Long courseId);
+
+    boolean existsByCourseIdAndPositionAndIdNot(Long courseId, Integer position, Long id);
+
     @Query("""
-        SELECT COALESCE(SUM(m.durationInMinutes), 0)
+        SELECT COALESCE(SUM(m.durationInSeconds), 0)
         FROM CourseModule m
         WHERE m.course.id = :courseId
     """)

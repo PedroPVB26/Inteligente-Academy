@@ -9,8 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.Instant;
 
 @Entity
 @Getter
@@ -32,7 +31,7 @@ public class Lesson {
     private Integer position; // primeira, segunda aula do modulo?
 
     @Column(nullable = false)
-    private Long durationInMinutes;
+    private Long durationInSeconds;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -43,16 +42,16 @@ public class Lesson {
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime modifiedAt;
+    private Instant modifiedAt;
 
     public Lesson(LessonCreationDto  lessonCreationDto, CourseModule courseModule) {
         this.title = lessonCreationDto.getTitle();
         this.position = lessonCreationDto.getPosition();
         this.courseModule = courseModule;
-        this.durationInMinutes = lessonCreationDto.getDuration();
+        this.durationInSeconds = lessonCreationDto.getDurationInSeconds();
         this.videoUrl = lessonCreationDto.getVideoUrl();
     }
 

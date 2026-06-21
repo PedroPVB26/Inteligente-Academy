@@ -1,6 +1,6 @@
 package br.edu.utfpr.inteligenteacademy.entity;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,10 +32,10 @@ public class Tag {
 
     @CreationTimestamp // Preenche automaticamente quando o registro é criado.
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @UpdateTimestamp // Atualiza automaticamente sempre que houver alteração na entidade.
-    private LocalDateTime modifiedAt;
+    private Instant modifiedAt;
 
     @OneToMany(mappedBy = "tag")
     private Set<CourseTag> courseTags = new HashSet<>();

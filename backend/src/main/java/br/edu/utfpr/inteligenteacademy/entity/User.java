@@ -2,7 +2,7 @@ package br.edu.utfpr.inteligenteacademy.entity;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,14 +59,14 @@ public class User implements UserDetails{
 
     private Instant passwordChangedAt;
     
-    private LocalDateTime deletedAt;
-    
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+	private Instant deletedAt;
 
-    @UpdateTimestamp
-    private LocalDateTime modifiedAt;
+	@CreationTimestamp
+	@Column(nullable = false, updatable = false)
+	private Instant createdAt;
+
+	@UpdateTimestamp
+	private Instant modifiedAt;
 
 	@OneToMany(
 			mappedBy = "user",

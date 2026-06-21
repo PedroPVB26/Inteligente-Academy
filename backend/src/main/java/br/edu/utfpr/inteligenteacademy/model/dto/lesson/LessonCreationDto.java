@@ -35,13 +35,12 @@ public class LessonCreationDto {
     private Integer position;
 
     @Schema(
-            description = "Lesson duration in minutes",
-            example = "15",
-            minimum = "1"
+            description = "Lesson durationInSeconds in seconds",
+            example = "1200"
     )
-    @NotNull(message = "duration must not be null")
-    @Positive(message = "duration must be a positive number")
-    private Long duration;
+    @NotNull(message = "durationInSeconds must not be null")
+    @Positive(message = "durationInSeconds must be a positive number")
+    private Long durationInSeconds;
 
     @Schema(
             description = "Lesson video URL",

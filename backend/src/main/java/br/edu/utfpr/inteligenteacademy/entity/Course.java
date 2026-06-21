@@ -1,6 +1,6 @@
 package br.edu.utfpr.inteligenteacademy.entity;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -32,7 +32,7 @@ public class Course {
     private String description;
 
     @Column(nullable = false)
-    private Long durationInMinutes = 0L; // in minutes. É calculado automaticamente a partir das suas aulas
+    private Long durationInSeconds = 0L; // in seconds. É calculado automaticamente a partir das suas aulas
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -40,10 +40,10 @@ public class Course {
 
     @CreationTimestamp // Preenche automaticamente quando o registro é criado.
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @UpdateTimestamp // Atualiza automaticamente sempre que houver alteração na entidade.
-    private LocalDateTime modifiedAt;
+    private Instant modifiedAt;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<CourseTag> courseTags = new HashSet<>();

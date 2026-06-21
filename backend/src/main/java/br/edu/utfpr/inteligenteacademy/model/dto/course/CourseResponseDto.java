@@ -1,6 +1,6 @@
 package br.edu.utfpr.inteligenteacademy.model.dto.course;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +32,7 @@ import lombok.Setter;
     "id",
     "name",
     "description",
-    "duration",
+    "durationInSeconds",
     "tags",
     "publicationStatus",
     "courseModules",
@@ -46,18 +46,18 @@ public class CourseResponseDto {
     private Long id;
     private String name;
     private String description;
-    private Long duration;
+    private Long durationInSeconds;
     private PublicationStatus  publicationStatus;
     private List<TagResponseDto> tags;
     private List<CourseModuleResponseDto> courseModules;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private Instant createdAt;
+    private Instant modifiedAt;
 
     public CourseResponseDto(Course course) {
         this.id = course.getId();
         this.name = course.getName();
         this.description = course.getDescription();
-        this.duration = course.getDurationInMinutes();
+        this.durationInSeconds = course.getDurationInSeconds();
         this.createdAt = course.getCreatedAt();
         this.modifiedAt = course.getModifiedAt();
         this.tags = course.getCourseTags()

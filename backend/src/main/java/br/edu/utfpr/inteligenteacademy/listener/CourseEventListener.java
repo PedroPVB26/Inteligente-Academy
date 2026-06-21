@@ -5,21 +5,15 @@ import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
 import br.edu.utfpr.inteligenteacademy.model.event.CourseModuleModifiedEvent;
 import br.edu.utfpr.inteligenteacademy.repository.CourseModuleRepository;
 import br.edu.utfpr.inteligenteacademy.repository.CourseRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class CourseEventListener {
     private final CourseRepository courseRepository;
     private final CourseModuleRepository courseModuleRepository;
-
-    public CourseEventListener(
-            CourseRepository courseRepository,
-            CourseModuleRepository courseModuleRepository
-    ) {
-        this.courseRepository = courseRepository;
-        this.courseModuleRepository = courseModuleRepository;
-    }
 
     @EventListener
     public void onCourseModuleModified(CourseModuleModifiedEvent event) {
@@ -28,7 +22,7 @@ public class CourseEventListener {
         );
 
         Long duration = courseModuleRepository.sumDurationByCourseId(course.getId());
-        course.setDurationInMinutes(duration);
+        course.setDurationInSeconds(duration);
         courseRepository.save(course);
     }
 }

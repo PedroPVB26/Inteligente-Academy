@@ -22,9 +22,23 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
     );
 
     @Query("""
-        SELECT COALESCE(SUM(l.durationInMinutes), 0)
+        SELECT COALESCE(SUM(l.durationInSeconds), 0)
         FROM Lesson l
         WHERE l.courseModule.id = :moduleId
     """)
     Long sumDurationByModuleId(Long moduleId);
+
+    // Conta quantas aulas existem em todo o curso (através do relacionamento CourseModule -> Course)
+    long countByCourseModuleCourseId(Long courseId);
+
+    @Query("""
+    SELECT COUNT(l)
+    FROM Lesson l
+    WHERE l.courseModule.course.id = :courseId
+    AND l.publicationStatus =
+        br.edu.utfpr.inteligenteacademy.model.PublicationStatus.PUBLISHED
+""")
+    long countPublishedLessonsByCourse(
+            Long courseId
+    );
 }

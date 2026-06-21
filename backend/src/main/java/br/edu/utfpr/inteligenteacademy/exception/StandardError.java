@@ -1,6 +1,6 @@
 package br.edu.utfpr.inteligenteacademy.exception;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -11,7 +11,7 @@ public class StandardError {
             description = "Data e hora do erro",
             example = "2026-05-22T16:54:04.3721313"
     )
-    private LocalDateTime timestamp;
+    private Instant timestamp;
 
     @Schema(
             description = "Código HTTP",
@@ -42,7 +42,7 @@ public class StandardError {
     }
 
     public StandardError(
-            LocalDateTime timestamp,
+            Instant timestamp,
             Integer status,
             String error,
             String message,
@@ -55,11 +55,11 @@ public class StandardError {
         this.path = path;
     }
 
-    public LocalDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
     }
 
