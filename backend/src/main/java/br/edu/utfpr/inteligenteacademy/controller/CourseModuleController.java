@@ -64,4 +64,14 @@ public class CourseModuleController {
         );
         return ResponseEntity.ok(updatedModule);
     }
+
+    // ----- DELETE -----
+    @DeleteMapping("/{moduleId}")
+    public ResponseEntity<Void> delete(
+            @PathVariable Long courseId,
+            @PathVariable Long moduleId
+    ) {
+        courseModuleService.delete(courseId, moduleId);
+        return ResponseEntity.noContent().build();
+    }
 }

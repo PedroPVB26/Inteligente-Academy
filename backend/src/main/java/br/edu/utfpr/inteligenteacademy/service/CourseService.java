@@ -56,25 +56,29 @@ public class CourseService {
 		Course course = findEntityById(courseId);
 		return new CourseResponseDto(course);
 	}
-	
+
+    @Transactional
+    public void delete(Long courseId) {
+        Course course = findEntityById(courseId);
+        courseRepository.delete(course);
+    }
+
 	@Transactional
 	public CourseResponseDto save(CourseCreationDto courseCreationDto) {
-
-		if(courseRepository.existsByName(courseCreationDto.getName())) {
+		if (courseRepository.existsByName(courseCreationDto.getName())) {
 			throw new DatabaseException("Name already exists in the database");
 		}
-		
+
 		Course course = new Course(courseCreationDto);
 
-		if(courseCreationDto.getTagsIds() != null && !courseCreationDto.getTagsIds().isEmpty()) {
+		if (courseCreationDto.getTagsIds() != null && !courseCreationDto.getTagsIds().isEmpty()) {
 			for (Long tagId : courseCreationDto.getTagsIds()) {
 				Tag tag = tagService.findEntityById(tagId);
 				course.addTag(tag);
 			}
 		}
-		
+
 		Course savedCourse = courseRepository.save(course);
-		
 		return new CourseResponseDto(savedCourse);
 	}
 

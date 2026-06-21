@@ -42,4 +42,11 @@ public class CourseController {
         CourseResponseDto saved = courseService.save(courseCreationDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
+
+    // ----- DELETE -----
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity<Void> delete(@PathVariable Long courseId) {
+        courseService.delete(courseId);
+        return ResponseEntity.noContent().build();
+    }
 }

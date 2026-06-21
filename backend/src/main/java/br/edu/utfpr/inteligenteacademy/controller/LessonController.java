@@ -59,4 +59,16 @@ public class LessonController {
                 .status(HttpStatus.CREATED)
                 .body(lessonResponse);
     }
+
+    // ----- DELETE -----
+    @DeleteMapping("/{lessonId}")
+    public ResponseEntity<Void> delete(
+            @PathVariable Long courseId,
+            @PathVariable Long moduleId,
+            @PathVariable Long lessonId
+    ) {
+        lessonService.delete(courseId, moduleId, lessonId);
+        return ResponseEntity.noContent().build();
+    }
 }
+
