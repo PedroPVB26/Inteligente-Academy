@@ -2,17 +2,14 @@ package br.edu.utfpr.inteligenteacademy.controller;
 
 import java.util.List;
 
+import br.edu.utfpr.inteligenteacademy.model.PublicationStatus;
+import br.edu.utfpr.inteligenteacademy.model.dto.course.CourseEditionDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.course.CourseSummaryDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.edu.utfpr.inteligenteacademy.model.dto.course.CourseCreationDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.course.CourseResponseDto;
@@ -27,8 +24,10 @@ public class CourseController {
 
     // ----- GET -----
     @GetMapping
-    public ResponseEntity<List<CourseSummaryDto>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll());
+    public ResponseEntity<List<CourseSummaryDto>> findAll(
+            @RequestParam(required = false) PublicationStatus publicationStatus
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(publicationStatus));
     }
 
     @GetMapping("/{courseId}")
@@ -40,13 +39,7 @@ public class CourseController {
     // ----- POST -----
     @PostMapping
     public ResponseEntity<CourseResponseDto> save(@RequestBody @Valid CourseCreationDto courseCreationDto) {
-        CourseResponseDto CursoSalvo = courseService.save(courseCreationDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(CursoSalvo);
+        CourseResponseDto saved = courseService.save(courseCreationDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
-
-    // ----- PUT -----
-
-
-    // ----- DELETE -----
-
 }

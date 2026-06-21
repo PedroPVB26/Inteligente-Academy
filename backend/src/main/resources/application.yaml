@@ -33,6 +33,9 @@ jwt:
   access-token-expiration: 900000
   refresh-token-expiration: 604800000
 
+app:
+  base-url: http://localhost:8081
+  internal-token: ${INTELIGENTE_ACADEMY_INTERNAL_TOKEN}
 
 server:
   port: 8081

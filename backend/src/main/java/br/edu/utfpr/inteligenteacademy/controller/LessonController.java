@@ -26,6 +26,7 @@ public class LessonController {
             @PathVariable("courseId") Long courseId,
             @PathVariable("lessonId") Long lessonId
     ){
+        // tenho que verificar se o usuário que fez essa requisição está inscrito no curso para poder acessar a aula
         LessonResponseDto lessonResponse = lessonService
                 .findByHierarchy(courseId, moduleId, lessonId);
         return ResponseEntity.ok(lessonResponse);

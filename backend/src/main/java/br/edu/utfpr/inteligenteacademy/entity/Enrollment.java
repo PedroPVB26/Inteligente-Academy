@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -36,7 +36,10 @@ public class Enrollment {
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    private LocalDateTime enrolledAt;
+    private Instant enrolledAt;
+
+    @Column
+    private Instant completedAt;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

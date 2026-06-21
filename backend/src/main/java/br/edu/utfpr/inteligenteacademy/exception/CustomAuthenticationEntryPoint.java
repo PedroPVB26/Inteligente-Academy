@@ -1,7 +1,7 @@
 package br.edu.utfpr.inteligenteacademy.exception;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     ) throws IOException, ServletException {
 
         StandardError error = new StandardError(
-                LocalDateTime.now(),
+                Instant.now(),
                 HttpStatus.UNAUTHORIZED.value(),
                 "Unauthorized",
                 "Authentication is required to access this resource",

@@ -1,6 +1,6 @@
 package br.edu.utfpr.inteligenteacademy.service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -117,10 +117,10 @@ public class UserService {
 	                "User with id " + userId + " not found"
 	            )
 	        );
-	    
-	    user.setDeleted(true);
-	    user.setDeletedAt(LocalDateTime.now());
-	    
+
+					user.setDeleted(true);
+					user.setDeletedAt(Instant.now());
+
 	    userRepository.save(user);
 	    
 	    return new UserSoftDeleteResponseDto(user);

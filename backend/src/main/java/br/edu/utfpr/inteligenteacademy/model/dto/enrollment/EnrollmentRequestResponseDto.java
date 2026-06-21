@@ -4,7 +4,7 @@ import br.edu.utfpr.inteligenteacademy.entity.EnrollmentRequest;
 import br.edu.utfpr.inteligenteacademy.model.EnrollmentRequestStatus;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @JsonPropertyOrder({
         "id",
@@ -21,7 +21,7 @@ public record EnrollmentRequestResponseDto(
         String userName,
         Long courseId,
         String courseName,
-        LocalDateTime requestedAt,
+        Instant requestedAt,
         EnrollmentRequestStatus status
 ) {
 

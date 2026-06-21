@@ -5,6 +5,7 @@ import br.edu.utfpr.inteligenteacademy.entity.CourseModule;
 import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
 import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleEditionDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleResponseDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.module.CourseModuleSummaryDto;
 import br.edu.utfpr.inteligenteacademy.repository.CourseModuleRepository;
@@ -86,5 +87,40 @@ public class CourseModuleService {
 
         CourseModule moduleSaved = courseModuleRepository.save(courseModule);
         return new  CourseModuleResponseDto(moduleSaved);
+    }
+
+    @Transactional
+    public CourseModuleResponseDto update(Long courseId, Long moduleId, CourseModuleEditionDto courseModuleEditionDto) {
+        CourseModule courseModule = findEntityByIdAndCourseId(moduleId, courseId);
+
+        if (courseModuleEditionDto.position() != null
+                && courseModuleRepository.existsByCourseIdAndPositionAndIdNot(
+                courseId,
+                courseModuleEditionDto.position(),
+                moduleId
+        )) {
+            throw new DatabaseException(
+                    "Course already has a module at position: " + courseModuleEditionDto.position()
+            );
+        }
+
+        if (courseModuleEditionDto.title() != null) {
+            courseModule.setTitle(courseModuleEditionDto.title());
+        }
+
+        if (courseModuleEditionDto.description() != null) {
+            courseModule.setDescription(courseModuleEditionDto.description());
+        }
+
+        if (courseModuleEditionDto.position() != null) {
+            courseModule.setPosition(courseModuleEditionDto.position());
+        }
+
+        if (courseModuleEditionDto.publicationStatus() != null) {
+            courseModule.setPublicationStatus(courseModuleEditionDto.publicationStatus());
+        }
+
+        CourseModule updatedModule = courseModuleRepository.save(courseModule);
+        return new CourseModuleResponseDto(updatedModule);
     }
 }

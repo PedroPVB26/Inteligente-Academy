@@ -32,15 +32,12 @@ public class LessonService {
 
     @Transactional(readOnly = true)
     public LessonResponseDto findById(Long lessonId) {
-        Lesson lesson = lessonRepository.findById(lessonId)
-                .orElseThrow(()-> new ResourceNotFoundException(
-                        "Lesson with id: " + lessonId + " not found."
-                ));
+        Lesson lesson = findEntityById(lessonId);
         return new LessonResponseDto(lesson);
     }
 
     @Transactional(readOnly = true)
-    public Lesson findEntityById(Long lessonId) {
+    Lesson findEntityById(Long lessonId) {
         return lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Lesson with id: " + lessonId + " not found."

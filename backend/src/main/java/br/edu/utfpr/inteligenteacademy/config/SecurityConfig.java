@@ -2,6 +2,7 @@ package br.edu.utfpr.inteligenteacademy.config;
 
 import java.util.List;
 
+import br.edu.utfpr.inteligenteacademy.security.InternalEndpointFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,7 @@ import br.edu.utfpr.inteligenteacademy.security.JwtAuthenticationFilter;
 public class SecurityConfig {
     private final AsyncConfig asyncConfig;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+	private final InternalEndpointFilter internalEndpointFilter;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
@@ -66,12 +68,12 @@ public class SecurityConfig {
             	// PARA TESTAR O FRONT
 //            	.anyRequest().permitAll()
             		
-            	// VALIDA QUEM PODE ACESSAR O QUE
+//            	// VALIDA QUEM PODE ACESSAR O QUE
                 // Públicas
                 .requestMatchers("/auth/**").permitAll()
 
                 // Courses
-                .requestMatchers(HttpMethod.GET, "/course/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/courses/**").permitAll()
                 .requestMatchers("/courses/**").hasRole(admin)
 
                 // Users
@@ -86,8 +88,22 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/enrollment-requests/pending").hasAnyRole(educador, admin)
                 .requestMatchers(HttpMethod.GET, "/enrollment-requests/**").hasAnyRole(educador, admin)
                 .requestMatchers(HttpMethod.PATCH, "/enrollment-requests/**").hasAnyRole(educador, admin)
-
                 .requestMatchers(HttpMethod.PATCH, "/enrollment/**").hasAnyRole(educador, admin)
+
+				// Lessons Update
+				.requestMatchers(HttpMethod.PATCH, "/progress/**").authenticated()
+				.requestMatchers(HttpMethod.GET, "/progress/**").authenticated()
+
+				.requestMatchers(HttpMethod.GET, "/certificates/*/download").authenticated()
+				.requestMatchers(HttpMethod.GET, "/certificates/validate/*").permitAll()
+
+				// Internas
+				.requestMatchers("/internal/**").permitAll()
+
+				.requestMatchers(
+						"/css/**",
+						"/images/**"
+				).permitAll()
 
 
                 // Swagger
@@ -100,6 +116,7 @@ public class SecurityConfig {
                 	    "/webjars/**"
                 	).permitAll()
             )
+			.addFilterBefore(internalEndpointFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

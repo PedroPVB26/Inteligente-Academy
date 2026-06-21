@@ -9,7 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class CourseModule {
     private String description;
 
     @Column(nullable = false)
-    private Long durationInMinutes = 0L; // in minutes. É calculado automaticamente a partir das suas aulas
+    private Long durationInSeconds = 0L; // in seconds. É calculado automaticamente a partir das suas aulas
 
     @Column(nullable = false)
     private Integer position; // primeiro modulo do curso? segundo modulo? isso eh o que este campo responde
@@ -44,10 +44,10 @@ public class CourseModule {
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime modifiedAt;
+    private Instant modifiedAt;
 
     @OneToMany(mappedBy = "courseModule", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("position ASC")
@@ -58,7 +58,7 @@ public class CourseModule {
         this.description = courseModuleCreationDto.getDescription();
         this.position = courseModuleCreationDto.getPosition();
         this.course = course;
-        this.durationInMinutes = course.getDurationInMinutes();
+        this.durationInSeconds = course.getDurationInSeconds();
     }
 
     public void addLesson(Lesson lesson) {

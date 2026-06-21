@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Certificado IntelliGente</title>
+    <link rel="stylesheet" href="/css/certificado.css" />
+</head>
+<body>
+
+<div class="certificate">
+
+    <div class="top-bar"></div>
+
+    <div class="side-shape"></div>
+
+    <div class="content">
+
+        <div class="logo">
+            <img src="/images/logo.png" alt="InteliGente" />
+        </div>
+
+        <div class="label">
+            CERTIFICADO DE CONCLUSÃO
+        </div>
+
+        <h1 class="title">
+            Certificamos que
+        </h1>
+
+        <div class="student" th:text="${certificate.studentName}">
+            [Student Name]
+        </div>
+
+        <div class="description">
+            concluiu com aproveitamento o curso oferecido pela plataforma
+            IntelliGente, cumprindo todos os requisitos acadêmicos e
+            atividades propostas.
+        </div>
+
+        <div class="course" th:text="${certificate.courseName}">
+            [Course Name]
+        </div>
+
+        <div class="description course-description">
+            Realizado no período de <strong th:text="${certificate.startDate}">[Start Date]</strong> a <strong th:text="${certificate.endDate}">[End Date]</strong>,<br />
+            com carga horária integral de <strong th:text="${certificate.workload}">[Workload]</strong> <strong>horas</strong>.
+        </div>
+
+        <div class="info">
+            <div class="info-box">
+                <span>Código de Validação</span>
+                <strong th:text="${certificate.validationCode}">[Validation Code]</strong>
+            </div>
+        </div>
+
+        <div class="city-date">
+            Cornélio Procópio - PR, <span th:text="${certificate.issueDate}">[Issue Date]</span>
+        </div>
+
+    </div>
+
+    <img src="/images/robo.png" alt="Mascote IntelliGente" class="mascot" />
+
+    <div class="signatures">
+        <div class="signature">
+            <div class="signature-line"></div>
+            <p>Robson Parmezan Bonídia</p>
+            <small>Coordenador do Projeto InteliGente</small>
+        </div>
+    </div>
+
+    <div class="footer-text">
+        IntelliGente • Building Paths of Equality with Artificial Intelligence
+    </div>
+
+    <div class="bottom-bar"></div>
+
+</div>
+
+</body>
+</html>

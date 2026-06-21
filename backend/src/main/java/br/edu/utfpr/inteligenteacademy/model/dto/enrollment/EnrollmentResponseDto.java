@@ -4,7 +4,7 @@ import br.edu.utfpr.inteligenteacademy.entity.Enrollment;
 import br.edu.utfpr.inteligenteacademy.model.EnrollmentStatus;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @JsonPropertyOrder({
         "id",
@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
         "courseId",
         "courseName",
         "enrolledAt",
+        "completedAt",
         "status",
         "progressPercentage"
 })
@@ -22,7 +23,8 @@ public record EnrollmentResponseDto(
         String userName,
         Long courseId,
         String courseName,
-        LocalDateTime enrolledAt,
+        Instant enrolledAt,
+        Instant completedAt,
         EnrollmentStatus status,
         Double progressPercentage
 ) {
@@ -35,6 +37,7 @@ public record EnrollmentResponseDto(
                 enrollment.getCourse().getId(),
                 enrollment.getCourse().getName(),
                 enrollment.getEnrolledAt(),
+                enrollment.getCompletedAt(),
                 enrollment.getStatus(),
                 enrollment.getProgressPercentage()
         );

@@ -1,6 +1,6 @@
 package br.edu.utfpr.inteligenteacademy.model.dto.tag;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -22,8 +22,8 @@ import lombok.Setter;
 public class TagResponseDto {
     private Long id;
     private String name;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private Instant createdAt;
+    private Instant modifiedAt;
 
     public TagResponseDto(Tag tag) {
         this.id = tag.getId();
