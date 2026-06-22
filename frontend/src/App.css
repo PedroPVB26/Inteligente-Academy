@@ -1,7 +1,0 @@
-.main-content {
-  flex: 1;             /* Empurra o footer para baixo */
-  width: 100%;         /* Ocupa a largura total disponível */
-  max-width: 1200px;   /* Impede o conteúdo de espalhar demais em monitores gigantes */
-  margin: 0 auto;      /* Centraliza o bloco do conteúdo na tela */
-  padding: 20px;       /* Dá um respiro nas laterais para o conteúdo não colar na tela */
-}

@@ -8,6 +8,29 @@ function Home() {
 
   return (
     <section className="hero-container">
+      <div className="hero-wave-wrap" aria-hidden="true">
+        <svg className="hero-waves" viewBox="0 24 150 28" preserveAspectRatio="none">
+          <defs>
+            <path
+              id="home-wave-path"
+              d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18v44h-352z"
+            />
+          </defs>
+          <g className="hero-wave hero-wave-1">
+            <use href="#home-wave-path" x="48" y="0" />
+          </g>
+          <g className="hero-wave hero-wave-2">
+            <use href="#home-wave-path" x="48" y="3" />
+          </g>
+          <g className="hero-wave hero-wave-3">
+            <use href="#home-wave-path" x="48" y="5" />
+          </g>
+          <g className="hero-wave hero-wave-4">
+            <use href="#home-wave-path" x="48" y="7" />
+          </g>
+        </svg>
+      </div>
+
       <div className="hero-content">
         <h1 className="hero-title">
           Aprenda de Forma <span className="highlight-orange">InteliGente</span> com o <span className="highlight-white">InteliGente Academy!</span>

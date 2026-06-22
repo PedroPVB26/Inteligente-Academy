@@ -1,7 +1,13 @@
 /* Container Geral */
 .hero-container {
-  background-color: #2c314e; /* Tom exato do azul arroxeado de fundo */
+  background:
+    radial-gradient(1200px 420px at -5% -15%, rgba(242, 101, 34, 0.18), transparent 60%),
+    radial-gradient(900px 360px at 90% 5%, rgba(99, 102, 241, 0.22), transparent 55%),
+    linear-gradient(180deg, #232949 0%, #2c314e 56%, #262d47 100%);
   min-height: 80vh;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -9,6 +15,73 @@
   gap: 40px;
   font-family: 'Segoe UI', Roboto, sans-serif;
   color: #ffffff;
+  margin:0;
+}
+
+.hero-wave-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 140px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+.hero-waves {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-wave use {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.hero-wave-1 use {
+  fill: rgba(255, 255, 255, 0.08);
+  animation-name: hero-wave-drift-1;
+  animation-duration: 9s;
+}
+
+.hero-wave-2 use {
+  fill: rgba(255, 255, 255, 0.12);
+  animation-name: hero-wave-drift-2;
+  animation-duration: 12s;
+}
+
+.hero-wave-3 use {
+  fill: rgba(255, 255, 255, 0.17);
+  animation-name: hero-wave-drift-3;
+  animation-duration: 15s;
+}
+
+.hero-wave-4 use {
+  fill: rgba(255, 255, 255, 0.22);
+  animation-name: hero-wave-drift-4;
+  animation-duration: 18s;
+}
+
+@keyframes hero-wave-drift-1 {
+  from { transform: translateX(0); }
+  to { transform: translateX(-70px); }
+}
+
+@keyframes hero-wave-drift-2 {
+  from { transform: translateX(0); }
+  to { transform: translateX(55px); }
+}
+
+@keyframes hero-wave-drift-3 {
+  from { transform: translateX(0); }
+  to { transform: translateX(-35px); }
+}
+
+@keyframes hero-wave-drift-4 {
+  from { transform: translateX(0); }
+  to { transform: translateX(25px); }
 }
 
 /* Bloco de Conteúdo (Esquerda) */
@@ -17,6 +90,8 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 /* Título e seus Destaques Específicos */
@@ -123,6 +198,7 @@
 .hero-image-wrapper {
   position: relative;
   max-width: 480px;
+  z-index: 1;
 }
 
 .hero-main-image {
@@ -145,6 +221,9 @@
     flex-direction: column-reverse;
     text-align: center;
     padding: 40px 5%;
+  }
+  .hero-wave-wrap {
+    height: 100px;
   }
   .hero-content {
     align-items: center;
