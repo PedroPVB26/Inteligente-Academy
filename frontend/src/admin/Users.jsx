@@ -15,11 +15,11 @@ function Users() {
     const [error, setError] = useState(null);
 
     const [cpf, setCpf] = useState("");
-    const [nome, setNome] = useState("");
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
-    const [dataNascimento, setDataNascimento] = useState("");
-    const [tipoUsuario, setTipoUsuario] = useState("ALUNO");
+    const [password, setPassword] = useState("");
+    const [birthDate, setBirthDate] = useState("");
+    const [userRole, setUserRole] = useState("ALUNO");
 
 
     async function load() {
@@ -53,10 +53,10 @@ function Users() {
 
         if (
             !cpf ||
-            !nome ||
+            !name ||
             !email ||
-            !senha ||
-            !dataNascimento
+            !password ||
+            !birthDate
         ) {
 
             alert("Preencha todos os campos");
@@ -68,22 +68,22 @@ function Users() {
             await createUser({
 
                 cpf,
-                nome,
+                name,
                 email,
-                senha,
-                dataNascimento,
-                tipoUsuario,
+                password,
+                birthDate,
+                userRole,
 
             });
 
             load();
 
             setCpf("");
-            setNome("");
+            setName("");
             setEmail("");
-            setSenha("");
-            setDataNascimento("");
-            setTipoUsuario("ALUNO");
+            setPassword("");
+            setBirthDate("");
+            setUserRole("ALUNO");
 
             alert("Usuário cadastrado!");
 
@@ -125,8 +125,8 @@ function Users() {
                 <input
                     type="text"
                     placeholder="Nome"
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                 />
 
                 <input
@@ -139,19 +139,19 @@ function Users() {
                 <input
                     type="password"
                     placeholder="Senha"
-                    value={senha}
-                    onChange={(e) => setSenha(e.target.value)}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
 
                 <input
                     type="date"
-                    value={dataNascimento}
-                    onChange={(e) => setDataNascimento(e.target.value)}
+                    value={birthDate}
+                    onChange={(e) => setBirthDate(e.target.value)}
                 />
 
                 <select
-                    value={tipoUsuario}
-                    onChange={(e) => setTipoUsuario(e.target.value)}
+                    value={userRole}
+                    onChange={(e) => setUserRole(e.target.value)}
                 >
 
                     <option value="ALUNO">
@@ -186,7 +186,7 @@ function Users() {
 
                     <UserCard
                         key={usuario.id}
-                        usuario={usuario}
+                        user={usuario}
                     />
 
                 ))

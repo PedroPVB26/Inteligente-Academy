@@ -13,7 +13,7 @@ export async function listUsers() {
 
 export async function createUser(user) {
 
-    const response = await fetch(`${API}/users`, {
+    const response = await fetch(`${API}/auth/register`, {
 
         method: "POST",
 

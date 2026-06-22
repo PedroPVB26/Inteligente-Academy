@@ -26,18 +26,6 @@ const getYouTubeEmbedUrl = (url) => {
   return null;
 };
 
-const parseJsonResponse = async (response) => {
-  const text = await response.text();
-  if (!text) return null;
-
-  try {
-    return JSON.parse(text);
-  } catch (error) {
-    console.error('Invalid JSON response:', text, error);
-    return null;
-  }
-};
-
 function RegisterCourses({ onCreationSuccess }) {
   // Estados do formulário base
   const [name, setName] = useState('');
@@ -262,21 +250,12 @@ function RegisterCourses({ onCreationSuccess }) {
       });
 
       if (!courseResponse.ok) {
-        const errorText = await courseResponse.text().catch(() => '');
-        let errorData = {};
-        try {
-          errorData = JSON.parse(errorText || '{}');
-        } catch {
-          errorData = {};
-        }
-        setErrorMessage(errorData.message || errorText || 'Erro ao cadastrar curso no servidor.');
+        const errorData = await courseResponse.json().catch(() => ({}));
+        setErrorMessage(errorData.message || 'Erro ao cadastrar curso no servidor.');
         return;
       }
 
-      const createdCourse = await parseJsonResponse(courseResponse);
-      if (!createdCourse || !createdCourse.id) {
-        throw new Error('Resposta inválida do servidor ao cadastrar o curso.');
-      }
+      const createdCourse = await courseResponse.json();
       const courseId = createdCourse.id;
 
       for (const [modIndex, mod] of modules.entries()) {
@@ -293,20 +272,11 @@ function RegisterCourses({ onCreationSuccess }) {
         });
 
         if (!moduleResponse.ok) {
-          const errorText = await moduleResponse.text().catch(() => '');
-          let errorData = {};
-          try {
-            errorData = JSON.parse(errorText || '{}');
-          } catch {
-            errorData = {};
-          }
-          throw new Error(errorData.message || errorText || 'Erro ao cadastrar módulo no servidor.');
+          const errorData = await moduleResponse.json().catch(() => ({}));
+          throw new Error(errorData.message || 'Erro ao cadastrar módulo no servidor.');
         }
 
-        const createdModule = await parseJsonResponse(moduleResponse);
-        if (!createdModule || !createdModule.id) {
-          throw new Error('Resposta inválida do servidor ao cadastrar o módulo.');
-        }
+        const createdModule = await moduleResponse.json();
         const moduleId = createdModule.id;
 
         for (const [lesIndex, les] of mod.lessons.entries()) {

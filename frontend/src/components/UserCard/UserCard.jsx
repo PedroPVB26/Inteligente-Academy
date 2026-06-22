@@ -1,11 +1,14 @@
 function UserCard({ user }) {
+    if (!user) {
+        return null;
+    }
 
     return (
 
         <div className="user-card">
 
             <p>
-                <strong>Nome:</strong> {user.nome}
+                <strong>Nome:</strong> {user.name}
             </p>
 
             <p>
@@ -17,7 +20,15 @@ function UserCard({ user }) {
             </p>
 
             <p>
-                <strong>Tipo:</strong> {user.tipouser}
+                <strong>Data de Nascimento:</strong> {user.birthDate}
+            </p>
+
+            <p>
+                <strong>Email:</strong> {user.email}
+            </p>
+
+            <p>
+                <strong>Tipo:</strong> {user.userRole}
             </p>
 
             <p>
@@ -30,7 +41,7 @@ function UserCard({ user }) {
 
             <p>
                 <strong>Verificado:</strong>{" "}
-                {user.verificado ? "Sim" : "Não"}
+                {user.verified ? "Sim" : "Não"}
             </p>
 
         </div>

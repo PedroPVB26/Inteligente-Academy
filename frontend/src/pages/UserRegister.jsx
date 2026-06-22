@@ -10,7 +10,7 @@ function UserRegister() {
     const [email, setEmail] = useState([]);
     const [password, setPassword] = useState("");
     const [birthDate, setBirthDate] = useState([]);
-    const [userType, setUserType] = useState("");
+    const [userRole, setUserRole] = useState("");
 
     const [error, setError] = useState(null);
 
@@ -28,7 +28,7 @@ function UserRegister() {
             setEmail(data.map(user => user.email));
             setPassword(data.map(user => user.password));
             setBirthDate(data.map(user => user.birthDate));
-            setUserType(data.map(user => user.userType));
+            setUserRole(data.map(user => user.userRole));
 
             setError(null);
         } catch (error) {
@@ -55,9 +55,9 @@ function UserRegister() {
                 email,
                 password,
                 birthDate,
-                userType
+                userRole
             };
-            const response = await fetch(`${API}/users`, {
+            const response = await fetch(`${API}/auth/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -85,7 +85,7 @@ function UserRegister() {
             <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
             <input type="password" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} />
             <input type="date" placeholder="Data de Nascimento" value={birthDate} onChange={e => setBirthDate(e.target.value)} />
-            <select value={userType} onChange={e => setUserType(e.target.value)}>
+            <select value={userRole} onChange={e => setUserRole(e.target.value)}>
                 <option value="">Selecione o tipo de usuário</option>
                 <option value="client">Cliente</option>
                 <option value="admin">Administrador</option>
