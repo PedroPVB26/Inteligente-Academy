@@ -1,13 +1,31 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
+import { login } from '../services/userService';
+import { saveAuth } from '../services/authService';
 
-export default function Login({ onClose = () => {}, onOpenRegister = () => {} }) {
+export default function Login({ onClose = () => {}, onOpenRegister = () => {}, onLoginSuccess = () => {} }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Tentando logar com:\nEmail: ${email}\nSenha: ${senha}`);
+    setError('');
+    setLoading(true);
+
+    try {
+      const response = await login(email, senha);
+      saveAuth(response.accessToken, response.refreshToken);
+      setEmail('');
+      setSenha('');
+      onLoginSuccess();
+    } catch (err) {
+      setError(err.message || 'Erro ao fazer login. Verifique suas credenciais.');
+      console.error('Erro no login:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -26,11 +44,15 @@ export default function Login({ onClose = () => {}, onOpenRegister = () => {} })
         <div className="login-header">
           <span className="login-logo-icon">🎓</span>
           <h2>InteliGente <span className="highlight-orange">Academy</span></h2>
-          <p>Junte-se a nós e comece a estudar agora. Prometemos manter seus dados seguros.</p>
+          <p>Junte-se a nós e comece a estudar agora.</p>
+          <p>Prometemos manter seus dados seguros.</p>
         </div>
 
         {/* Formulário */}
         <form onSubmit={handleSubmit} className="login-form">
+          
+          {/* Mensagem de Erro */}
+          {error && <div className="login-error-message">{error}</div>}
           
           {/* Campo Email */}
           <div className="input-group">
@@ -40,6 +62,7 @@ export default function Login({ onClose = () => {}, onOpenRegister = () => {} })
               onChange={(e) => setEmail(e.target.value)}
               placeholder="E-mail"
               required
+              disabled={loading}
             />
           </div>
 
@@ -51,12 +74,13 @@ export default function Login({ onClose = () => {}, onOpenRegister = () => {} })
               onChange={(e) => setSenha(e.target.value)}
               placeholder="Senha"
               required
+              disabled={loading}
             />
           </div>
 
           {/* Botão Login */}
-          <button type="submit" className="btn-login-submit">
-            Login
+          <button type="submit" className="btn-login-submit" disabled={loading}>
+            {loading ? 'Fazendo login...' : 'Login'}
           </button>
         </form>
 

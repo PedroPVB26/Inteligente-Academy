@@ -2,8 +2,9 @@ import React from 'react';
 import './navbar.css';
 import { useNavigate } from "react-router-dom";
 import logoHorizontal from '../../assets/logo_horizontal.svg';
+import UserMenu from './UserMenu';
 
-function Navbar({ onOpenLogin }) {
+function Navbar({ onOpenLogin, currentUser, onLogout }) {
     const navigate = useNavigate();
 
     return (
@@ -34,8 +35,11 @@ function Navbar({ onOpenLogin }) {
                     <span className="moon-icon">🌙</span>
                 </button>*/}
 
-                {/* Botão Entrar Laranja */}
-                <button className="btn-login" onClick={onOpenLogin}>Entrar</button>
+                {currentUser ? (
+                    <UserMenu onLogout={onLogout} />
+                ) : (
+                    <button className="btn-login" onClick={onOpenLogin}>Entrar</button>
+                )}
             </div>
         </nav>
     );

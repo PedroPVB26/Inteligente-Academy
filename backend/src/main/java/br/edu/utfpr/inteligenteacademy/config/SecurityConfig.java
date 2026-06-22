@@ -68,54 +68,54 @@ public class SecurityConfig {
             		
 //            	// VALIDA QUEM PODE ACESSAR O QUE
                 // Públicas
-                // .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/auth/**").permitAll()
 
-                // // Courses
-                // .requestMatchers(HttpMethod.GET, "/courses/**").permitAll()
-                // .requestMatchers("/courses/**").hasRole(admin)
+                // Courses
+                .requestMatchers(HttpMethod.GET, "/courses/**").permitAll()
+                .requestMatchers("/courses/**").hasRole(admin)
 
-                // // // Users
-                // // .requestMatchers("/users/**").hasRole(admin)
+                // // Users
+                // .requestMatchers("/users/**").hasRole(admin)
 
-                // // // Tags
-                // // .requestMatchers(HttpMethod.GET, "/tags/**").authenticated()
-                // // .requestMatchers("/tags/**").hasRole(admin)
+                // // Tags
+                // .requestMatchers(HttpMethod.GET, "/tags/**").authenticated()
+                // .requestMatchers("/tags/**").hasRole(admin)
 
-                // // Enrollments
-                // .requestMatchers(HttpMethod.POST, "/enrollment-requests/**").authenticated()
-                // .requestMatchers(HttpMethod.GET, "/enrollment-requests/pending").hasAnyRole(educador, admin)
-                // .requestMatchers(HttpMethod.GET, "/enrollment-requests/**").hasAnyRole(educador, admin)
-                // .requestMatchers(HttpMethod.PATCH, "/enrollment-requests/**").hasAnyRole(educador, admin)
-                // .requestMatchers(HttpMethod.PATCH, "/enrollment/**").hasAnyRole(educador, admin)
+                // Enrollments
+                .requestMatchers(HttpMethod.POST, "/enrollment-requests/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/enrollment-requests/pending").hasAnyRole(educador, admin)
+                .requestMatchers(HttpMethod.GET, "/enrollment-requests/**").hasAnyRole(educador, admin)
+                .requestMatchers(HttpMethod.PATCH, "/enrollment-requests/**").hasAnyRole(educador, admin)
+                .requestMatchers(HttpMethod.PATCH, "/enrollment/**").hasAnyRole(educador, admin)
 
-				// // Lessons Update
-				// .requestMatchers(HttpMethod.PATCH, "/progress/**").authenticated()
-				// .requestMatchers(HttpMethod.GET, "/progress/**").authenticated()
+				// Lessons Update
+				.requestMatchers(HttpMethod.PATCH, "/progress/**").authenticated()
+				.requestMatchers(HttpMethod.GET, "/progress/**").authenticated()
 
-				// .requestMatchers(HttpMethod.GET, "/certificates/*/download").authenticated()
-				// .requestMatchers(HttpMethod.GET, "/certificates/validate/*").permitAll()
+				.requestMatchers(HttpMethod.GET, "/certificates/*/download").authenticated()
+				.requestMatchers(HttpMethod.GET, "/certificates/validate/*").permitAll()
 
-				// // Internas
-				// .requestMatchers("/internal/**").permitAll()
+				// Internas
+				.requestMatchers("/internal/**").permitAll()
 
-				// .requestMatchers(
-				// 		"/css/**",
-				// 		"/images/**"
-				// ).permitAll()
+				.requestMatchers(
+						"/css/**",
+						"/images/**"
+				).permitAll()
 
 
-                // // Swagger
-                // .requestMatchers(
-                // 	    "/swagger-ui/**",
-                // 	    "/swagger-ui.html",
-                // 	    "/v3/api-docs/**",
-                // 	    "/v3/api-docs",
-                // 	    "/swagger-resources/**",
-                // 	    "/webjars/**"
-                // 	).permitAll()
+                // Swagger
+                .requestMatchers(
+                	    "/swagger-ui/**",
+                	    "/swagger-ui.html",
+                	    "/v3/api-docs/**",
+                	    "/v3/api-docs",
+                	    "/swagger-resources/**",
+                	    "/webjars/**"
+                	).permitAll()
 
                 // PARA TESTAR O FRONT
-                .anyRequest().permitAll()
+                //.anyRequest().permitAll()
             )
 			.addFilterBefore(internalEndpointFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

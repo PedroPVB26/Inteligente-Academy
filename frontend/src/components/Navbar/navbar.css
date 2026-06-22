@@ -164,3 +164,7 @@
     display: none; /* Em projetos reais, aqui entraria um menu Hamburguer */
   }
 }
+
+.nav-user-menu{
+  z-index:100;
+}

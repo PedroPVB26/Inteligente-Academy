@@ -6,10 +6,10 @@ import '../styles/About.css';
 function About() {
   // Array simulando os desenvolvedores listados no seu footer para gerar os cards dinamicamente
   const teamMembers = [
-    { id: 1, name: "Jocimar Borges Júnior", role: "Developer", img: "/assets/avatar-placeholder.png" },
-    { id: 2, name: "Lucas Francisco Alves Costa", role: "Developer", img: "/assets/avatar-placeholder.png" },
-    { id: 3, name: "Pedro Paulo Valent Bittencourt", role: "Developer", img: "/assets/avatar-placeholder.png" },
-    { id: 4, name: "Leonardo Silva e Cruz", role: "Developer", img: "/assets/avatar-placeholder.png" },
+    { id: 1, name: "Jocimar Borges Júnior", github: "https://www.github.com/jocimarbj",linkedin: "https://www.linkedin.com/in/jocimarbj/", role: "Developer", img: "https://media.licdn.com/dms/image/v2/D4D03AQHFOGDKdruNMg/profile-displayphoto-scale_400_400/B4DZx1HjCeKYAk-/0/1771491441129?e=1783555200&v=beta&t=aCkkvL3N1xHp5yUbAQ9_WPgu5qb6pa-vo57APVR7Xzc" },
+    { id: 2, name: "Lucas Francisco Alves Costa", github: "https://github.com/LucasFranciscoAlvesCosta",linkedin: "https://www.linkedin.com/in/lucas-francisco-alves-costa-12b2ab327/", role: "Developer", img: "https://media.licdn.com/dms/image/v2/D4D03AQFGeToggUNfgQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1725422726558?e=1783555200&v=beta&t=RUnPji8R7SpxoOp8on91mk6z4ZhTwDXbhuDhtqfZjHA" },
+    { id: 3, name: "Pedro Paulo Valent Bittencourt", github: "https://github.com/PedroPVB26", linkedin: "https://www.linkedin.com/in/pedro-bittencourt-883867275/", role: "Developer", img: "https://media.licdn.com/dms/image/v2/D4D35AQFbbNQbjnMsGw/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1720750104193?e=1782763200&v=beta&t=BeioH2KTu56KV8PRhXNmnz43eOe5DLkcinMaHiymxiQ" },
+    { id: 4, name: "Leonardo Silva e Cruz", github: "https://www.github.com/hiperd", linkedin: "https://www.linkedin.com/in/leonardosilvaecruz/", role: "Developer", img: "https://media.licdn.com/dms/image/v2/D4D03AQGFypLUr2LmIA/profile-displayphoto-scale_400_400/B4DZ1KYG3VIYAs-/0/1775069333065?e=1783555200&v=beta&t=YpItziQ-aFRbDQvS2dUq2peVCCGs2ZMIKHsBL_fT39I" },
   ];
 
   return (
@@ -19,10 +19,10 @@ function About() {
       <section className="about-hero">
         <div className="about-hero-content">
           <h1 className="about-title">
-            Sobre a <span className="highlight-orange">InteliGente</span> <span className="highlight-white">Academy</span>
+            Sobre o <span className="highlight-orange">InteliGente</span> <span className="highlight-white">Academy</span>
           </h1>
           <p className="about-description">
-            A InteliGente Academy nasceu com a missão de democratizar o acesso ao conhecimento focado na 
+            O InteliGente Academy nasceu com a missão de democratizar o acesso ao conhecimento focado na 
             Era da Inteligência Artificial e Tecnologia. Nosso objetivo é guiar estudantes desde os conceitos 
             mais básicos até a implementação prática de soluções reais, gerando impacto positivo para a sociedade.
           </p>
@@ -67,10 +67,13 @@ function About() {
             <div key={member.id} className="member-card">
               <div className="member-avatar-box">
                 {/* Substitua pelo caminho real das fotos de vocês quando tiver */}
-                <img src={member.img} alt={member.name} className="member-img" />
+                <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
+                  <img src={member.img} alt={member.name} className="member-img" />
+                </a>
               </div>
               <h3 className="member-name">{member.name}</h3>
               <p className="member-role">{member.role}</p>
+              <a href={member.github} target="_blank" rel="noopener noreferrer"> Github</a>
             </div>
           ))}
         </div>
