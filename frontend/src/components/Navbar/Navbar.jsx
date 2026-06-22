@@ -1,20 +1,41 @@
-import { Link } from 'react-router-dom'; // usado para as páginas não recarregarem do zero
-import logoNavbar from '../../assets/logo_reduzida_navbar.svg';
-import './Navbar.css';
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import './navbar.css';
+import logoHorizontal from '../../assets/logo_horizontal.svg';
 
-export default function Navbar(){
-    const { t } = useTranslation();
+function Navbar() {
     return (
-        <nav>
-            <div className='navbar-container'>
-                <Link to="/"><img src={logoNavbar} alt="Logo Navbar" /></Link>
-                <div className='navbar-links'>
-                    <Link to="/admin/users">{t("users.title")}</Link>
-                    <Link to="/admin/courses">{t("courses.title")}</Link>
-                    <Link to="/admin/tags">{t("tags.title")}</Link>
+        <nav className="navbar">
+            {/* Lado Esquerdo: Logo e Links Principais */}
+            <div className="nav-left">
+                <div className="nav-logo-container">
+                    <img src={logoHorizontal} alt="Logo Academy" className="nav-logo" />
+                </div>
+
+                <div className="nav-links">
+                    <a href="#sobre" className="nav-link">Sobre</a>
+                    <a href="#certificados" className="nav-link">Certificados</a>
+                    <a href="#cursos" className="nav-link">Cursos</a>
                 </div>
             </div>
+
+            {/* Lado Direito: Seleção de Idioma, Dark Mode e Entrar */}
+            <div className="nav-right">
+                {/*{/* Seletor de Idioma }
+                <div className="nav-language">
+                    <span className="globe-icon">🌐</span>
+                    <span className="arrow-down">⌃</span>
+                </div>
+
+                {/* Botão Dark Mode (Lua) 
+                <button className="nav-theme-toggle">
+                    <span className="moon-icon">🌙</span>
+                </button>*/}
+
+                {/* Botão Entrar Laranja */}
+                <button className="btn-login">Entrar</button>
+            </div>
         </nav>
-    )
+    );
 }
+
+export default Navbar;

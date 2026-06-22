@@ -16,10 +16,6 @@ function App() {
 
       <div style={{ padding: "20px" }}>
 
-        <h1>{t("system.title")}</h1>
-
-        <hr />
-
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
