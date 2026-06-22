@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // 1. Importa o hook de navegação
 import home_hero from "../assets/hero_intelirob.webp";
+import ad_certificado from "../assets/ad_certificado.webp";
+import ad_cursos from "../assets/ad_cursos.webp";
+import carrossel1_livro from "../assets/carrossel1_livro.webp";
 import "../styles/Home.css";
 
 function Home() {
   const navigate = useNavigate(); // 2. Inicializa o navigate
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const carouselItems = [
+    { id: "carrossel", src: carrossel1_livro, alt: "Livro Ciência de Dados" },
+  ];
+
+  const handlePrev = () => {
+    setActiveIndex((current) => (current - 1 + carouselItems.length) % carouselItems.length);
+  };
+
+  const handleNext = () => {
+    setActiveIndex((current) => (current + 1) % carouselItems.length);
+  };
 
   return (
-    <section className="hero-container">
+    <>
+      <section className="hero-container">
       <div className="hero-wave-wrap" aria-hidden="true">
         <svg className="hero-waves" viewBox="0 24 150 28" preserveAspectRatio="none">
           <defs>
@@ -62,7 +79,37 @@ function Home() {
       <div className="hero-image-wrapper">
         <img src={home_hero} alt="Robô Inteligente Academy" className="hero-main-image" />
       </div>
+      </section>
+    
+    <section className="home-carousel-section">
+      <div className="home-carousel-box">
+        <button type="button" className="carousel-nav prev" onClick={handlePrev} aria-label="Anterior">
+          ◀
+        </button>
+        <div className="home-carousel-wrapper">
+          <div className="home-carousel-track" style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
+            {carouselItems.map((item) => (
+              <div className="home-carousel-card" id={item.id} key={item.id}>
+                <img src={item.src} alt={item.alt} />
+              </div>
+            ))}
+          </div>
+        </div>
+        <button type="button" className="carousel-nav next" onClick={handleNext} aria-label="Próximo">
+          ▶
+        </button>
+      </div>
+
+      <div className="home-carousel-static-cards">
+        <div className="home-carousel-card" id="ad-cursos">
+          <img src={ad_cursos} alt="Veja todos os cursos" />
+        </div>
+        <div className="home-carousel-card" id="ad-certificado">
+          <img src={ad_certificado} alt="Obtenha seu certificado" />
+        </div>
+      </div>
     </section>
+  </>
   );
 }
 

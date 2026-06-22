@@ -50,11 +50,18 @@ export const getCurrentUser = () => {
   const payload = parseJwt(token);
   if (!payload) return null;
 
+  const nowSeconds = Math.floor(Date.now() / 1000);
+  if (payload.exp && payload.exp <= nowSeconds) {
+    clearAuth();
+    return null;
+  }
+
   return {
     id: payload.id,
     email: payload.sub || payload.email,
     role: payload.role || null,
     accessToken: token,
+    expiresAt: payload.exp ? new Date(payload.exp * 1000) : null,
   };
 };
 

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { clearAuth, getCurrentUser } from '../../services/authService';
 import './UserMenu.css';
+import "../../pages/Profile.jsx"; // Importando o CSS do Profile.jsx para estilizar o menu do usuário
 
 export default function UserMenu({ onLogout }) {
   const [open, setOpen] = useState(false);
