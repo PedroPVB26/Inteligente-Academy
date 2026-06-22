@@ -1,0 +1,246 @@
+/* Container Principal da Página */
+.certificates-page-container {
+  background-color: #2c314e;
+  color: #ffffff;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  padding: 60px 8%;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Cabeçalho da Página */
+.certificates-header {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 20px;
+}
+
+.certificates-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+}
+
+.highlight-orange {
+  color: #f26522;
+}
+
+.certificates-subtitle {
+  color: #94a3b8;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Organização em Grid dos Cards */
+.certificates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 30px;
+}
+
+/* ==========================================================================
+   Estilização do Card de Certificado (Estilo Premium Glassmorphism)
+   ========================================================================== */
+.certificate-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.certificate-card:hover {
+  transform: translateY(-4px);
+  border-color: #f26522; /* Acende a borda no hover */
+}
+
+/* Topo do Card */
+.card-cert-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.medal-icon-box {
+  font-size: 2rem;
+  background-color: rgba(242, 101, 34, 0.1);
+  padding: 10px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-cert-title-group h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+  color: #ffffff;
+}
+
+.badge-conclusao {
+  background-color: rgba(16, 185, 129, 0.15); /* Verde translúcido */
+  color: #10b981;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+/* Corpo do Card */
+.card-cert-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex-grow: 1;
+}
+
+.cert-course-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 5px 0 0 0;
+  line-height: 1.3;
+}
+
+.cert-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.meta-value {
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+/* Bloco do Código de Validação */
+.cert-code-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.code-label {
+  font-size: 0.7rem;
+  color: #64748b;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.code-value {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #cbd5e1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  word-break: break-all;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Rodapé do Card com os Botões */
+.card-cert-actions {
+  display: flex;
+  gap: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 15px;
+}
+
+.card-cert-actions button {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+/* Botão Baixar (Laranja) */
+.btn-cert-primary {
+  background-color: #f26522;
+  color: #ffffff;
+  border: none;
+}
+
+.btn-cert-primary:hover {
+  background-color: #d15619;
+}
+
+/* Botão Visualizar (Transparente / Borda) */
+.btn-cert-secondary {
+  background: transparent;
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-cert-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.btn-icon {
+  font-size: 1rem;
+}
+
+/* Estado de Lista Vazia */
+.no-certificates {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.no-certificates p {
+  color: #94a3b8;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Responsividade Básica */
+@media (max-width: 480px) {
+  .card-cert-actions {
+    flex-direction: column;
+  }
+}

@@ -13,7 +13,7 @@
    Banner Superior Roxo
    ========================================================================== */
 .featured-banner {
-  background: linear-gradient(135deg, #4f46e5 0%, #3b336a 100%); /* Roxo degradê */
+  background: linear-gradient(135deg, #c47f40 0%, #3b336a 100%); /* Roxo degradê */
   border-radius: 24px;
   padding: 40px;
   display: flex;
@@ -28,7 +28,7 @@
 }
 
 .banner-title {
-  color: #22c55e; /* Verde vibrante do texto de chamada */
+  color: #ffffff; /* Verde vibrante do texto de chamada */
   font-size: 1.8rem;
   font-weight: 800;
   margin: 0 0 10px 0;

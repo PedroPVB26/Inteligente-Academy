@@ -1,13 +1,14 @@
 import React from 'react';
 import './CourseCard.css';
+import tecnologiaImage from '../../assets/tecnologia.png';
 
 function CourseCard() {
   return (
-    <div className="course-card">
+    <div className="course-card-style">
       {/* Parte Superior: Imagem e Tags Flutuantes */}
       <div className="card-image-container">
         <img 
-          src="/assets/curso-ia.png" 
+          src={tecnologiaImage} 
           alt="Introdução a IA" 
           className="card-image" 
         />

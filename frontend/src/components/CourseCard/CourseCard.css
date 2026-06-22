@@ -1,11 +1,11 @@
 /* Container Principal do Card */
-.course-card {
+.course-card-style {
   width: 360px; /* Largura ideal baseada na proporção do seu print */
-  background-color: #f3f3f3; /* Fundo cinza bem claro/esbranquiçado */
-  border-radius: 16px;
+  background-color: white; /* Fundo cinza bem claro/esbranquiçado */
   overflow: hidden; /* Garante que a imagem siga as bordas arredondadas */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   font-family: 'Segoe UI', Roboto, sans-serif;
+  border-radius: 12px;
 }
 
 /* Área da Imagem */
@@ -102,6 +102,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 6px;
 }
 
 /* Badge de Estrelas (Nota 5.0) */

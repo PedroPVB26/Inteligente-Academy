@@ -1,20 +1,23 @@
 import React from 'react';
 import './navbar.css';
+import { useNavigate } from "react-router-dom";
 import logoHorizontal from '../../assets/logo_horizontal.svg';
 
 function Navbar() {
+    const navigate = useNavigate();
+
     return (
         <nav className="navbar">
             {/* Lado Esquerdo: Logo e Links Principais */}
             <div className="nav-left">
                 <div className="nav-logo-container">
-                    <img src={logoHorizontal} alt="Logo Academy" className="nav-logo" />
+                    <img src={logoHorizontal} alt="Logo Academy" className="nav-logo" onClick={() => navigate("/")} />
                 </div>
 
                 <div className="nav-links">
-                    <a href="#sobre" className="nav-link">Sobre</a>
-                    <a href="#certificados" className="nav-link">Certificados</a>
-                    <a href="#cursos" className="nav-link">Cursos</a>
+                    <a href="#sobre" className="nav-link" onClick={() => navigate("/about")}>Sobre</a>
+                    <a href="#certificados" className="nav-link" onClick={() => navigate("/certificates")}>Certificados</a>
+                    <a href="#cursos" className="nav-link" onClick={() => navigate("/courses")}>Cursos</a>
                 </div>
             </div>
 
@@ -32,7 +35,7 @@ function Navbar() {
                 </button>*/}
 
                 {/* Botão Entrar Laranja */}
-                <button className="btn-login">Entrar</button>
+                <button className="btn-login" onClick={() => navigate("/login")}>Entrar</button>
             </div>
         </nav>
     );
