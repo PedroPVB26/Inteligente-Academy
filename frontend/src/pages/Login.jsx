@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
 
-export default function Login() {
+export default function Login({ onClose = () => {}, onOpenRegister = () => {} }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
@@ -13,7 +13,14 @@ export default function Login() {
   return (
     <div className="login-page-overlay">
       <div className="login-card-container">
-        
+        <button
+          type="button"
+          className="login-close-button"
+          onClick={onClose}
+          aria-label="Fechar login"
+        >
+          ×
+        </button>
 
         {/* Cabeçalho */}
         <div className="login-header">
@@ -63,7 +70,9 @@ export default function Login() {
         {/* Rodapé */}
         <p className="login-footer-text">
           Ainda não tem uma conta?{' '}
-          <a href="#inscrever" className="highlight-orange">Inscrever-se</a>
+          <button type="button" className="highlight-orange login-footer-action" onClick={onOpenRegister}>
+            Inscrever-se
+          </button>
         </p>
       </div>
     </div>

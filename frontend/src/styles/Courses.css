@@ -91,9 +91,9 @@
 }
 
 .dropdown-group select, .sort-dropdown {
-  background-color: #3b4563;
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 10px 16px;
   border-radius: 10px;
   font-size: 0.95rem;
@@ -101,30 +101,6 @@
   outline: none;
   min-width: 0;
   width: 100%;
-  transition: all 0.2s ease;
-}
-
-.dropdown-group select:hover, .sort-dropdown:hover {
-  border-color: rgba(255, 255, 255, 0.5);
-  background-color: #454f6a;
-}
-
-.dropdown-group select:focus, .sort-dropdown:focus {
-  border-color: #f26522;
-  background-color: #454f6a;
-  box-shadow: 0 0 0 3px rgba(242, 101, 34, 0.15);
-}
-
-.dropdown-group select option {
-  background-color: #3b4563;
-  color: #ffffff;
-  padding: 10px;
-}
-
-.dropdown-group select option:hover,
-.dropdown-group select option:checked {
-  background-color: #f26522;
-  color: #ffffff;
 }
 
 .btn-apply-filter {

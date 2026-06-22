@@ -3,7 +3,7 @@ import './navbar.css';
 import { useNavigate } from "react-router-dom";
 import logoHorizontal from '../../assets/logo_horizontal.svg';
 
-function Navbar() {
+function Navbar({ onOpenLogin }) {
     const navigate = useNavigate();
 
     return (
@@ -35,7 +35,7 @@ function Navbar() {
                 </button>*/}
 
                 {/* Botão Entrar Laranja */}
-                <button className="btn-login" onClick={() => navigate("/login")}>Entrar</button>
+                <button className="btn-login" onClick={onOpenLogin}>Entrar</button>
             </div>
         </nav>
     );

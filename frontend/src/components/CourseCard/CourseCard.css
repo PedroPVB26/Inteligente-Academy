@@ -1,6 +1,7 @@
 /* Container Principal do Card */
 .course-card-style {
-  width: 360px; /* Largura ideal baseada na proporção do seu print */
+  width: 100%;
+  max-width: 360px; /* Mantém a proporção visual do card */
   background-color: white; /* Fundo cinza bem claro/esbranquiçado */
   overflow: hidden; /* Garante que a imagem siga as bordas arredondadas */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);

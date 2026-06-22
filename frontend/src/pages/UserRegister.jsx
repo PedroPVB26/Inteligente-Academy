@@ -1,46 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import "../styles/UserRegister.css";
 
 const API = import.meta.env.VITE_API_URL ?? "";
 
-function UserRegister() {
-    const {t} = useTranslation();
+function formatCpf(value) {
+    const digits = value.replace(/\D/g, "").slice(0, 11);
 
-    const [cpf, setCpf] = useState([]);
+    return digits
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+}
+
+function UserRegister({ onClose = () => {} }) {
+    const [cpf, setCpf] = useState("");
     const [name, setName] = useState("");
-    const [email, setEmail] = useState([]);
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [birthDate, setBirthDate] = useState([]);
-    const [userRole, setUserRole] = useState("");
-
-    const [error, setError] = useState(null);
-
-    // GET
-    async function loadUsers() {
-        try{
-            const response = await fetch(`${API}/users`);
-
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
-            const data = await response.json();
-            setCpf(data.map(user => user.cpf));
-            setName(data.map(user => user.name));
-            setEmail(data.map(user => user.email));
-            setPassword(data.map(user => user.password));
-            setBirthDate(data.map(user => user.birthDate));
-            setUserRole(data.map(user => user.userRole));
-
-            setError(null);
-        } catch (error) {
-            console.log("Erro ao carregar usuários", error);
-            setError(error.message || String(error));
-        }
-    }
-
-    useEffect(() => {
-        console.log('API base URL:', API);
-        loadUsers();
-    }, []);
+    const [birthDate, setBirthDate] = useState("");
+    const userRole = "ALUNO";
 
     // POST
     async function registerUser() {
@@ -77,20 +55,36 @@ function UserRegister() {
     }
 
     return (
-        <div>
-            <h1>{t('userRegister.title')}</h1>
-            {/* Formulário de registro de usuário */}
-            <input type="text" placeholder="CPF" value={cpf} onChange={e => setCpf(e.target.value)} />
-            <input type="text" placeholder="Nome" value={name} onChange={e => setName(e.target.value)} />
-            <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-            <input type="password" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} />
-            <input type="date" placeholder="Data de Nascimento" value={birthDate} onChange={e => setBirthDate(e.target.value)} />
-            <select value={userRole} onChange={e => setUserRole(e.target.value)}>
-                <option value="">Selecione o tipo de usuário</option>
-                <option value="client">Cliente</option>
-                <option value="admin">Administrador</option>
-            </select>
-            <button onClick={registerUser}>Cadastrar</button>
+        <div className="login-page-overlay">
+            <div className="user-register-card login-card-container">
+                <button
+                    type="button"
+                    onClick={onClose}
+                    aria-label="Fechar cadastro"
+                    className="login-close-button"
+                >
+                    ×
+                </button>
+
+                <h1 className="user-register-title">Cadastro de Usuário</h1>
+
+                <div className="user-register-form">
+                    {/* Formulário de registro de usuário */}
+                    <input
+                        className="user-register-field"
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="CPF"
+                        value={formatCpf(cpf)}
+                        onChange={e => setCpf(e.target.value.replace(/\D/g, "").slice(0, 11))}
+                    />
+                    <input className="user-register-field" type="text" placeholder="Nome" value={name} onChange={e => setName(e.target.value)} />
+                    <input className="user-register-field" type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+                    <input className="user-register-field" type="password" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} />
+                    <input className="user-register-field" type="date" placeholder="Data de Nascimento" value={birthDate} onChange={e => setBirthDate(e.target.value)} />
+                    <button type="button" className="user-register-submit" onClick={registerUser}>Cadastrar</button>
+                </div>
+            </div>
         </div>
     );
 }

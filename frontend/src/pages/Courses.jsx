@@ -1,17 +1,118 @@
-import React, { useState } from 'react';
-import '../styles/CoursesPage.css';
+import React, { useEffect, useState } from 'react';
+import '../styles/Courses.css';
 import CourseCard from '../components/CourseCard/CourseCard'; // Importando o componente de card que criamos antes
 import roboFormado from '../assets/robo-formado.png'; // Imagem do robô com capelo
 
+const API = import.meta.env.VITE_API_URL ?? '';
+const PAGE_SIZE = 8;
+
+const DEFAULT_FILTERS = {
+    category: '',
+    duration: '',
+    level: '',
+    language: ''
+};
+
+const FALLBACK_COURSES = [
+    { id: 1, title: 'Introdução a IA', code: 'IA01', instructor: 'Robson Parmesan Bonidia', rating: '5.0', req: 'PY01', duration: '40 horas', level: 'Nível', category: 'Pequim', language: 'Python' },
+    { id: 2, title: 'Aulas de Python: Do Básico ao Avançado com Projetos Reais', code: 'PY01', instructor: 'Robson Parmesan Bonidia', rating: '4.4', req: 'Nenhum', duration: '08 horas', level: 'Intermediário', category: 'Ciência de Dados', language: 'Python' },
+    { id: 3, title: 'Introdução a IA', code: 'A101', instructor: 'Robson Parmesan Bonidia', rating: '5.0', req: 'PY01', duration: '02 horas', level: 'Avançado', category: 'Análise de Dados', language: 'Java' },
+    { id: 4, title: 'Aulas de Python: Do Básico ao Avançado...', code: 'PY01', instructor: 'Robson Parmesan Bonidia', rating: '4.4', req: 'Nenhum', duration: '40 horas', level: 'Intermediário', category: 'Ciência de Dados', language: 'Python' },
+    { id: 5, title: 'Introdução a IA', code: 'IA01', instructor: 'Robson Parmesan Bonidia', rating: '5.0', req: 'PY01', duration: '40 horas', level: 'Nível', category: 'Pequim', language: 'JavaScript' },
+    { id: 6, title: 'Aulas de Python: Do Básico ao Avançado com Projetos Reais', code: 'PY01', instructor: 'Robson Parmesan Bonidia', rating: '4.4', req: 'Nenhum', duration: '08 horas', level: 'Intermediário', category: 'Ciência de Dados', language: 'Python' },
+    { id: 7, title: 'Introdução a IA', code: 'A101', instructor: 'Robson Parmesan Bonidia', rating: '5.0', req: 'PY01', duration: '02 horas', level: 'Avançado', category: 'Análise de Dados', language: 'SQL' },
+    { id: 8, title: 'Aulas de Python: Do Básico ao Avançado...', code: 'PY01', instructor: 'Robson Parmesan Bonidia', rating: '4.4', req: 'Nenhum', duration: '40 horas', level: 'Intermediário', category: 'Ciência de Dados', language: 'Python' },
+    { id: 9, title: 'Introdução a IA', code: 'IA01', instructor: 'Robson Parmesan Bonidia', rating: '5.0', req: 'PY01', duration: '40 horas', level: 'Nível', category: 'Pequim', language: 'Java' },
+    { id: 10, title: 'Aulas de Python: Do Básico ao Avançado com Projetos Reais', code: 'PY01', instructor: 'Robson Parmesan Bonidia', rating: '4.4', req: 'Nenhum', duration: '08 horas', level: 'Intermediário', category: 'Ciência de Dados', language: 'Python' },
+    { id: 11, title: 'Introdução a IA', code: 'A101', instructor: 'Robson Parmesan Bonidia', rating: '5.0', req: 'PY01', duration: '02 horas', level: 'Avançado', category: 'Análise de Dados', language: 'JavaScript' },
+    { id: 12, title: 'Aulas de Python: Do Básico ao Avançado...', code: 'PY01', instructor: 'Robson Parmesan Bonidia', rating: '4.4', req: 'Nenhum', duration: '40 horas', level: 'Intermediário', category: 'Ciência de Dados', language: 'Python' }
+];
+
 function CoursesPage() {
-    // Simulando uma lista de cursos vinda de um estado ou API
-    const [courses, setCourses] = useState([
-        { id: 1, title: 'Introdução a IA', code: 'IA01', instructor: 'Robson Parmesan Bonidia', rating: '5.0', req: 'PY01', hours: '40 horas', level: 'Nível', category: 'Categoria' },
-        { id: 2, title: 'Aulas de Python: Do Básico ao Avançado com Projetos Reais', code: 'PY01', instructor: 'Robson Parmesan Bonidia', rating: '4.4', req: 'Nenhum', hours: '08 horas', level: 'Intermediário', category: 'Ciência de Dados' },
-        { id: 3, title: 'Introdução a IA', code: 'A101', instructor: 'Robson Parmesan Bonidia', rating: '5.0', req: 'PY01', hours: '02 horas', level: 'Avançado', category: 'Análise de Dados' },
-        { id: 4, title: 'Aulas de Python: Do Básico ao Avançado...', code: 'PY01', instructor: 'Robson Parmesan Bonidia', rating: '4.4', req: 'Nenhum', hours: '40 horas', level: 'Intermediário', category: 'Ciência de Dados' },
-        // Adicione quantos cursos quiser, o grid vai se ajustar sozinho!
-    ]);
+    const [courses, setCourses] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const [draftFilters, setDraftFilters] = useState(DEFAULT_FILTERS);
+    const [appliedFilters, setAppliedFilters] = useState(DEFAULT_FILTERS);
+
+    function buildQueryParams(offset = 0, filters = DEFAULT_FILTERS) {
+        const params = new URLSearchParams({
+            limit: String(PAGE_SIZE),
+            offset: String(offset)
+        });
+
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value) {
+                params.set(key, value);
+            }
+        });
+
+        return params.toString();
+    }
+
+    function matchesFilters(course, filters) {
+        return Object.entries(filters).every(([key, value]) => {
+            if (!value) {
+                return true;
+            }
+
+            const courseValue = String(course[key] ?? '').toLowerCase();
+            return courseValue === String(value).toLowerCase();
+        });
+    }
+
+    function getFilteredFallbackCourses(filters) {
+        return FALLBACK_COURSES.filter((course) => matchesFilters(course, filters));
+    }
+
+    async function loadCoursesPage(offset = 0, filters = appliedFilters, replace = false) {
+        setIsLoading(true);
+
+        try {
+            const response = await fetch(`${API}/courses?${buildQueryParams(offset, filters)}`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+            const newCourses = Array.isArray(data) ? data : (data.items ?? []);
+            const filteredCourses = newCourses.filter((course) => matchesFilters(course, filters));
+
+            setCourses((currentCourses) => replace || offset === 0 ? filteredCourses : [...currentCourses, ...filteredCourses]);
+            setHasMore(newCourses.length === PAGE_SIZE);
+        } catch (error) {
+            const fallbackCourses = getFilteredFallbackCourses(filters).slice(offset, offset + PAGE_SIZE);
+
+            setCourses((currentCourses) => replace || offset === 0 ? fallbackCourses : [...currentCourses, ...fallbackCourses]);
+            setHasMore(offset + PAGE_SIZE < getFilteredFallbackCourses(filters).length);
+            console.log('Erro ao carregar cursos:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        loadCoursesPage(0, DEFAULT_FILTERS, true);
+    }, []);
+
+    function handleFilterChange(field, value) {
+        setDraftFilters((currentFilters) => ({
+            ...currentFilters,
+            [field]: value
+        }));
+    }
+
+    function handleApplyFilters() {
+        setAppliedFilters(draftFilters);
+        setCourses([]);
+        setHasMore(true);
+        loadCoursesPage(0, draftFilters, true);
+    }
+
+    function handleShowMore() {
+        loadCoursesPage(courses.length, appliedFilters, false);
+    }
 
     return (
         <div className="courses-page-container">
@@ -42,27 +143,39 @@ function CoursesPage() {
 
                 <div className="filter-bar">
                     <div className="dropdown-group">
-                        <select><option>Categoria</option></select>
-                        <select><option>Duração</option></select>
-                        <select><option>Nível</option></select>
-                        <select><option>Linguagem</option></select>
+                        <select value={draftFilters.category} onChange={(e) => handleFilterChange('category', e.target.value)}>
+                            <option value="">Categoria</option>
+                            <option value="Pequim">Pequim</option>
+                            <option value="Ciência de Dados">Ciência de Dados</option>
+                            <option value="Análise de Dados">Análise de Dados</option>
+                        </select>
+                        <select value={draftFilters.duration} onChange={(e) => handleFilterChange('duration', e.target.value)}>
+                            <option value="">Duração</option>
+                            <option value="02 horas">02 horas</option>
+                            <option value="08 horas">08 horas</option>
+                            <option value="40 horas">40 horas</option>
+                        </select>
+                        <select value={draftFilters.level} onChange={(e) => handleFilterChange('level', e.target.value)}>
+                            <option value="">Nível</option>
+                            <option value="Nível">Nível</option>
+                            <option value="Intermediário">Intermediário</option>
+                            <option value="Avançado">Avançado</option>
+                        </select>
+                        <select value={draftFilters.language} onChange={(e) => handleFilterChange('language', e.target.value)}>
+                            <option value="">Linguagem</option>
+                            <option value="Python">Python</option>
+                            <option value="Java">Java</option>
+                            <option value="JavaScript">JavaScript</option>
+                            <option value="SQL">SQL</option>
+                        </select>
                     </div>
-                    <button className="btn-apply-filter">Aplicar Filtro</button>
+                    <button type="button" className="btn-apply-filter" onClick={handleApplyFilters}>Aplicar Filtro</button>
                 </div>
             </section>
 
             {/* Resultados e Grid de Cards */}
             <section className="results-section">
-                <div className="results-header">
-                    <div className="results-titles">
-                        <h3>Top Resultados</h3>
-                        <p>Sabemos o que é melhor para você. As melhores opções para você.</p>
-                    </div>
-                    <select className="sort-dropdown">
-                        <option>Mais popular</option>
-                    </select>
-                </div>
-
+                
                 {/* Mapeamento dinâmico dos cards de curso */}
                 <div className="courses-grid">
                     {courses.map((course) => (
@@ -70,10 +183,18 @@ function CoursesPage() {
                     ))}
                 </div>
 
-                {/* Botão Show More Centralizado */}
-                <div className="show-more-container">
-                    <button className="btn-show-more">Show More</button>
-                </div>
+                {!isLoading && courses.length === 0 && (
+                    <p className="empty-results-text">Nenhum curso encontrado com os filtros selecionados.</p>
+                )}
+
+                {/* Botão Mostrar Mais Centralizado */}
+                {hasMore && (
+                    <div className="show-more-container">
+                        <button className="btn-show-more" onClick={handleShowMore} disabled={isLoading}>
+                            {isLoading ? 'Carregando...' : 'Mostrar Mais'}
+                        </button>
+                    </div>
+                )}
             </section>
 
         </div>

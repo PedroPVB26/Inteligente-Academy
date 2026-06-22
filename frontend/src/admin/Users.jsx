@@ -9,6 +9,17 @@ import {
     createUser
 } from "../services/userService";
 
+function formatCpf(value) {
+
+    const digits = value.replace(/\D/g, "").slice(0, 11);
+
+    return digits
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d)/, "$1.$2")
+        .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+}
+
 function Users() {
 
     const [users, setUsers] = useState([]);
@@ -118,8 +129,9 @@ function Users() {
                 <input
                     type="text"
                     placeholder="CPF"
-                    value={cpf}
-                    onChange={(e) => setCpf(e.target.value)}
+                    inputMode="numeric"
+                    value={formatCpf(cpf)}
+                    onChange={(e) => setCpf(e.target.value.replace(/\D/g, "").slice(0, 11))}
                 />
 
                 <input

@@ -51,6 +51,16 @@ main {
   flex: 1; /* Faz o conteúdo principal esticar e empurrar o footer para baixo */
 }
 
+.app-content {
+  padding: 20px;
+}
+
+.app-shell--blurred {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+}
+
 p {
   margin: 0;
 }
