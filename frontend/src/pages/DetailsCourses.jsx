@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import '../styles/DetailsCourses.css';
 
+
+
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8081';
 
 function formatDate(value) {
