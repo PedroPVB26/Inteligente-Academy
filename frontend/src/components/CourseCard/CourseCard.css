@@ -135,6 +135,9 @@
 
 /* Botão "Inscreva-se" */
 .btn-enroll {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   color: #ea580c;
   border: 2px solid #ea580c;

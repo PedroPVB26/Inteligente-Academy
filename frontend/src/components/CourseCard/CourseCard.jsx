@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './CourseCard.css';
 import tecnologiaImage from '../../assets/tecnologia.png';
 
@@ -13,6 +14,7 @@ function CourseCard({ data = {} }) {
     level = 'Nível',
     category = 'Categoria'
   } = data;
+  const courseId = data.id;
 
   return (
     <div className="course-card-style">
@@ -53,7 +55,9 @@ function CourseCard({ data = {} }) {
             </div>
           </div>
           
-          <button className="btn-enroll">Inscreva-se</button>
+          <Link className="btn-enroll" to={`/courses/${courseId}`}>
+            Ver detalhes
+          </Link>
         </div>
       </div>
     </div>

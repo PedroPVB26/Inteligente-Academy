@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import '../styles/DetailsCourses.css';
 
-
-
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8081';
+const API_CANDIDATES = [
+    import.meta.env.VITE_API_URL,
+    '',
+    'http://127.0.0.1:8081',
+    'http://localhost:8081'
+].filter(Boolean);
 
 function formatDate(value) {
     if (!value) {
@@ -55,28 +58,29 @@ export default function DetailsCourses() {
             setIsLoading(true);
             setErrorMessage('');
 
-            try {
-                const response = await fetch(`${API_URL}/courses/${courseId}`);
+            for (const baseUrl of API_CANDIDATES) {
+                try {
+                    const response = await fetch(`${baseUrl}/courses/${courseId}`);
 
-                if (!response.ok) {
-                    throw new Error(`Falha ao carregar o curso (${response.status})`);
-                }
+                    if (!response.ok) {
+                        throw new Error(`Falha ao carregar o curso (${response.status})`);
+                    }
 
-                const data = await response.json();
+                    const data = await response.json();
 
-                if (isActive) {
-                    setCourse(data);
+                    if (isActive) {
+                        setCourse(data);
+                        setIsLoading(false);
+                    }
+                    return;
+                } catch (error) {
+                    console.error(`Erro ao buscar detalhes do curso em ${baseUrl || 'origem atual'}:`, error);
                 }
-            } catch (error) {
-                if (isActive) {
-                    setErrorMessage('Não foi possível carregar os detalhes do curso.');
-                }
+            }
 
-                console.error('Erro ao buscar detalhes do curso:', error);
-            } finally {
-                if (isActive) {
-                    setIsLoading(false);
-                }
+            if (isActive) {
+                setErrorMessage('Não foi possível carregar os detalhes do curso.');
+                setIsLoading(false);
             }
         }
 

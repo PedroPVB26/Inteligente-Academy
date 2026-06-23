@@ -3,7 +3,7 @@ import '../styles/Courses.css';
 import CourseCard from '../components/CourseCard/CourseCard'; // Importando o componente de card que criamos antes
 import roboFormado from '../assets/robo-formado.png'; // Imagem do robô com capelo
 
-const API = import.meta.env.VITE_API_URL ?? '';
+const API = import.meta.env.VITE_API_URL ?? window.location.origin;
 const PAGE_SIZE = 8;
 
 const DEFAULT_FILTERS = {
