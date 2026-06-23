@@ -20,9 +20,9 @@ i18n
 
     },
 
-    lng: "pt", // padrão (default)
+    lng: "en", // padrão (default)
 
-    fallbackLng: "pt",
+    fallbackLng: "en",
 
     interpolation: {
         escapeValue: false
