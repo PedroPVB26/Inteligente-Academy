@@ -158,6 +158,21 @@
   transform: translateY(-1px);
 }
 
+/* Botão de troca de idioma simples */
+.nav-lang-toggle {
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.nav-lang-toggle:hover {
+  background: rgba(255,255,255,0.12);
+}
+
 /* Responsividade Básica (Oculta links em telas pequenas) */
 @media (max-width: 850px) {
   .nav-links {

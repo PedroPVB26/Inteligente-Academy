@@ -1,11 +1,19 @@
 import React from 'react';
 import './navbar.css';
 import { useNavigate } from "react-router-dom";
-import logoHorizontal from '../../assets/logo_horizontal.svg';
+import logoHorizontal from '../../assets/logo_reduzida_navbar.svg';
 import UserMenu from './UserMenu';
+import { useTranslation } from 'react-i18next';
 
 function Navbar({ onOpenLogin, currentUser, onLogout }) {
     const navigate = useNavigate();
+    const { i18n } = useTranslation();
+
+    const currentLang = i18n.language && i18n.language.startsWith('pt') ? 'pt' : 'en';
+    const toggleLang = () => {
+        const next = currentLang === 'pt' ? 'en' : 'pt';
+        i18n.changeLanguage(next);
+    };
 
     return (
         <nav className="navbar">
@@ -34,6 +42,15 @@ function Navbar({ onOpenLogin, currentUser, onLogout }) {
                 <button className="nav-theme-toggle">
                     <span className="moon-icon">🌙</span>
                 </button>*/}
+
+                <button
+                    type="button"
+                    className="nav-lang-toggle"
+                    onClick={toggleLang}
+                    aria-label="Trocar idioma"
+                >
+                    {currentLang === 'pt' ? 'PT' : 'EN'}
+                </button>
 
                 {currentUser ? (
                     <UserMenu onLogout={onLogout} />

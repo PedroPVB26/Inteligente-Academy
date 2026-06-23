@@ -6,7 +6,6 @@ const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8081';
 // Função auxiliar para extrair o ID do vídeo do YouTube e gerar a miniatura
 const getYouTubeThumbnail = (url) => {
   if (!url) return null;
-  // Expressão regular aceita tanto links normais quanto links de compartilhamento ou embed
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   const match = url.match(regExp);
   if (match && match[2].length === 11) {
@@ -30,6 +29,9 @@ function RegisterCourses({ onCreationSuccess }) {
   // Estados do formulário base
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [selectedTagId, setSelectedTagId] = useState('');
+  const [newTagName, setNewTagName] = useState('');
+  const [tags, setTags] = useState([]);
   
   // Estados para Módulos e Aulas
   const [modules, setModules] = useState([]);
@@ -45,13 +47,21 @@ function RegisterCourses({ onCreationSuccess }) {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Estados para os Collapsibles (guardam quais IDs estão expandidos)
+  // Estados para os Collapsibles
   const [expandedCourses, setExpandedCourses] = useState({});
   const [expandedModules, setExpandedModules] = useState({});
   const [showAllCourses, setShowAllCourses] = useState(false);
 
+  // === FUNÇÃO PARA BUSCAR O TOKEN (Mesma do Tags.jsx) ===
+  const getToken = () => {
+    let token = localStorage.getItem("accessToken") || localStorage.getItem("refreshToken");
+    if (!token || token === "undefined" || token === "null") return "";
+    return token.replace(/^"(.*)"$/, '$1');
+  };
+
   useEffect(() => {
     fetchCourses();
+    fetchTags();
   }, []);
 
   const visibleCourses = showAllCourses ? courses : courses.slice(0, 3);
@@ -60,9 +70,14 @@ function RegisterCourses({ onCreationSuccess }) {
     setShowAllCourses(prev => !prev);
   };
 
+  // === INÍCIO DAS REQUISIÇÕES COM AUTENTICAÇÃO ===
+
   async function fetchCourseDetails(courseId) {
     try {
-      const response = await fetch(`${API_URL}/courses/${courseId}`);
+      const token = getToken();
+      const response = await fetch(`${API_URL}/courses/${courseId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       if (response.ok) {
         const courseDetails = await response.json();
         setCourses(prev => prev.map(course => course.id === courseId ? courseDetails : course));
@@ -74,7 +89,10 @@ function RegisterCourses({ onCreationSuccess }) {
 
   async function fetchCourses() {
     try {
-      const response = await fetch(`${API_URL}/courses`);
+      const token = getToken();
+      const response = await fetch(`${API_URL}/courses`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       if (response.ok) {
         const data = await response.json();
         setCourses(data);
@@ -84,7 +102,238 @@ function RegisterCourses({ onCreationSuccess }) {
     }
   }
 
-  /* --- FUNÇÕES PARA GERENCIAR MÓDULOS E AULAS NO FORMULÁRIO --- */
+  async function fetchTags() {
+    try {
+      const token = getToken();
+      const response = await fetch(`${API_URL}/tags`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setTags(data);
+      }
+    } catch (error) {
+      console.error('Error fetching tags:', error);
+    }
+  }
+
+  const handleDeleteCourse = async (courseId) => {
+    if (!window.confirm('Deseja excluir este curso e todo o seu conteúdo?')) return;
+    try {
+      const token = getToken();
+      const response = await fetch(`${API_URL}/courses/${courseId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        setCourses(prev => prev.filter(course => course.id !== courseId));
+        setSuccessMessage('Curso excluído com sucesso.');
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        setErrorMessage(errorData.message || 'Erro ao excluir o curso.');
+      }
+    } catch (error) {
+      console.error('Error deleting course:', error);
+      setErrorMessage('Não foi possível conectar ao servidor para excluir o curso.');
+    }
+  };
+
+  const handleDeleteModule = async (courseId, moduleId) => {
+    if (!window.confirm('Deseja excluir este módulo e todas as suas aulas?')) return;
+    try {
+      const token = getToken();
+      const response = await fetch(`${API_URL}/courses/${courseId}/modules/${moduleId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        setCourses(prev => prev.map(course => {
+          if (course.id !== courseId) return course;
+          return {
+            ...course,
+            courseModules: course.courseModules?.filter(module => module.id !== moduleId),
+          };
+        }));
+        setExpandedModules(prev => {
+          const next = { ...prev };
+          delete next[moduleId];
+          return next;
+        });
+        setSuccessMessage('Módulo excluído com sucesso.');
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        setErrorMessage(errorData.message || 'Erro ao excluir o módulo.');
+      }
+    } catch (error) {
+      console.error('Error deleting module:', error);
+      setErrorMessage('Não foi possível conectar ao servidor para excluir o módulo.');
+    }
+  };
+
+  const handleDeleteLesson = async (courseId, moduleId, lessonId) => {
+    if (!window.confirm('Deseja excluir esta aula?')) return;
+    try {
+      const token = getToken();
+      const response = await fetch(`${API_URL}/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        setCourses(prev => prev.map(course => {
+          if (course.id !== courseId) return course;
+          return {
+            ...course,
+            courseModules: course.courseModules?.map(module => {
+              if (module.id !== moduleId) return module;
+              return {
+                ...module,
+                lessons: module.lessons?.filter(lesson => lesson.id !== lessonId),
+              };
+            }),
+          };
+        }));
+        setSuccessMessage('Aula excluída com sucesso.');
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        setErrorMessage(errorData.message || 'Erro ao excluir a aula.');
+      }
+    } catch (error) {
+      console.error('Error deleting lesson:', error);
+      setErrorMessage('Não foi possível conectar ao servidor para excluir a aula.');
+    }
+  };
+
+  /* --- SUBMISSÃO DO FORMULÁRIO (POSTs) --- */
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    if (!name.trim() || !description.trim()) {
+      setErrorMessage('Por favor, preencha o nome e descrição do curso.');
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+    
+    const token = getToken(); // Pega o token para usar em todos os POSTs
+
+    const coursePayload = { name, description };
+
+    try {
+      const tagIds = [];
+
+      if (newTagName.trim()) {
+        const tagResponse = await fetch(`${API_URL}/tags`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` 
+          },
+          body: JSON.stringify({ name: newTagName.trim() }),
+        });
+
+        if (!tagResponse.ok) {
+          const errorData = await tagResponse.json().catch(() => ({}));
+          throw new Error(errorData.message || 'Erro ao cadastrar a nova categoria.');
+        }
+
+        const createdTag = await tagResponse.json();
+        tagIds.push(createdTag.id);
+        setTags((prevTags) => [createdTag, ...prevTags]);
+      } else if (selectedTagId) {
+        tagIds.push(Number(selectedTagId));
+      }
+
+      if (tagIds.length > 0) {
+        coursePayload.tagsIds = tagIds;
+      }
+
+      const courseResponse = await fetch(`${API_URL}/courses`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(coursePayload),
+      });
+
+      if (!courseResponse.ok) {
+        const errorData = await courseResponse.json().catch(() => ({}));
+        setErrorMessage(errorData.message || 'Erro ao cadastrar curso no servidor.');
+        return;
+      }
+
+      const createdCourse = await courseResponse.json();
+      const courseId = createdCourse.id;
+
+      for (const [modIndex, mod] of modules.entries()) {
+        const modulePayload = {
+          title: mod.title,
+          description: mod.description || `Módulo sobre ${mod.title}`,
+          position: modIndex + 1,
+        };
+
+        const moduleResponse = await fetch(`${API_URL}/courses/${courseId}/modules`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` 
+          },
+          body: JSON.stringify(modulePayload),
+        });
+
+        if (!moduleResponse.ok) {
+          const errorData = await moduleResponse.json().catch(() => ({}));
+          throw new Error(errorData.message || 'Erro ao cadastrar módulo no servidor.');
+        }
+
+        const createdModule = await moduleResponse.json();
+        const moduleId = createdModule.id;
+
+        for (const [lesIndex, les] of mod.lessons.entries()) {
+          const lessonPayload = {
+            title: les.title,
+            position: lesIndex + 1,
+            durationInSeconds: 900,
+            videoUrl: les.youtubeUrl,
+          };
+
+          const lessonResponse = await fetch(`${API_URL}/courses/${courseId}/modules/${moduleId}/lessons`, {
+            method: 'POST',
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}` 
+            },
+            body: JSON.stringify(lessonPayload),
+          });
+
+          if (!lessonResponse.ok) {
+            const errorData = await lessonResponse.json().catch(() => ({}));
+            throw new Error(errorData.message || 'Erro ao cadastrar aula no servidor.');
+          }
+        }
+      }
+
+      setSuccessMessage('Curso cadastrado com sucesso!');
+      setName('');
+      setDescription('');
+      setModules([]);
+      setAssessments([]);
+      fetchCourses();
+      if (onCreationSuccess) onCreationSuccess();
+    } catch (error) {
+      console.error('Request error:', error);
+      setErrorMessage(error.message || 'Não foi possível conectar ao servidor backend.');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  /* --- OUTRAS FUNÇÕES DE MANIPULAÇÃO DE ESTADO --- */
   const handleAddModule = () => {
     setModules([...modules, { id: Date.now(), title: '', lessons: [] }]);
   };
@@ -114,7 +363,6 @@ function RegisterCourses({ onCreationSuccess }) {
     }));
   };
 
-  /* --- FUNÇÕES PARA AVALIAÇÃO --- */
   const handleAddAssessmentQuestion = () => {
     if (currentQuestion.trim()) {
       setAssessments([...assessments, { id: Date.now(), question: currentQuestion }]);
@@ -122,7 +370,6 @@ function RegisterCourses({ onCreationSuccess }) {
     }
   };
 
-  /* --- FUNÇÕES PARA EXPANDIR/RETRAIR A LISTA --- */
   const toggleCourse = async (courseId) => {
     const isOpen = !!expandedCourses[courseId];
     setExpandedCourses(prev => ({ ...prev, [courseId]: !prev[courseId] }));
@@ -138,182 +385,6 @@ function RegisterCourses({ onCreationSuccess }) {
     setExpandedModules(prev => ({ ...prev, [moduleId]: !prev[moduleId] }));
   };
 
-  const handleDeleteCourse = async (courseId) => {
-    if (!window.confirm('Deseja excluir este curso e todo o seu conteúdo?')) return;
-
-    try {
-      const response = await fetch(`${API_URL}/courses/${courseId}`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        setCourses(prev => prev.filter(course => course.id !== courseId));
-        setSuccessMessage('Curso excluído com sucesso.');
-      } else {
-        const errorData = await response.json().catch(() => ({}));
-        setErrorMessage(errorData.message || 'Erro ao excluir o curso.');
-      }
-    } catch (error) {
-      console.error('Error deleting course:', error);
-      setErrorMessage('Não foi possível conectar ao servidor para excluir o curso.');
-    }
-  };
-
-  const handleDeleteModule = async (courseId, moduleId) => {
-    if (!window.confirm('Deseja excluir este módulo e todas as suas aulas?')) return;
-
-    try {
-      const response = await fetch(`${API_URL}/courses/${courseId}/modules/${moduleId}`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        setCourses(prev => prev.map(course => {
-          if (course.id !== courseId) return course;
-          return {
-            ...course,
-            courseModules: course.courseModules?.filter(module => module.id !== moduleId),
-          };
-        }));
-        setExpandedModules(prev => {
-          const next = { ...prev };
-          delete next[moduleId];
-          return next;
-        });
-        setSuccessMessage('Módulo excluído com sucesso.');
-      } else {
-        const errorData = await response.json().catch(() => ({}));
-        setErrorMessage(errorData.message || 'Erro ao excluir o módulo.');
-      }
-    } catch (error) {
-      console.error('Error deleting module:', error);
-      setErrorMessage('Não foi possível conectar ao servidor para excluir o módulo.');
-    }
-  };
-
-  const handleDeleteLesson = async (courseId, moduleId, lessonId) => {
-    if (!window.confirm('Deseja excluir esta aula?')) return;
-
-    try {
-      const response = await fetch(`${API_URL}/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        setCourses(prev => prev.map(course => {
-          if (course.id !== courseId) return course;
-          return {
-            ...course,
-            courseModules: course.courseModules?.map(module => {
-              if (module.id !== moduleId) return module;
-              return {
-                ...module,
-                lessons: module.lessons?.filter(lesson => lesson.id !== lessonId),
-              };
-            }),
-          };
-        }));
-        setSuccessMessage('Aula excluída com sucesso.');
-      } else {
-        const errorData = await response.json().catch(() => ({}));
-        setErrorMessage(errorData.message || 'Erro ao excluir a aula.');
-      }
-    } catch (error) {
-      console.error('Error deleting lesson:', error);
-      setErrorMessage('Não foi possível conectar ao servidor para excluir a aula.');
-    }
-  };
-
-  /* --- SUBMISSÃO DO FORMULÁRIO --- */
-  async function handleSubmit(event) {
-    event.preventDefault();
-
-    if (!name.trim() || !description.trim()) {
-      setErrorMessage('Por favor, preencha o nome e descrição do curso.');
-      return;
-    }
-
-    setIsLoading(true);
-    setErrorMessage('');
-    setSuccessMessage('');
-
-    const coursePayload = {
-      name,
-      description,
-    };
-
-    try {
-      const courseResponse = await fetch(`${API_URL}/courses`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(coursePayload),
-      });
-
-      if (!courseResponse.ok) {
-        const errorData = await courseResponse.json().catch(() => ({}));
-        setErrorMessage(errorData.message || 'Erro ao cadastrar curso no servidor.');
-        return;
-      }
-
-      const createdCourse = await courseResponse.json();
-      const courseId = createdCourse.id;
-
-      for (const [modIndex, mod] of modules.entries()) {
-        const modulePayload = {
-          title: mod.title,
-          description: mod.description || `Módulo sobre ${mod.title}`,
-          position: modIndex + 1,
-        };
-
-        const moduleResponse = await fetch(`${API_URL}/courses/${courseId}/modules`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(modulePayload),
-        });
-
-        if (!moduleResponse.ok) {
-          const errorData = await moduleResponse.json().catch(() => ({}));
-          throw new Error(errorData.message || 'Erro ao cadastrar módulo no servidor.');
-        }
-
-        const createdModule = await moduleResponse.json();
-        const moduleId = createdModule.id;
-
-        for (const [lesIndex, les] of mod.lessons.entries()) {
-          const lessonPayload = {
-            title: les.title,
-            position: lesIndex + 1,
-            durationInSeconds: 900,
-            videoUrl: les.youtubeUrl,
-          };
-
-          const lessonResponse = await fetch(`${API_URL}/courses/${courseId}/modules/${moduleId}/lessons`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(lessonPayload),
-          });
-
-          if (!lessonResponse.ok) {
-            const errorData = await lessonResponse.json().catch(() => ({}));
-            throw new Error(errorData.message || 'Erro ao cadastrar aula no servidor.');
-          }
-        }
-      }
-
-      setSuccessMessage('Curso cadastrado com sucesso!');
-      setName('');
-      setDescription('');
-      setModules([]);
-      setAssessments([]);
-      fetchCourses();
-      if (onCreationSuccess) onCreationSuccess();
-    } catch (error) {
-      console.error('Request error:', error);
-      setErrorMessage(error.message || 'Não foi possível conectar ao servidor backend.');
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   return (
     <>
@@ -341,6 +412,31 @@ function RegisterCourses({ onCreationSuccess }) {
             value={description} 
             onChange={(e) => setDescription(e.target.value)} 
             maxLength={255} />
+          </div>
+
+          <div className="form-group">
+            <label>Categoria / Tag</label>
+            <select
+              value={selectedTagId}
+              onChange={(e) => setSelectedTagId(e.target.value)}
+            >
+              <option value="">Selecione uma categoria existente</option>
+              {tags.map((tag) => (
+                <option key={tag.id} value={tag.id}>{tag.name}</option>
+              ))}
+            </select>
+            <small>Ou crie uma nova categoria abaixo.</small>
+          </div>
+
+          <div className="form-group">
+            <label>Nova Categoria (opcional)</label>
+            <input
+              type="text"
+              placeholder="Ex: Ciência de Dados"
+              value={newTagName}
+              onChange={(e) => setNewTagName(e.target.value)}
+              maxLength={80}
+            />
           </div>
 
           {/* SESSÃO DE MÓDULOS NO FORMULÁRIO */}
