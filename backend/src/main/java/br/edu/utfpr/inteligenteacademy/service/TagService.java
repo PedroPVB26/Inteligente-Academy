@@ -24,7 +24,7 @@ public class TagService {
 	@Transactional(readOnly = true)
 	public List<TagResponseDto> findAll(){
 		List<Tag> tags = tagRepository.findAll();
-		return tags.stream().map(x -> new TagResponseDto(x)).toList();
+		return tags.stream().map(TagResponseDto::new).toList();
 	}
 	
 	

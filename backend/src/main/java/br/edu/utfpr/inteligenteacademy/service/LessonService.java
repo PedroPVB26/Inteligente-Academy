@@ -6,6 +6,7 @@ import br.edu.utfpr.inteligenteacademy.entity.Lesson;
 import br.edu.utfpr.inteligenteacademy.exception.DatabaseException;
 import br.edu.utfpr.inteligenteacademy.exception.ResourceNotFoundException;
 import br.edu.utfpr.inteligenteacademy.model.dto.lesson.LessonCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.lesson.LessonEditionDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.lesson.LessonResponseDto;
 import br.edu.utfpr.inteligenteacademy.model.event.LessonModifiedEvent;
 import br.edu.utfpr.inteligenteacademy.repository.LessonRepository;
@@ -84,4 +85,55 @@ public class LessonService {
     private void publishEvent(LessonModifiedEvent lessonModifiedEvent) {
         applicationEventPublisher.publishEvent(lessonModifiedEvent);
     }
+
+    @Transactional
+    public LessonResponseDto update(
+            Long courseId,
+            Long moduleId,
+            Long lessonId,
+            LessonEditionDto lessonEditionDto
+    ) {
+        Lesson lesson = lessonRepository.findByIdAndCourseModuleIdAndCourseModuleCourseId(
+                lessonId, moduleId, courseId
+        ).orElseThrow(() -> new ResourceNotFoundException(
+                "Lesson with id: " + lessonId + " not found."
+        ));
+
+        if (lessonEditionDto.position() != null
+                && lessonRepository.existsByCourseModuleIdAndPositionAndIdNot(
+                moduleId,
+                lessonEditionDto.position(),
+                lessonId
+        )) {
+            throw new DatabaseException(
+                    "Module already has a lesson at position: " + lessonEditionDto.position()
+            );
+        }
+
+        if (lessonEditionDto.title() != null) {
+            lesson.setTitle(lessonEditionDto.title());
+        }
+
+        if (lessonEditionDto.position() != null) {
+            lesson.setPosition(lessonEditionDto.position());
+        }
+
+        if (lessonEditionDto.durationInSeconds() != null) {
+            lesson.setDurationInSeconds(lessonEditionDto.durationInSeconds());
+        }
+
+        if (lessonEditionDto.videoUrl() != null) {
+            lesson.setVideoUrl(lessonEditionDto.videoUrl());
+        }
+
+        if (lessonEditionDto.publicationStatus() != null) {
+            lesson.setPublicationStatus(lessonEditionDto.publicationStatus());
+        }
+
+        Lesson updated = lessonRepository.save(lesson);
+
+        publishEvent(new LessonModifiedEvent(moduleId));
+        return new LessonResponseDto(updated);
+    }
+
 }

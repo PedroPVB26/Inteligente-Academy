@@ -20,7 +20,7 @@ import br.edu.utfpr.inteligenteacademy.service.TagService;
 @RestController
 @RequestMapping("/tags")
 public class TagController {
-    private TagService tagService;
+    private final TagService tagService;
 
     public TagController(TagService tagService) {
         this.tagService = tagService;
