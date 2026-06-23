@@ -7,29 +7,15 @@ const API = import.meta.env.VITE_API_URL ?? '';
 const PAGE_SIZE = 8;
 
 const DEFAULT_FILTERS = {
-    category: '',
+    tagId: '',
     duration: '',
     level: '',
     language: ''
 };
 
-const FALLBACK_COURSES = [
-    { id: 1, title: 'Introdução a IA', code: 'IA01', instructor: 'Robson Parmesan Bonidia', rating: '5.0', req: 'PY01', duration: '40 horas', level: 'Nível', category: 'Pequim', language: 'Python' },
-    { id: 2, title: 'Aulas de Python: Do Básico ao Avançado com Projetos Reais', code: 'PY01', instructor: 'Robson Parmesan Bonidia', rating: '4.4', req: 'Nenhum', duration: '08 horas', level: 'Intermediário', category: 'Ciência de Dados', language: 'Python' },
-    { id: 3, title: 'Introdução a IA', code: 'A101', instructor: 'Robson Parmesan Bonidia', rating: '5.0', req: 'PY01', duration: '02 horas', level: 'Avançado', category: 'Análise de Dados', language: 'Java' },
-    { id: 4, title: 'Aulas de Python: Do Básico ao Avançado...', code: 'PY01', instructor: 'Robson Parmesan Bonidia', rating: '4.4', req: 'Nenhum', duration: '40 horas', level: 'Intermediário', category: 'Ciência de Dados', language: 'Python' },
-    { id: 5, title: 'Introdução a IA', code: 'IA01', instructor: 'Robson Parmesan Bonidia', rating: '5.0', req: 'PY01', duration: '40 horas', level: 'Nível', category: 'Pequim', language: 'JavaScript' },
-    { id: 6, title: 'Aulas de Python: Do Básico ao Avançado com Projetos Reais', code: 'PY01', instructor: 'Robson Parmesan Bonidia', rating: '4.4', req: 'Nenhum', duration: '08 horas', level: 'Intermediário', category: 'Ciência de Dados', language: 'Python' },
-    { id: 7, title: 'Introdução a IA', code: 'A101', instructor: 'Robson Parmesan Bonidia', rating: '5.0', req: 'PY01', duration: '02 horas', level: 'Avançado', category: 'Análise de Dados', language: 'SQL' },
-    { id: 8, title: 'Aulas de Python: Do Básico ao Avançado...', code: 'PY01', instructor: 'Robson Parmesan Bonidia', rating: '4.4', req: 'Nenhum', duration: '40 horas', level: 'Intermediário', category: 'Ciência de Dados', language: 'Python' },
-    { id: 9, title: 'Introdução a IA', code: 'IA01', instructor: 'Robson Parmesan Bonidia', rating: '5.0', req: 'PY01', duration: '40 horas', level: 'Nível', category: 'Pequim', language: 'Java' },
-    { id: 10, title: 'Aulas de Python: Do Básico ao Avançado com Projetos Reais', code: 'PY01', instructor: 'Robson Parmesan Bonidia', rating: '4.4', req: 'Nenhum', duration: '08 horas', level: 'Intermediário', category: 'Ciência de Dados', language: 'Python' },
-    { id: 11, title: 'Introdução a IA', code: 'A101', instructor: 'Robson Parmesan Bonidia', rating: '5.0', req: 'PY01', duration: '02 horas', level: 'Avançado', category: 'Análise de Dados', language: 'JavaScript' },
-    { id: 12, title: 'Aulas de Python: Do Básico ao Avançado...', code: 'PY01', instructor: 'Robson Parmesan Bonidia', rating: '4.4', req: 'Nenhum', duration: '40 horas', level: 'Intermediário', category: 'Ciência de Dados', language: 'Python' }
-];
-
 function CoursesPage() {
     const [courses, setCourses] = useState([]);
+    const [tags, setTags] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [draftFilters, setDraftFilters] = useState(DEFAULT_FILTERS);
@@ -41,28 +27,24 @@ function CoursesPage() {
             offset: String(offset)
         });
 
-        Object.entries(filters).forEach(([key, value]) => {
-            if (value) {
-                params.set(key, value);
-            }
-        });
+        if (filters.tagId) {
+            params.set('tagId', filters.tagId);
+        }
 
         return params.toString();
     }
 
-    function matchesFilters(course, filters) {
-        return Object.entries(filters).every(([key, value]) => {
-            if (!value) {
-                return true;
+    async function loadTags() {
+        try {
+            const response = await fetch(`${API}/tags`);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
             }
-
-            const courseValue = String(course[key] ?? '').toLowerCase();
-            return courseValue === String(value).toLowerCase();
-        });
-    }
-
-    function getFilteredFallbackCourses(filters) {
-        return FALLBACK_COURSES.filter((course) => matchesFilters(course, filters));
+            const tagsData = await response.json();
+            setTags(tagsData);
+        } catch (error) {
+            console.error('Erro ao carregar categorias:', error);
+        }
     }
 
     async function loadCoursesPage(offset = 0, filters = appliedFilters, replace = false) {
@@ -77,15 +59,11 @@ function CoursesPage() {
 
             const data = await response.json();
             const newCourses = Array.isArray(data) ? data : (data.items ?? []);
-            const filteredCourses = newCourses.filter((course) => matchesFilters(course, filters));
-
-            setCourses((currentCourses) => replace || offset === 0 ? filteredCourses : [...currentCourses, ...filteredCourses]);
+            setCourses((currentCourses) => replace || offset === 0 ? newCourses : [...currentCourses, ...newCourses]);
             setHasMore(newCourses.length === PAGE_SIZE);
         } catch (error) {
-            const fallbackCourses = getFilteredFallbackCourses(filters).slice(offset, offset + PAGE_SIZE);
-
-            setCourses((currentCourses) => replace || offset === 0 ? fallbackCourses : [...currentCourses, ...fallbackCourses]);
-            setHasMore(offset + PAGE_SIZE < getFilteredFallbackCourses(filters).length);
+            setCourses((currentCourses) => replace || offset === 0 ? [] : currentCourses);
+            setHasMore(false);
             console.log('Erro ao carregar cursos:', error);
         } finally {
             setIsLoading(false);
@@ -93,6 +71,7 @@ function CoursesPage() {
     }
 
     useEffect(() => {
+        loadTags();
         loadCoursesPage(0, DEFAULT_FILTERS, true);
     }, []);
 
@@ -143,30 +122,11 @@ function CoursesPage() {
 
                 <div className="filter-bar">
                     <div className="dropdown-group">
-                        <select value={draftFilters.category} onChange={(e) => handleFilterChange('category', e.target.value)}>
+                        <select value={draftFilters.tagId} onChange={(e) => handleFilterChange('tagId', e.target.value)}>
                             <option value="">Categoria</option>
-                            <option value="Pequim">Pequim</option>
-                            <option value="Ciência de Dados">Ciência de Dados</option>
-                            <option value="Análise de Dados">Análise de Dados</option>
-                        </select>
-                        <select value={draftFilters.duration} onChange={(e) => handleFilterChange('duration', e.target.value)}>
-                            <option value="">Duração</option>
-                            <option value="02 horas">02 horas</option>
-                            <option value="08 horas">08 horas</option>
-                            <option value="40 horas">40 horas</option>
-                        </select>
-                        <select value={draftFilters.level} onChange={(e) => handleFilterChange('level', e.target.value)}>
-                            <option value="">Nível</option>
-                            <option value="Nível">Nível</option>
-                            <option value="Intermediário">Intermediário</option>
-                            <option value="Avançado">Avançado</option>
-                        </select>
-                        <select value={draftFilters.language} onChange={(e) => handleFilterChange('language', e.target.value)}>
-                            <option value="">Linguagem</option>
-                            <option value="Python">Python</option>
-                            <option value="Java">Java</option>
-                            <option value="JavaScript">JavaScript</option>
-                            <option value="SQL">SQL</option>
+                            {tags.map((tag) => (
+                                <option key={tag.id} value={tag.id}>{tag.name}</option>
+                            ))}
                         </select>
                     </div>
                     <button type="button" className="btn-apply-filter" onClick={handleApplyFilters}>Aplicar Filtro</button>
