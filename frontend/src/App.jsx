@@ -6,6 +6,7 @@ import About from './pages/About';
 import Login from './pages/Login';
 import UserRegister from './pages/UserRegister';
 import Courses from './pages/Courses';
+import DetailsCourses from './pages/DetailsCourses';
 import Usuarios from "./admin/Users";
 import Cursos from "./admin/RegisterCourses";
 import Etiquetas from "./pages/Tags";
@@ -58,6 +59,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/courses" element={<Courses />} />
+            <Route path="/courses/:courseId" element={<DetailsCourses />} />
             <Route path="/certificates" element={<Certificates />} />
             <Route path="/about" element={<About />} />
             <Route path="/profile" element={currentUser ? <Profile /> : <Navigate to="/" replace />} />
