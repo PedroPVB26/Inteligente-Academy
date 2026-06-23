@@ -1,10 +1,11 @@
-// Configuração da URL base da API usando variáveis de ambiente do Vite
-export const API_URL = import.meta.env.VITE_API_URL;
+// Configuração da URL base da API usando variáveis de ambiente do Vite.
+// Quando a variável não existir, usa a origem atual do navegador.
+export const API_URL = import.meta.env.VITE_API_URL ?? window.location.origin;
 
 // Função utilitária para centralizar cabeçalhos e tratamentos de erro comuns do fetch
 export const handleRequest = async (url, options = {}) => {
   try {
-    const response = await fetch(`${API_URL}${url}`, {
+    const response = await fetch(new URL(url, API_URL), {
       headers: {
         'Content-Type': 'application/json',
         ...options.headers,

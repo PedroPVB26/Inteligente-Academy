@@ -2,12 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import '../styles/DetailsCourses.css';
 
-const API_CANDIDATES = [
-    import.meta.env.VITE_API_URL,
-    '',
-    'http://127.0.0.1:8081',
-    'http://localhost:8081'
-].filter(Boolean);
+const API = import.meta.env.VITE_API_URL ?? '';
 
 function formatDate(value) {
     if (!value) {
@@ -58,24 +53,23 @@ export default function DetailsCourses() {
             setIsLoading(true);
             setErrorMessage('');
 
-            for (const baseUrl of API_CANDIDATES) {
-                try {
-                    const response = await fetch(`${baseUrl}/courses/${courseId}`);
+            try {
+                const response = await fetch(`${API}/courses/${courseId}`);
 
-                    if (!response.ok) {
-                        throw new Error(`Falha ao carregar o curso (${response.status})`);
-                    }
-
-                    const data = await response.json();
-
-                    if (isActive) {
-                        setCourse(data);
-                        setIsLoading(false);
-                    }
-                    return;
-                } catch (error) {
-                    console.error(`Erro ao buscar detalhes do curso em ${baseUrl || 'origem atual'}:`, error);
+                if (!response.ok) {
+                    throw new Error(`Falha ao carregar o curso (${response.status})`);
                 }
+
+                const data = await response.json();
+
+                if (isActive) {
+                    setCourse(data);
+                    setIsLoading(false);
+                }
+
+                return;
+            } catch (error) {
+                console.error(`Erro ao buscar detalhes do curso em ${API}:`, error);
             }
 
             if (isActive) {

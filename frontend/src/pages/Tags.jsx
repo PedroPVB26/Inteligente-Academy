@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
-const API = import.meta.env.VITE_API_URL ?? "";
+import { handleRequest } from "../services/api";
 
 function Tags() {
   const { t } = useTranslation();
@@ -16,13 +15,7 @@ function Tags() {
 
     try {
 
-      const response = await fetch(`${API}/tags`);
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const dados = await response.json();
+      const dados = await handleRequest('/tags');
 
       setTags(dados);
       setError(null);
@@ -35,7 +28,6 @@ function Tags() {
 
 
   useEffect(() => {
-    console.log('API base URL:', API);
     loadTags();
   }, []);
 
@@ -54,15 +46,10 @@ function Tags() {
         name
       };
 
-      const response = await fetch(`${API}/tags`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+      await handleRequest('/tags', {
+        method: 'POST',
         body: JSON.stringify(newTag)
       });
-
-      if (response.ok) {
 
         alert("Tag cadastrada!");
 
@@ -70,12 +57,9 @@ function Tags() {
 
         setName("");
 
-      } else {
-        alert("Erro ao cadastrar tag");
-      }
-
     } catch (erro) {
       console.log("Erro no cadastro", erro);
+      alert("Erro ao cadastrar tag");
     }
   }
 
@@ -84,7 +68,6 @@ function Tags() {
     <div style={{ padding: "20px" }}>
 
       <h2>Tags</h2>
-      <p style={{fontSize:12, color:'#666'}}>API: {API}</p>
       {error && <p style={{color:'crimson'}}>Erro: {error}</p>}
 
       <input
