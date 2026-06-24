@@ -60,18 +60,6 @@ public class LessonController {
                 .status(HttpStatus.CREATED)
                 .body(lessonResponse);
     }
-<<<<<<< HEAD
-
-    // ----- DELETE -----
-    @DeleteMapping("/{lessonId}")
-    public ResponseEntity<Void> delete(
-            @PathVariable Long courseId,
-            @PathVariable Long moduleId,
-            @PathVariable Long lessonId
-    ) {
-        lessonService.delete(courseId, moduleId, lessonId);
-        return ResponseEntity.noContent().build();
-=======
     // ----- PATCH -----
     @PatchMapping("/{lessonId}")
     public ResponseEntity<LessonResponseDto> update(
@@ -88,7 +76,6 @@ public class LessonController {
         );
 
         return ResponseEntity.ok(updatedLesson);
->>>>>>> ed81d2e7002347d45f2d243b1e79d67be2d11f3e
     }
 }
 
