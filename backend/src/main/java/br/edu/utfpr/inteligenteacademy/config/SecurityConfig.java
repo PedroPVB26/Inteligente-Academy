@@ -74,12 +74,12 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/courses/**").permitAll()
                 .requestMatchers("/courses/**").hasRole(admin)
 
-                // // Users
-                // .requestMatchers("/users/**").hasRole(admin)
+                // Users
+                .requestMatchers("/users/**").hasRole(admin)
 
-                // // Tags
-                // .requestMatchers(HttpMethod.GET, "/tags/**").authenticated()
-                // .requestMatchers("/tags/**").hasRole(admin)
+                // Tags
+                .requestMatchers(HttpMethod.GET, "/tags/**").permitAll()
+                .requestMatchers("/tags/**").hasRole(admin)
 
                 // Enrollments
                 .requestMatchers(HttpMethod.POST, "/enrollment-requests/**").authenticated()

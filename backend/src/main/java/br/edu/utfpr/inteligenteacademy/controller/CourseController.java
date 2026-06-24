@@ -35,9 +35,10 @@ public class CourseController {
     // ----- GET -----
     @GetMapping
     public ResponseEntity<List<CourseSummaryDto>> findAll(
-            @RequestParam(required = false) PublicationStatus publicationStatus
+            @RequestParam(required = false) PublicationStatus publicationStatus,
+            @RequestParam(required = false) Long tagId
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(publicationStatus));
+        return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(publicationStatus, tagId));
     }
 
     @GetMapping("/{courseId}")

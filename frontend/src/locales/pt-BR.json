@@ -25,6 +25,13 @@
         "button": "Adicionar Etiqueta"
     },
 
+    "navbar": {
+        "courses": "Cursos",
+        "about": "Sobre",
+        "certifications": "Certificados",
+        "login": "Entrar"
+    },
+
     "about": {
         "title": "Sobre o",
         "description": "O InteliGente Academy nasceu com a missão de democratizar o acesso ao conhecimento focado na Era da Inteligência Artificial e Tecnologia. Nosso objetivo é guiar estudantes desde os conceitos mais básicos até a implementação prática de soluções reais, gerando impacto positivo para a sociedade.",

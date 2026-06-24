@@ -25,13 +25,17 @@ public class CourseService {
 	private final TagService tagService;
 
 	@Transactional(readOnly = true)
-	public List<CourseSummaryDto> findAll(PublicationStatus publicationStatus) {
+	public List<CourseSummaryDto> findAll(PublicationStatus publicationStatus, Long tagId) {
 		List<Course> courses;
 
-		if (publicationStatus == null) {
-			courses = courseRepository.findAll();
-		} else {
+		if (tagId != null && publicationStatus != null) {
+			courses = courseRepository.findDistinctByPublicationStatusAndCourseTags_Tag_Id(publicationStatus, tagId);
+		} else if (tagId != null) {
+			courses = courseRepository.findDistinctByCourseTags_Tag_Id(tagId);
+		} else if (publicationStatus != null) {
 			courses = courseRepository.findByPublicationStatus(publicationStatus);
+		} else {
+			courses = courseRepository.findAll();
 		}
 
 		return courses.stream()

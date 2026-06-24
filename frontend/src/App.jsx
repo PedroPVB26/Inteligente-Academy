@@ -9,7 +9,6 @@ import Courses from './pages/Courses';
 import DetailsCourses from './pages/DetailsCourses';
 import Usuarios from "./admin/Users";
 import Cursos from "./admin/RegisterCourses";
-import Etiquetas from "./pages/Tags";
 import Profile from './pages/Profile';
 import Navbar from "./components/Navbar/Navbar";
 import ProtectedRoute from './components/Navbar/ProtectedRoute';
@@ -63,12 +62,9 @@ function App() {
             <Route path="/certificates" element={<Certificates />} />
             <Route path="/about" element={<About />} />
             <Route path="/profile" element={currentUser ? <Profile /> : <Navigate to="/" replace />} />
-
             {/* ADMIN */}
             <Route path="/admin/users" element={<ProtectedRoute><Usuarios /></ProtectedRoute>} />
             <Route path="/admin/courses" element={<ProtectedRoute><Cursos /></ProtectedRoute>} />
-            <Route path="/admin/tags" element={<ProtectedRoute><Etiquetas /></ProtectedRoute>} />
-
           </Routes>
 
         </div>

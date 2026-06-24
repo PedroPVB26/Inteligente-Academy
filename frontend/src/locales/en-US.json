@@ -24,6 +24,13 @@
         "button": "Add Tag"
     },
 
+    "navbar": {
+        "courses": "Courses",
+        "about": "About",
+        "certifications": "Certifications",
+        "login": "Login"
+    },
+
     "about": {
         "title": "About",
         "description": "InteliGente Academy was born with the mission of democratizing access to knowledge focused on the. Age of Artificial Intelligence and Technology. Our goal is to guide students from the most basic concepts to the practical implementation of real solutions, generating a positive impact on society.",
