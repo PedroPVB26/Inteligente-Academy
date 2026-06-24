@@ -61,7 +61,7 @@ export default function DetailsCourses() {
 
                 if (isActive) {
                     setCourse(data);
-                    
+
                     // SELEÇÃO AUTOMÁTICA: Pega a primeira aula do primeiro módulo para não abrir a tela em branco
                     if (data.courseModules && data.courseModules.length > 0) {
                         const firstModule = data.courseModules[0];
@@ -74,20 +74,11 @@ export default function DetailsCourses() {
                 if (isActive) {
                     setErrorMessage('Não foi possível carregar os detalhes do curso.');
                 }
-                console.error('Erro ao buscar detalhes do curso:', error);
+                console.error(`Erro ao buscar detalhes do curso em ${API_URL}:`, error);
             } finally {
                 if (isActive) {
                     setIsLoading(false);
                 }
-
-                return;
-            }catch (error) {
-                console.error(`Erro ao buscar detalhes do curso em ${API}:`, error);
-            }
-
-            if (isActive) {
-                setErrorMessage('Não foi possível carregar os detalhes do curso.');
-                setIsLoading(false);
             }
         }
 
