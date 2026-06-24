@@ -14,7 +14,7 @@ import Navbar from "./components/Navbar/Navbar";
 import ProtectedRoute from './components/Navbar/ProtectedRoute';
 import { clearAuth, getCurrentUser } from './services/authService';
 import Footer from "./components/Footer/Footer";
-
+import StudentArea from './pages/StudentArea';
 
 function App() {
   const [authModal, setAuthModal] = useState(null);
@@ -62,6 +62,8 @@ function App() {
             <Route path="/certificates" element={<Certificates />} />
             <Route path="/about" element={<About />} />
             <Route path="/profile" element={currentUser ? <Profile /> : <Navigate to="/" replace />} />
+            <Route path="/student-area" element={<StudentArea />} />
+
             {/* ADMIN */}
             <Route path="/admin/users" element={<ProtectedRoute><Usuarios /></ProtectedRoute>} />
             <Route path="/admin/courses" element={<ProtectedRoute><Cursos /></ProtectedRoute>} />

@@ -1,6 +1,7 @@
 package br.edu.utfpr.inteligenteacademy.controller;
 
 import br.edu.utfpr.inteligenteacademy.model.dto.lesson.LessonCreationDto;
+import br.edu.utfpr.inteligenteacademy.model.dto.lesson.LessonEditionDto;
 import br.edu.utfpr.inteligenteacademy.model.dto.lesson.LessonResponseDto;
 import br.edu.utfpr.inteligenteacademy.service.LessonService;
 import jakarta.validation.Valid;
@@ -22,9 +23,9 @@ public class LessonController {
     // ----- GET -----
     @GetMapping("/{lessonId}")
     public ResponseEntity<LessonResponseDto> findById(
-            @PathVariable("moduleId") Long moduleId,
-            @PathVariable("courseId") Long courseId,
-            @PathVariable("lessonId") Long lessonId
+            @PathVariable Long moduleId,
+            @PathVariable Long courseId,
+            @PathVariable Long lessonId
     ){
         // tenho que verificar se o usuário que fez essa requisição está inscrito no curso para poder acessar a aula
         LessonResponseDto lessonResponse = lessonService
@@ -34,8 +35,8 @@ public class LessonController {
 
     @GetMapping
     public ResponseEntity<List<LessonResponseDto>> findAllByModuleIdAndCourse(
-            @PathVariable("moduleId") Long moduleId,
-            @PathVariable("courseId") Long courseId
+            @PathVariable Long moduleId,
+            @PathVariable Long courseId
     ) {
         return ResponseEntity.ok(lessonService.findAllByModuleIdAndCourseId(moduleId, courseId));
     }
@@ -59,6 +60,7 @@ public class LessonController {
                 .status(HttpStatus.CREATED)
                 .body(lessonResponse);
     }
+<<<<<<< HEAD
 
     // ----- DELETE -----
     @DeleteMapping("/{lessonId}")
@@ -69,6 +71,24 @@ public class LessonController {
     ) {
         lessonService.delete(courseId, moduleId, lessonId);
         return ResponseEntity.noContent().build();
+=======
+    // ----- PATCH -----
+    @PatchMapping("/{lessonId}")
+    public ResponseEntity<LessonResponseDto> update(
+            @PathVariable Long courseId,
+            @PathVariable Long moduleId,
+            @PathVariable Long lessonId,
+            @RequestBody @Valid LessonEditionDto lessonEditionDto
+    ) {
+        LessonResponseDto updatedLesson = lessonService.update(
+                courseId,
+                moduleId,
+                lessonId,
+                lessonEditionDto
+        );
+
+        return ResponseEntity.ok(updatedLesson);
+>>>>>>> ed81d2e7002347d45f2d243b1e79d67be2d11f3e
     }
 }
 

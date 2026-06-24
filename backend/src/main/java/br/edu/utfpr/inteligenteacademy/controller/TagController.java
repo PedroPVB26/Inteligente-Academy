@@ -22,7 +22,7 @@ import br.edu.utfpr.inteligenteacademy.service.TagService;
 @RequestMapping("/tags")
 @CrossOrigin(origins = "*")
 public class TagController {
-    private TagService tagService;
+    private final TagService tagService;
 
     public TagController(TagService tagService) {
         this.tagService = tagService;

@@ -41,6 +41,24 @@ export default function UserMenu({ onLogout }) {
             className="user-menu-item"
             onClick={() => {
               setOpen(false);
+              navigate('/student-area');
+            }}
+          > Área do Aluno
+          </button>
+          <button
+            type="button"
+            className="user-menu-item"
+            onClick={() => {
+              setOpen(false);
+              navigate('/admin/courses');
+            }}
+          > Área do Admin
+          </button>
+          <button
+            type="button"
+            className="user-menu-item"
+            onClick={() => {
+              setOpen(false);
               navigate('/profile');
             }}
           >

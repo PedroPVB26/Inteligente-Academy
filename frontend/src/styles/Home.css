@@ -1,9 +1,5 @@
 /* Container Geral */
 .hero-container {
-  background:
-    radial-gradient(1200px 420px at -5% -15%, rgba(242, 101, 34, 0.18), transparent 60%),
-    radial-gradient(900px 360px at 90% 5%, rgba(99, 102, 241, 0.22), transparent 55%),
-    linear-gradient(180deg, #232949 0%, #2c314e 56%, #262d47 100%);
   min-height: 80vh;
   position: relative;
   isolation: isolate;

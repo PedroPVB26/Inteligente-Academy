@@ -85,8 +85,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/enrollment-requests/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "/enrollment-requests/pending").hasAnyRole(educador, admin)
                 .requestMatchers(HttpMethod.GET, "/enrollment-requests/**").hasAnyRole(educador, admin)
-                .requestMatchers(HttpMethod.PATCH, "/enrollment-requests/**").hasAnyRole(educador, admin)
+                .requestMatchers(HttpMethod.PATCH, "/enrollment-requests/**").permitAll()
                 .requestMatchers(HttpMethod.PATCH, "/enrollment/**").hasAnyRole(educador, admin)
+                .requestMatchers(HttpMethod.GET, "/enrollment/users/**").permitAll()
 
 				// Lessons Update
 				.requestMatchers(HttpMethod.PATCH, "/progress/**").authenticated()

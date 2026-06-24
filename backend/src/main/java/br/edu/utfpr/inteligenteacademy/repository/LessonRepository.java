@@ -41,4 +41,11 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
     long countPublishedLessonsByCourse(
             Long courseId
     );
+
+
+    boolean existsByCourseModuleIdAndPositionAndIdNot(
+            Long courseModuleId,
+            Integer position,
+            Long lessonId
+    );
 }
