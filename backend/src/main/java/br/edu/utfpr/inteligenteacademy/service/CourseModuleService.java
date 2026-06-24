@@ -123,4 +123,10 @@ public class CourseModuleService {
         CourseModule updatedModule = courseModuleRepository.save(courseModule);
         return new CourseModuleResponseDto(updatedModule);
     }
+
+    @Transactional
+    public void delete(Long courseId, Long moduleId) {
+        CourseModule courseModule = findEntityByIdAndCourseId(moduleId, courseId);
+        courseModuleRepository.delete(courseModule);
+    }
 }

@@ -1,0 +1,233 @@
+/* Container de Fundo que cobre a tela toda (Fundo escuro translúcido) */
+.login-page-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(22, 25, 41, 0.85); /* Tom escuro baseado no fundo do app */
+  backdrop-filter: blur(8px); /* Desfoca o site atrás do modal de login */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  padding: 20px;
+}
+
+/* Card Centralizado */
+.login-card-container {
+  background-color: #2c314e; /* O mesmo azul arroxeado do restante do site */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 440px;
+  border-radius: 20px;
+  padding: 40px 30px;
+  position: relative;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  text-align: center;
+}
+
+/* Botão Fechar (X) */
+.login-close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+  font-size: 1.2rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  z-index: 2;
+}
+
+.login-close-button:hover {
+  color: #ffffff;
+  background: rgba(242, 101, 34, 0.18);
+  border-color: rgba(242, 101, 34, 0.55);
+  transform: scale(1.05);
+}
+
+.login-footer-action {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.login-footer-action:hover {
+  text-decoration: underline;
+}
+
+/* Cabeçalho do Login */
+.login-header {
+  margin-bottom: 30px;
+}
+
+.login-logo-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.login-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.5px;
+}
+
+.highlight-orange {
+  color: #f26522; /* Laranja padrão da marca */
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-header p {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0 10px;
+}
+
+/* Formulário e Inputs */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-error-message {
+  background-color: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(220, 38, 38, 0.5);
+  color: #fecaca;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.input-group input {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 14px 16px;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+/* Efeito ao clicar no campo de texto */
+.input-group input:focus {
+  border-color: #f26522;
+  background-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 3px rgba(242, 101, 34, 0.15);
+}
+
+.input-group input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Botão Enviar Formulário (Laranja) */
+.btn-login-submit {
+  background-color: #d15619; /* Laranja sólido idêntico aos botões principais */
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 5px;
+}
+
+.btn-login-submit:hover:not(:disabled) {
+  background-color: #b84711;
+}
+
+.btn-login-submit:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-login-submit:disabled {
+  background-color: #8b3a0a;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Divisor "ou" */
+.login-divider {
+  color: #64748b;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 20px 0;
+  position: relative;
+}
+
+/* Linhas finas nas laterais do "ou" */
+.login-divider::before, .login-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.login-divider::before { left: 0; }
+.login-divider::after { right: 0; }
+
+/* Botão Google (Estilo outline com vidro fosco) */
+.btn-login-google {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.btn-login-google:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.google-icon {
+  font-size: 1.1rem;
+}
+
+/* Texto do Rodapé */
+.login-footer-text {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+
+.login-footer-text a:hover {
+  text-decoration: underline;
+}

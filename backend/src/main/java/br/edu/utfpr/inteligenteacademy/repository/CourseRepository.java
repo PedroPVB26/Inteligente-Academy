@@ -11,4 +11,6 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
 	boolean existsByName(String name);
 	boolean existsByNameAndIdNot(String name, Long id);
 	List<Course> findByPublicationStatus(PublicationStatus publicationStatus);
+	List<Course> findDistinctByCourseTags_Tag_Id(Long tagId);
+	List<Course> findDistinctByPublicationStatusAndCourseTags_Tag_Id(PublicationStatus publicationStatus, Long tagId);
 }

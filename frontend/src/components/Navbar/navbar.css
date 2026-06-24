@@ -1,0 +1,185 @@
+
+/* Container Principal da Navbar */
+.navbar {
+  background-color: #2c314e; /* O mesmo azul arroxeado do restante do site */
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4%;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Agrupamento do lado esquerdo (Logo + Menu) */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+/* Logo da Empresa */
+.nav-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.nav-logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.nav-logo-text {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Links de Navegação */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav-link {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+}
+
+/* Seta para baixo invertida do design */
+.arrow-down {
+  font-size: 0.7rem;
+  display: inline-block;
+  transform: rotate(180deg);
+  margin-top: -2px;
+  color: #f26522; /* Laranja no detalhe da seta */
+}
+
+/* --- NOVO: Botão de Certificado Estilizado --- */
+.btn-certificate {
+  background-color: rgba(255, 255, 255, 0.06);
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.btn-certificate:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: #f26522;
+}
+
+.cert-icon {
+  font-size: 0.9rem;
+}
+
+
+/* Agrupamento do lado direito (Ações) */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Caixa do Seletor de Idioma (Globo) */
+.nav-language {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.nav-language:hover {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+.globe-icon {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Ícone de Tema (Lua) */
+.nav-theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.nav-theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.moon-icon {
+  font-size: 1.2rem;
+  color: #fef08a; /* Amarelo suave para a lua */
+}
+
+/* Botão Laranja "Entrar" */
+.btn-login {
+  background-color: #d15619; /* Tom de laranja idêntico ao do print */
+  color: #ffffff;
+  border: none;
+  padding: 8px 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-login:hover {
+  background-color: #b84711;
+  transform: translateY(-1px);
+}
+
+/* Botão de troca de idioma simples */
+.nav-lang-toggle {
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.nav-lang-toggle:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+/* Responsividade Básica (Oculta links em telas pequenas) */
+@media (max-width: 850px) {
+  .nav-links {
+    display: none; /* Em projetos reais, aqui entraria um menu Hamburguer */
+  }
+}
+
+.nav-user-menu{
+  z-index:100;
+}

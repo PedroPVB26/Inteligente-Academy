@@ -1,29 +1,33 @@
 import { defineConfig } from 'vite'
-import react, { reactCompilerPreset } from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
 
 // https://vite.dev/config/
-export default {
+export default defineConfig({
+  plugins: [
+    react()
+  ],
   server: {
     host: true, // permite acesso externo
-    port: 5173,  // ou outra porta que você queira
+    port: 5173, 
+    // Garante que o Vite force o roteamento do React Router mesmo após um F5
+    historyApiFallback: true, 
     proxy: {
-      '/usuario': {
-        target: 'http://localhost:8081',
+      '/users': {
+        target: 'http://127.0.0.1:8081',
         changeOrigin: true,
         secure: false
       },
-      '/curso': {
-        target: 'http://localhost:8081',
+      '/courses': {
+        target: 'http://127.0.0.1:8081',
         changeOrigin: true,
         secure: false
       },
-      '/etiqueta': {
-        target: 'http://localhost:8081',
+      '/tags': {
+        target: 'http://127.0.0.1:8081',
         changeOrigin: true,
         secure: false
       }
     }
   }
-
-}
+})

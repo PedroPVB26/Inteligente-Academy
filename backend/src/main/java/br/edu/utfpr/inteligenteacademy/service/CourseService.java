@@ -25,13 +25,17 @@ public class CourseService {
 	private final TagService tagService;
 
 	@Transactional(readOnly = true)
-	public List<CourseSummaryDto> findAll(PublicationStatus publicationStatus) {
+	public List<CourseSummaryDto> findAll(PublicationStatus publicationStatus, Long tagId) {
 		List<Course> courses;
 
-		if (publicationStatus == null) {
-			courses = courseRepository.findAll();
-		} else {
+		if (tagId != null && publicationStatus != null) {
+			courses = courseRepository.findDistinctByPublicationStatusAndCourseTags_Tag_Id(publicationStatus, tagId);
+		} else if (tagId != null) {
+			courses = courseRepository.findDistinctByCourseTags_Tag_Id(tagId);
+		} else if (publicationStatus != null) {
 			courses = courseRepository.findByPublicationStatus(publicationStatus);
+		} else {
+			courses = courseRepository.findAll();
 		}
 
 		return courses.stream()
@@ -56,25 +60,29 @@ public class CourseService {
 		Course course = findEntityById(courseId);
 		return new CourseResponseDto(course);
 	}
-	
+
+    @Transactional
+    public void delete(Long courseId) {
+        Course course = findEntityById(courseId);
+        courseRepository.delete(course);
+    }
+
 	@Transactional
 	public CourseResponseDto save(CourseCreationDto courseCreationDto) {
-
-		if(courseRepository.existsByName(courseCreationDto.getName())) {
+		if (courseRepository.existsByName(courseCreationDto.getName())) {
 			throw new DatabaseException("Name already exists in the database");
 		}
-		
+
 		Course course = new Course(courseCreationDto);
 
-		if(courseCreationDto.getTagsIds() != null && !courseCreationDto.getTagsIds().isEmpty()) {
+		if (courseCreationDto.getTagsIds() != null && !courseCreationDto.getTagsIds().isEmpty()) {
 			for (Long tagId : courseCreationDto.getTagsIds()) {
 				Tag tag = tagService.findEntityById(tagId);
 				course.addTag(tag);
 			}
 		}
-		
+
 		Course savedCourse = courseRepository.save(course);
-		
 		return new CourseResponseDto(savedCourse);
 	}
 

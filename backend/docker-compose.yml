@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # Configura o Banco de Dados automaticamente, sem ninguém precisar de instalar o Postgres no PC
+  db:
+    image: postgres:15-alpine
+    container_name: inteligente-academy-db
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    ports:
+      - "5432:5432"
+    
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Configura o Backend Java
+  backend:
+    image: eclipse-temurin:21-jdk-alpine
+    container_name: inteligente-academy-api
+
+    restart: unless-stopped
+
+    volumes:
+      - .:/app
+    
+    working_dir: /app
+
+
+    command: ./mvnw spring-boot:run
+
+    ports:
+      - "8081:8081"
+    
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      INTELIGENTE_ACADEMY_MAIL_USERNAME: ${INTELIGENTE_ACADEMY_MAIL_USERNAME}
+      INTELIGENTE_ACADEMY_MAIL_PASSWORD: ${INTELIGENTE_ACADEMY_MAIL_PASSWORD}
+      INTELIGENTE_ACADEMY_JWT_SECRET: ${INTELIGENTE_ACADEMY_JWT_SECRET}
+      INTELIGENTE_ACADEMY_INTERNAL_TOKEN: ${INTELIGENTE_ACADEMY_INTERNAL_TOKEN}
+
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+
+volumes:
+  postgres_data:

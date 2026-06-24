@@ -1,0 +1,216 @@
+.course-container {
+  max-width: 500px;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-family: sans-serif;
+  color: var(--orange-default);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: white;
+}
+
+.form-group input, 
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 10px;
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-submit:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Alertas de feedback */
+.alert {
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.alert-success {
+  background-color: #e6f4ea;
+  color: #137333;
+}
+
+.alert-danger {
+  background-color: #fce8e6;
+  color: #c5221f;
+}
+
+/* Listagem */
+.course-card {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+}
+
+.course-card p {
+  margin: 5px 0;
+}
+
+.empty-list {
+  color: #777;
+}
+
+.course-list{
+    color: black;
+}
+.course-card{ background: transparent; }
+
+/* Container Base */
+.course-container, .course-list {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: var(--bg-blue);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Formulário e Botões */
+.form-group { margin-bottom: 15px; }
+.form-group label { 
+    display: block;
+    font-weight: bold; 
+    margin-bottom: 5px;
+}
+.form-group input, .form-group textarea {
+  width: 100%; 
+  padding: 10px;
+}
+.btn-submit {
+  width: 100%; 
+  padding: 12px; 
+  background: var(--bg-blue-light); 
+  color: white; 
+  border: none; 
+  cursor: pointer; 
+  font-weight: bold;
+}
+.btn-add-module { 
+    background: var(--orange-light); 
+    color: white;
+    padding: 8px; 
+    border: none; 
+    cursor: pointer; 
+    margin-top: 10px; 
+}
+.btn-add-lesson { 
+    background: #6c757d; 
+    color: white; 
+    padding: 6px; 
+    border: none; 
+    cursor: pointer; 
+    font-size: 0.85em; 
+}
+.btn-add-assessment { 
+    background: var(--orange-light); 
+    color: white; 
+    padding: 10px; 
+    border: none; 
+    cursor: pointer; 
+    width: 100%; 
+    font-weight: bold; 
+}
+
+/* Criação de Módulos e Aulas */
+.modules-section { 
+    background: #f8f9fa; 
+    padding: 15px; 
+}
+.module-creation-box { 
+    background: white; 
+    padding: 10px; 
+    margin-bottom: 10px; 
+    border-left: 4px solid #198754; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+}
+.input-module-title { 
+    width: 100%; 
+    padding: 8px; 
+    margin-bottom: 10px; 
+    font-weight: bold; 
+}
+.lesson-creation-box { 
+    display: flex; 
+    gap: 10px; 
+    margin-bottom: 10px; 
+}
+.lesson-creation-box input { 
+    flex: 1; 
+    padding: 6px; 
+}
+
+/* COLLAPSIBLES (Expandir / Retrair) */
+.course-card { 
+    border-radius: 6px; 
+    margin-bottom: 10px; 
+    overflow: hidden; 
+}
+.collapsible-header {
+  padding: 15px; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  cursor: pointer; 
+  user-select: none;
+}
+.course-header { background-color: white; font-size: 1.1em; }
+.course-header:hover { background-color: #e9ecef; }
+.collapsible-body { padding: 15px; background: #fff; }
+.module-card { margin-top: 10px; border: 1px solid #eee; border-left: 3px solid #0d6efd; border-radius: 4px; }
+.module-header { padding: 10px 15px; background: #f8f9fa; font-size: 0.95em; }
+.module-header:hover { background: #e2e6ea; }
+
+/* Setas Animadas */
+.arrow { transition: transform 0.3s ease; font-size: 0.8em; }
+.arrow.open { transform: rotate(180deg); }
+
+/* Exibição das Aulas e Miniaturas do YouTube */
+.lessons-container { padding: 10px; background: #fff; }
+.lesson-item { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; padding: 10px; background: #fafafa; }
+.youtube-thumb { width: 120px; height: 68px; object-fit: cover; }
+.lesson-title { font-weight: 500; color: #333; }
+
+/* MODAL FLUTUANTE (Avaliações) */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000;
+}
+
+.modal-content {
+  background: var(--bg-main); padding: 25px; border-radius: 8px; width: 90%; max-width: 500px; max-height: 80vh; overflow-y: auto;
+}
+.assessment-list { margin-bottom: 20px; max-height: 200px; overflow-y: auto; }
+.assessment-item { padding: 8px; }
+.add-question-box { background: var(--bg-blue); padding: 15px; border-radius: 6px; margin-bottom: 20px; }
+.add-question-box input { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 10px;}
+.btn-save-question { background: #0d6efd; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; }
+.btn-close-modal { background: green; color: white; padding: 10px; width: 100%; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }

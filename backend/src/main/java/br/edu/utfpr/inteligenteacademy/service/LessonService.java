@@ -82,6 +82,17 @@ public class LessonService {
         return new LessonResponseDto(saved);
     }
 
+    @Transactional
+    public void delete(Long courseId, Long moduleId, Long lessonId) {
+        Lesson lesson = lessonRepository.findByIdAndCourseModuleIdAndCourseModuleCourseId(
+                lessonId, moduleId, courseId
+        ).orElseThrow(() -> new ResourceNotFoundException(
+                "Lesson with id: " + lessonId + " not found."
+        ));
+        lessonRepository.delete(lesson);
+        publishEvent(new LessonModifiedEvent(moduleId));
+    }
+
     private void publishEvent(LessonModifiedEvent lessonModifiedEvent) {
         applicationEventPublisher.publishEvent(lessonModifiedEvent);
     }

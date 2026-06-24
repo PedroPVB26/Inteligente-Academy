@@ -1,0 +1,51 @@
+{
+    "home": {
+        "title": "Welcome to InteliGente Academy",
+        "subtitle": "Learn Artificial Intelligence"
+    },
+
+    "login": {
+        "email": "Email",
+        "password": "Password",
+        "button": "Sign in"
+    },
+
+    "users": {
+        "title": "Users"
+    },
+
+    "courses": {
+        "title": "Courses"
+    },
+
+    "tags": {
+        "title": "Tags",
+        "placeholder": "Tag Name",
+        "button": "Add Tag"
+    },
+
+    "navbar": {
+        "courses": "Courses",
+        "about": "About",
+        "certifications": "Certifications",
+        "login": "Login"
+    },
+
+    "about": {
+        "title": "About",
+        "description": "InteliGente Academy was born with the mission of democratizing access to knowledge focused on the. Age of Artificial Intelligence and Technology. Our goal is to guide students from the most basic concepts to the practical implementation of real solutions, generating a positive impact on society.",
+        "concept": "Education with Purpose",
+        "pillars":{
+            "title-ia": "Focused in IA",
+            "text-ia": "Content is constantly updated to reflect the evolution of the leading tools on the market.",
+            "title-free": "100% Free",
+            "text-free": "Unlimited access to technology courses, workshops, and learning materials without financial barriers.",
+            "title-certification": "Certification",
+            "text-certification": "Validate your knowledge and boost your academic or professional resume with our certificates."
+        },
+        "team-dev":{
+            "title": "Who Makes It Happen",
+            "subtitle": "Meet the development team behind the platform"
+        }
+    }
+}

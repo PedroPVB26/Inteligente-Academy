@@ -65,8 +65,6 @@ public class SecurityConfig {
                     .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
             .authorizeHttpRequests(auth -> auth
-            	// PARA TESTAR O FRONT
-//            	.anyRequest().permitAll()
             		
 //            	// VALIDA QUEM PODE ACESSAR O QUE
                 // Públicas
@@ -80,15 +78,16 @@ public class SecurityConfig {
                 .requestMatchers("/users/**").hasRole(admin)
 
                 // Tags
-                .requestMatchers(HttpMethod.GET, "/tags/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/tags/**").permitAll()
                 .requestMatchers("/tags/**").hasRole(admin)
 
                 // Enrollments
                 .requestMatchers(HttpMethod.POST, "/enrollment-requests/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "/enrollment-requests/pending").hasAnyRole(educador, admin)
                 .requestMatchers(HttpMethod.GET, "/enrollment-requests/**").hasAnyRole(educador, admin)
-                .requestMatchers(HttpMethod.PATCH, "/enrollment-requests/**").hasAnyRole(educador, admin)
+                .requestMatchers(HttpMethod.PATCH, "/enrollment-requests/**").permitAll()
                 .requestMatchers(HttpMethod.PATCH, "/enrollment/**").hasAnyRole(educador, admin)
+                .requestMatchers(HttpMethod.GET, "/enrollment/users/**").permitAll()
 
 				// Lessons Update
 				.requestMatchers(HttpMethod.PATCH, "/progress/**").authenticated()
@@ -115,6 +114,9 @@ public class SecurityConfig {
                 	    "/swagger-resources/**",
                 	    "/webjars/**"
                 	).permitAll()
+
+                // PARA TESTAR O FRONT
+                //.anyRequest().permitAll()
             )
 			.addFilterBefore(internalEndpointFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

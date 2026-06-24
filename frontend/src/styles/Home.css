@@ -1,0 +1,322 @@
+/* Container Geral */
+.hero-container {
+  min-height: 80vh;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 8%;
+  gap: 40px;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  color: #ffffff;
+  margin:0;
+}
+
+.hero-wave-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 140px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+.hero-waves {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-wave use {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.hero-wave-1 use {
+  fill: rgba(255, 255, 255, 0.08);
+  animation-name: hero-wave-drift-1;
+  animation-duration: 9s;
+}
+
+.hero-wave-2 use {
+  fill: rgba(255, 255, 255, 0.12);
+  animation-name: hero-wave-drift-2;
+  animation-duration: 12s;
+}
+
+.hero-wave-3 use {
+  fill: rgba(255, 255, 255, 0.17);
+  animation-name: hero-wave-drift-3;
+  animation-duration: 15s;
+}
+
+.hero-wave-4 use {
+  fill: rgba(255, 255, 255, 0.22);
+  animation-name: hero-wave-drift-4;
+  animation-duration: 18s;
+}
+
+@keyframes hero-wave-drift-1 {
+  from { transform: translateX(0); }
+  to { transform: translateX(-70px); }
+}
+
+@keyframes hero-wave-drift-2 {
+  from { transform: translateX(0); }
+  to { transform: translateX(55px); }
+}
+
+@keyframes hero-wave-drift-3 {
+  from { transform: translateX(0); }
+  to { transform: translateX(-35px); }
+}
+
+@keyframes hero-wave-drift-4 {
+  from { transform: translateX(0); }
+  to { transform: translateX(25px); }
+}
+
+/* Bloco de Conteúdo (Esquerda) */
+.hero-content {
+  max-width: 580px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Título e seus Destaques Específicos */
+.hero-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.highlight-orange {
+  color: #f26522; /* Laranja principal */
+}
+
+.highlight-white {
+  color: #ffffff;
+}
+
+/* Descrição menor */
+.hero-description {
+  font-size: 1rem;
+  color: #e2e8f0;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 480px;
+}
+
+/* Bloco de Ação */
+.hero-action-box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+/* Subtítulo com o Verde */
+.hero-subtitle {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.highlight-green {
+  color: #10b981; /* Verde bem vivo igual ao print */
+  font-weight: 700;
+}
+
+/* Alinhamento dos Botões */
+.hero-buttons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Botão "Começar!" */
+.btn-start {
+  background: transparent;
+  color: #f26522; /* Texto laranja */
+  border: 2px solid #f26522; /* Borda laranja */
+  padding: 10px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px; /* Bordas arredondadas quadradas da imagem */
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-start:hover {
+  background-color: #f26522;
+  color: #ffffff;
+}
+
+/* Botão "Veja como funciona!" */
+.btn-watch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.btn-watch:hover {
+  opacity: 0.9;
+}
+
+/* O quadradinho do ícone de Play */
+.play-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 2px solid #f26522; /* Borda laranja da caixinha */
+  border-radius: 8px;
+  color: #f26522; /* Cor da setinha */
+  font-size: 0.75rem; /* Ajusta o tamanho do triângulo */
+  padding-left: 2px; /* Ajuste óptico para centralizar o triângulo */
+}
+
+/* Imagem da Direita */
+.hero-image-wrapper {
+  position: relative;
+  max-width: 480px;
+  z-index: 1;
+}
+
+.hero-main-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.hero-top-icon {
+  position: absolute;
+  top: -30px;
+  right: 15px;
+  width: 38px;
+  height: 38px;
+}
+
+/* Responsividade Básica */
+@media (max-width: 968px) {
+  .hero-container {
+    flex-direction: column-reverse;
+    text-align: center;
+    padding: 40px 5%;
+  }
+  .hero-wave-wrap {
+    height: 100px;
+  }
+  .hero-content {
+    align-items: center;
+  }
+  .hero-buttons {
+    justify-content: center;
+  }
+  .hero-description {
+    max-width: 100%;
+  }
+}
+
+/* Carrossel de banners abaixo do hero */
+.home-carousel-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:center;
+  gap: 20px;
+  margin: 40px 8%;
+  padding-bottom: 40px;
+}
+
+.home-carousel-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.home-carousel-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.home-carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.home-carousel-card {
+  min-width: 100%;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.home-carousel-card img {
+  width: 100%;
+  max-height: 250px;
+  object-fit: contain;
+}
+
+.carousel-nav {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #fff;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: grid;
+  place-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.carousel-nav:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.home-carousel-static-cards {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.home-carousel-static-cards .home-carousel-card {
+  width: calc(50% - 10px);
+  min-width: 210px;
+}
+
+@media (max-width: 968px) {
+  .home-carousel-section {
+    flex-direction: column;
+    margin: 20px 5%;
+  }
+  .home-carousel-box {
+    flex-direction: column;
+  }
+  .home-carousel-static-cards {
+    width: 100%;
+  }
+  .home-carousel-static-cards .home-carousel-card {
+    width: 100%;
+  }
+}

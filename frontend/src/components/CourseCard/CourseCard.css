@@ -1,0 +1,155 @@
+/* Container Principal do Card */
+.course-card-style {
+  width: 100%;
+  max-width: 360px; /* Mantém a proporção visual do card */
+  background-color: white; /* Fundo cinza bem claro/esbranquiçado */
+  overflow: hidden; /* Garante que a imagem siga as bordas arredondadas */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  border-radius: 12px;
+}
+
+/* Área da Imagem */
+.card-image-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Posicionamento das Tags sobre a Imagem */
+.tags-left {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.tag-right {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+/* Estilo Base dos Badges Superiores */
+.tag-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #ffffff;
+  backdrop-filter: blur(4px); /* Efeito sutil de vidro */
+}
+
+.badge-green {
+  background-color: rgba(22, 101, 52, 0.75); /* Verde translúcido */
+  border: 1px solid #16a34a;
+}
+
+.badge-blue {
+  background-color: rgba(30, 58, 138, 0.7); /* Azul translúcido */
+  border: 1px solid #3b82f6;
+}
+
+.badge-time {
+  background-color: rgba(15, 23, 42, 0.6); /* Preto/Cinza escuro translúcido */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.clock-icon {
+  font-size: 0.85rem;
+}
+
+/* Área de Texto (Metade de Baixo) */
+.card-info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.course-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+}
+
+.course-instructor {
+  font-size: 0.95rem;
+  color: #666666; /* Texto cinza do sublinhado */
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+/* Rodapé do Card */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.footer-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+}
+
+/* Badge de Estrelas (Nota 5.0) */
+.badge-rating {
+  background-color: #ea580c; /* Laranja escuro do print */
+  color: #ffffff;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.star-icon {
+  font-size: 0.85rem;
+}
+
+/* Badge de Pré-requisito */
+.badge-requirement {
+  background-color: #ea580c;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Botão "Inscreva-se" */
+.btn-enroll {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #ea580c;
+  border: 2px solid #ea580c;
+  padding: 6px 16px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-enroll:hover {
+  background-color: #ea580c;
+  color: #ffffff;
+}
